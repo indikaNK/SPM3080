@@ -23,7 +23,7 @@ public class DBManager {
  {
  MongoClient mongo;
  mongo = new MongoClient("localhost", 27017);
- database = mongo.getDB("LibraryDB_java");
+ database = mongo.getDB("TimeManageDB_java");
  }
  return database;
  }
