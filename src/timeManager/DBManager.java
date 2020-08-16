@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package timeManage;
+package timeManager;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 
 /**
  *
- *
+ * @author IT17113014
  */
 public class DBManager {
 
@@ -23,7 +23,7 @@ public class DBManager {
  {
  MongoClient mongo;
  mongo = new MongoClient("localhost", 27017);
- database = mongo.getDB("TimeManageDB_java");
+ database = mongo.getDB("spm_TimeManager_IT17113014");
  }
  return database;
  }
