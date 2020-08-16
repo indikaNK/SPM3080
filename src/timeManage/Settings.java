@@ -5,6 +5,8 @@
  */
 package timeManage;
 
+import java.time.LocalTime;
+
 /**
  *
  * @author Thisura
@@ -14,6 +16,8 @@ public class Settings extends javax.swing.JPanel {
     /**
      * Creates new form Settings
      */
+    int numberOfWorkingDays = 0;
+    
     public Settings() {
         initComponents();
     }
@@ -29,124 +33,209 @@ public class Settings extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jTextField1 = new javax.swing.JTextField();
+        jCheckBox_sunday = new javax.swing.JCheckBox();
+        jCheckBox_monday = new javax.swing.JCheckBox();
+        jCheckBox_tuesday = new javax.swing.JCheckBox();
+        jCheckBox_wednsday = new javax.swing.JCheckBox();
+        jCheckBox_thursday = new javax.swing.JCheckBox();
+        jCheckBox_friday = new javax.swing.JCheckBox();
+        jCheckBox_saturday = new javax.swing.JCheckBox();
+        txt_no_of_wrkng_days_p_week = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner3 = new javax.swing.JSpinner();
-        jSpinner4 = new javax.swing.JSpinner();
-        jComboBox1 = new javax.swing.JComboBox();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jSpinner_wrkng_hrs_p_day = new javax.swing.JSpinner();
+        jSpinner_wrkng_min_p_day = new javax.swing.JSpinner();
+        jRadioButton_time_slots_1hr = new javax.swing.JRadioButton();
+        jRadioButton_time_slot_30min = new javax.swing.JRadioButton();
+        timePicker_starting_time = new com.github.lgooddatepicker.components.TimePicker();
+        btn_save = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("SETTINGS");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
         jLabel2.setText("Working Days");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jCheckBox1.setText("Sunday");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBox_sunday.setText("Sunday");
+        jCheckBox_sunday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_sunday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jCheckBox_sundayActionPerformed(evt);
             }
         });
 
-        jCheckBox2.setText("Monday");
+        jCheckBox_monday.setText("Monday");
+        jCheckBox_monday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_monday.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBox_mondayStateChanged(evt);
+            }
+        });
+        jCheckBox_monday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_mondayActionPerformed(evt);
+            }
+        });
 
-        jCheckBox3.setText("Tuesday");
+        jCheckBox_tuesday.setText("Tuesday");
+        jCheckBox_tuesday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_tuesday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_tuesdayActionPerformed(evt);
+            }
+        });
 
-        jCheckBox4.setText("Wednsday");
+        jCheckBox_wednsday.setText("Wednsday");
+        jCheckBox_wednsday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_wednsday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_wednsdayActionPerformed(evt);
+            }
+        });
 
-        jCheckBox5.setText("Thursday");
+        jCheckBox_thursday.setText("Thursday");
+        jCheckBox_thursday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_thursday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_thursdayActionPerformed(evt);
+            }
+        });
 
-        jCheckBox6.setText("Friday");
+        jCheckBox_friday.setText("Friday");
+        jCheckBox_friday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_friday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_fridayActionPerformed(evt);
+            }
+        });
 
-        jCheckBox7.setText("Saterday");
+        jCheckBox_saturday.setText("Saturday");
+        jCheckBox_saturday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_saturday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_saturdayActionPerformed(evt);
+            }
+        });
+
+        txt_no_of_wrkng_days_p_week.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txt_no_of_wrkng_days_p_week.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_no_of_wrkng_days_p_weekActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Number of Working Days Per Week");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel4.setText("Working Time Per Day");
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel5.setText("Time Slots");
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         jLabel6.setText("Starting Time");
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AM", "PM" }));
+        jSpinner_wrkng_hrs_p_day.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jRadioButton1.setText("One Hour");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        jSpinner_wrkng_min_p_day.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jRadioButton_time_slots_1hr.setText("One Hour");
+        jRadioButton_time_slots_1hr.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRadioButton_time_slots_1hr.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                jRadioButton_time_slots_1hrActionPerformed(evt);
             }
         });
 
-        jRadioButton2.setText("30Minutes");
+        jRadioButton_time_slot_30min.setText("30Minutes");
+        jRadioButton_time_slot_30min.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btn_save.setText("SAVE");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_saveActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setText("hrs");
+
+        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel8.setText("min");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(84, 84, 84)
+                        .addGap(65, 65, 65)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
+                                .addGap(84, 84, 84)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBox6)
-                                    .addComponent(jCheckBox7)
                                     .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txt_no_of_wrkng_days_p_week, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(50, 50, 50)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jCheckBox5)
-                                            .addComponent(jCheckBox1)
-                                            .addComponent(jCheckBox4)
-                                            .addComponent(jCheckBox2)
-                                            .addComponent(jCheckBox3))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 319, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jCheckBox_friday)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jCheckBox_saturday)
+                                                .addGap(197, 610, Short.MAX_VALUE))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jCheckBox_thursday)
+                                                    .addComponent(jCheckBox_sunday)
+                                                    .addComponent(jCheckBox_wednsday)
+                                                    .addComponent(jCheckBox_monday)
+                                                    .addComponent(jCheckBox_tuesday))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addGap(198, 198, 198)
+                                                        .addComponent(timePicker_starting_time, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(41, 41, 41))
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(96, 96, 96)
+                                                        .addComponent(jRadioButton_time_slot_30min))
+                                                    .addComponent(jLabel6)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(jLabel5)
-                                                            .addComponent(jLabel4))
-                                                        .addGap(27, 27, 27))
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                        .addComponent(jRadioButton1)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(69, 69, 69)
-                                                .addComponent(jRadioButton2))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel6)
-                                                .addGap(77, 77, 77)
-                                                .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
-                .addGap(195, 195, 195))
+                                                            .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                    .addComponent(jLabel5)
+                                                                    .addComponent(jLabel4))
+                                                                .addGap(27, 27, 27))
+                                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                .addComponent(jRadioButton_time_slots_1hr)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                                        .addComponent(jSpinner_wrkng_hrs_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(4, 4, 4)
+                                                        .addComponent(jLabel7)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jSpinner_wrkng_min_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jLabel8)))
+                                                .addGap(16, 16, 16))))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_save)))
+                .addGap(93, 93, 93))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,74 +247,207 @@ public class Settings extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(37, 37, 37)
-                        .addComponent(jCheckBox1)
+                        .addComponent(jCheckBox_sunday)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox2)
+                        .addComponent(jCheckBox_monday)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox3)
+                        .addComponent(jCheckBox_tuesday)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox4)
+                        .addComponent(jCheckBox_wednsday)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox5))
+                        .addComponent(jCheckBox_thursday))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSpinner_wrkng_hrs_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSpinner_wrkng_min_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
                         .addGap(34, 34, 34)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton2)
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jRadioButton_time_slots_1hr)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jRadioButton_time_slot_30min)
+                                .addGap(41, 41, 41)
+                                .addComponent(jLabel6))
+                            .addComponent(timePicker_starting_time, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox6)
+                .addComponent(jCheckBox_friday)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBox7)
+                .addComponent(jCheckBox_saturday)
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_no_of_wrkng_days_p_week, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_save)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void jCheckBox_sundayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_sundayActionPerformed
+        if(jCheckBox_sunday.isSelected()){
+            String noOfWrkngDys = Integer.toString(++numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }else{
+            String noOfWrkngDys = Integer.toString(--numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }
+    }//GEN-LAST:event_jCheckBox_sundayActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void jRadioButton_time_slots_1hrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_time_slots_1hrActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_jRadioButton_time_slots_1hrActionPerformed
+
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        int noOfWorkingDays = Integer.parseInt(txt_no_of_wrkng_days_p_week.getText());
+        String[] workingDays = new String[7];
+        int i=0;
+        if(jCheckBox_sunday.isSelected()){
+            workingDays[i++] = "SUNDAY";
+        }
+        if(jCheckBox_monday.isSelected()){
+            workingDays[i++] = "Monday";
+        }
+        if(jCheckBox_tuesday.isSelected()){
+            workingDays[i++] = "Tuesday";
+        }
+        if(jCheckBox_wednsday.isSelected()){
+            workingDays[i++] = "WEDNSDAY";
+        }
+        if(jCheckBox_thursday.isSelected()){
+            workingDays[i++] = "THURSDAY";
+        }
+        if(jCheckBox_friday.isSelected()){
+            workingDays[i++] = "FRIDAY";
+        }
+        if(jCheckBox_saturday.isSelected()){
+            workingDays[i++] = "SATURDAY";
+        }
+        
+        int workingHoursPerDay = (Integer)jSpinner_wrkng_hrs_p_day.getValue();
+        int workingMinutesPerDay = (Integer)jSpinner_wrkng_min_p_day.getValue();
+        
+        String timeSlot="";
+        if(jRadioButton_time_slots_1hr.isSelected()){
+            timeSlot = "ONE_HOUR";
+        }
+        else if(jRadioButton_time_slot_30min.isSelected()){
+            timeSlot = "30_MINUTES";
+        }
+        else {
+            System.out.println("Please select timeslots");
+        }
+        
+//        int startTimeHours = (Integer)jSpinner_start_time_hrs.getValue();
+//        int startTimeMinutes = (Integer)jSpinner4_start_time_min.getValue();
+        LocalTime startTime = timePicker_starting_time.getTime();
+        
+        System.out.println("no of working days : "+ noOfWorkingDays);
+        System.out.println("working days : ");
+        int j=0;
+        while(j<workingDays.length){
+            System.out.println(workingDays[j++]);
+        }
+        System.out.println("working time per day : "+ workingHoursPerDay + ":"+workingMinutesPerDay);
+        System.out.println("time slot : "+ timeSlot);
+        System.out.println("Start time : "+ startTime);
+    }//GEN-LAST:event_btn_saveActionPerformed
+
+    private void txt_no_of_wrkng_days_p_weekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_no_of_wrkng_days_p_weekActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_no_of_wrkng_days_p_weekActionPerformed
+
+    private void jCheckBox_mondayStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox_mondayStateChanged
+        System.out.println("state changed");
+    }//GEN-LAST:event_jCheckBox_mondayStateChanged
+
+    private void jCheckBox_mondayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_mondayActionPerformed
+        if(jCheckBox_monday.isSelected()){
+            String noOfWrkngDys = Integer.toString(++numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }else{
+            String noOfWrkngDys = Integer.toString(--numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }
+    }//GEN-LAST:event_jCheckBox_mondayActionPerformed
+
+    private void jCheckBox_tuesdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_tuesdayActionPerformed
+        if(jCheckBox_tuesday.isSelected()){
+            String noOfWrkngDys = Integer.toString(++numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }else{
+            String noOfWrkngDys = Integer.toString(--numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }
+    }//GEN-LAST:event_jCheckBox_tuesdayActionPerformed
+
+    private void jCheckBox_wednsdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_wednsdayActionPerformed
+        if(jCheckBox_wednsday.isSelected()){
+            String noOfWrkngDys = Integer.toString(++numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }else{
+            String noOfWrkngDys = Integer.toString(--numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }
+    }//GEN-LAST:event_jCheckBox_wednsdayActionPerformed
+
+    private void jCheckBox_thursdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_thursdayActionPerformed
+        if(jCheckBox_thursday.isSelected()){
+            String noOfWrkngDys = Integer.toString(++numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }else{
+            String noOfWrkngDys = Integer.toString(--numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }
+    }//GEN-LAST:event_jCheckBox_thursdayActionPerformed
+
+    private void jCheckBox_fridayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_fridayActionPerformed
+        if(jCheckBox_friday.isSelected()){
+            String noOfWrkngDys = Integer.toString(++numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }else{
+            String noOfWrkngDys = Integer.toString(--numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }
+    }//GEN-LAST:event_jCheckBox_fridayActionPerformed
+
+    private void jCheckBox_saturdayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_saturdayActionPerformed
+        if(jCheckBox_saturday.isSelected()){
+            String noOfWrkngDys = Integer.toString(++numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }else{
+            String noOfWrkngDys = Integer.toString(--numberOfWorkingDays);
+            txt_no_of_wrkng_days_p_week.setText(noOfWrkngDys);
+        }
+    }//GEN-LAST:event_jCheckBox_saturdayActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton btn_save;
+    private javax.swing.JCheckBox jCheckBox_friday;
+    private javax.swing.JCheckBox jCheckBox_monday;
+    private javax.swing.JCheckBox jCheckBox_saturday;
+    private javax.swing.JCheckBox jCheckBox_sunday;
+    private javax.swing.JCheckBox jCheckBox_thursday;
+    private javax.swing.JCheckBox jCheckBox_tuesday;
+    private javax.swing.JCheckBox jCheckBox_wednsday;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JSpinner jSpinner4;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JRadioButton jRadioButton_time_slot_30min;
+    private javax.swing.JRadioButton jRadioButton_time_slots_1hr;
+    private javax.swing.JSpinner jSpinner_wrkng_hrs_p_day;
+    private javax.swing.JSpinner jSpinner_wrkng_min_p_day;
+    private com.github.lgooddatepicker.components.TimePicker timePicker_starting_time;
+    private javax.swing.JTextField txt_no_of_wrkng_days_p_week;
     // End of variables declaration//GEN-END:variables
 }
