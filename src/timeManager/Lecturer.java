@@ -21,7 +21,7 @@ public class Lecturer {
         this.level = level;
     }
     
-    private String  EID;    //lecturer ID
+    public String  EID;    //lecturer ID
     private String Name;
     private String faculty;
     private String dept; //department
@@ -83,6 +83,9 @@ public class Lecturer {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+    public Lecturer(String EID){
+        this.EID = EID;
     }
 
 

@@ -5,27 +5,25 @@
  */
 package timeManager;
 
+import timeManager.*;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
-import java.awt.Window;
 import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *
  * @author NK
  */
-public class Create_Employee_UI extends javax.swing.JPanel {
+public class Update_Remove_Subject_UI extends javax.swing.JPanel {
 
     /**
      * Creates new form Create_Employee
      */
-    public Create_Employee_UI() {
+    public Update_Remove_Subject_UI() {
         initComponents();
     }
 
@@ -52,15 +50,17 @@ public class Create_Employee_UI extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
+        jSpinner2 = new javax.swing.JSpinner();
+        jSpinner3 = new javax.swing.JSpinner();
+        jSpinner4 = new javax.swing.JSpinner();
 
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Create Employee");
+        jLabel1.setText("Create Subject");
 
         jButton1.setText("Submit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -69,19 +69,19 @@ public class Create_Employee_UI extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setText("Employee ID");
+        jLabel2.setText("Subject Code");
 
-        jLabel3.setText("Name");
+        jLabel3.setText("Subject Name");
 
-        jLabel4.setText("Faculty");
+        jLabel4.setText("Offered Year");
 
-        jLabel5.setText("Department");
+        jLabel5.setText("Offered Semester");
 
-        jLabel6.setText("Center");
+        jLabel6.setText("Lecture Hours");
 
-        jLabel7.setText("Building");
+        jLabel7.setText("Tutorial Hours");
 
-        jLabel8.setText("Occupation");
+        jLabel8.setText("Lab Hours");
 
         jButton2.setText("Home");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -90,55 +90,42 @@ public class Create_Employee_UI extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Faculty", "Computing", "Business", "Engineering" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Year", "Y1", "Y2", "Y3", "Y4", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Depatment", "Department 1", "Department 2", "Department 3" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Semester", "Semester 1", "Semester 2", "Semester 3" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Center", "Center A", "Center B", "Center C" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Building", "B1", "B2", "B3" }));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
-            }
-        });
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Job Title", "Professor", "LIC", "Senior Lecturer", "Lecturer", "Asistant Lecturer" }));
+        jLabel9.setText("Evaluation Hours");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,20 +139,20 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(85, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(132, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,18 +180,22 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                    .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel2, jTextField1});
@@ -214,30 +205,16 @@ public class Create_Employee_UI extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //go back to home
         //code here
-        //Create_Employee_UI e = new Create_Employee_UI();
+        
         
         Dashboard b=new Dashboard();
         b.setVisible(true);
-          JPanel comp = (JPanel) evt.getSource();
-          Window win = SwingUtilities.getWindowAncestor(comp);
-            win.dispose();
         
-        
-        
-       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
-
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
@@ -245,41 +222,43 @@ public class Create_Employee_UI extends javax.swing.JPanel {
         
         try{
         
-            //int eID = Integer.parseInt(jTextField1.getText());
-            String eID = jTextField1.getText();
-            String employee_Name = jTextField2.getText();
-            String faculty = jComboBox1.getSelectedItem().toString();
-            String department = jComboBox2.getSelectedItem().toString();
-            String centre = jComboBox3.getSelectedItem().toString();
-            String building = jComboBox4.getSelectedItem().toString();
-            String occupation = jComboBox5.getSelectedItem().toString();
+        String name = jTextField1.getText();
+        String code = jTextField2.getText();
+        String year = jComboBox1.getInputContext().toString();
+        String semester = jComboBox2.getInputContext().toString();
+        int nLhrs = (Integer)jSpinner1.getValue();
+        int nThrs = (Integer)jSpinner2.getValue();
+        int nLabhrs = (Integer)jSpinner3.getValue();
+        int nEVhrs = (Integer)jSpinner4.getValue();
             
             //simple validations
-            if(eID.isEmpty() == true){
-                JOptionPane.showMessageDialog(null, "Employee ID is Empty");
-            }else{
-            Lecturer lecturer = new Lecturer(eID, employee_Name, faculty, department, centre, building,occupation);
-                DBObject doc =  createDBObject(lecturer);
-                DB myDB = null;
-                
-            try {
-                //connection to DB
-                myDB = DBManager.getDatabase();
-               
-            } catch (UnknownHostException e) {
-                JOptionPane.showMessageDialog(null, "Error When connecting To Database");
-            }
-            DBCollection col = myDB.getCollection("Employee");
-            WriteResult result = col.insert(doc);
-            JOptionPane.showMessageDialog(null, "Record Inserted");
+               if (code.isEmpty())
+                {
+                JOptionPane.showMessageDialog(null, "Subject Code is Mandatory");
+                }else{
+        Subjects subjects = new Subjects(name, code, year, semester, nLhrs, nThrs,nLabhrs,nEVhrs);
+        DBObject doc = createDBObject(subjects);
+        DB myDB = null;
+        try
+        {
+        myDB = DBManager.getDatabase();
+        }
+        catch (UnknownHostException ex)
+        {
+        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        }
+        DBCollection col = myDB.getCollection("Subjects ");
+        WriteResult result = col.insert(doc);
+        JOptionPane.showMessageDialog(null, "Inserted Successfully");
                         jTextField1.setText(null);
                         jTextField2.setText(null);
-                        jComboBox1.setSelectedItem("Select Faculty");
-                        jComboBox2.setSelectedItem("Select Department");
-                        jComboBox3.setSelectedItem("Select Center");
-                        jComboBox4.setSelectedItem("Select Building");
-                        jComboBox5.setSelectedItem("Select Occupation");
-            }
+                        jComboBox1.setSelectedItem("Offered Year");
+                        jComboBox2.setSelectedItem("Offered Semester");
+                        jSpinner1.setValue(null);
+                        jSpinner3.setValue(null);
+                        jSpinner2.setValue(null);
+                        jSpinner4.setValue(null);
+        }
         }catch(Exception e){
                 JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!" + e.toString());
         jTextField1.grabFocus();
@@ -288,28 +267,24 @@ public class Create_Employee_UI extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
-    private static DBObject createDBObject(Lecturer lecturer)
+    private static DBObject createDBObject(Subjects subjects)
 {
             BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
-            docBuilder.append("Employee ID", lecturer.getEID());
-            docBuilder.append("Employee_Name", lecturer.getName());
-            docBuilder.append("Faculty", lecturer.getFaculty());
-            docBuilder.append("Department", lecturer.getDept());
-            docBuilder.append("Center", lecturer.getCenter());
-            docBuilder.append("Building", lecturer.getBuilding());
-            docBuilder.append("Occupation", lecturer.getLevel());
+            docBuilder.append("Subject Code", subjects.getSubjectCode());
+            docBuilder.append("Subject Name", subjects.getSubjectName());
+            docBuilder.append("Offered Year", subjects.getOfferedYear());
+            docBuilder.append("Offerd Semester", subjects.getOfferedSemester());
+            docBuilder.append("Lecture Hours", subjects.getnLhrs());
+            docBuilder.append("Tutorial Hours", subjects.getnThrs());
+            docBuilder.append("Lab Hours", subjects.getnLabhrs());
+            docBuilder.append("Evaluation Hours", subjects.getnEvhrs());
              return docBuilder.get();
 }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -318,12 +293,14 @@ public class Create_Employee_UI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JSpinner jSpinner3;
+    private javax.swing.JSpinner jSpinner4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-
-
-
 
 
 
@@ -344,29 +321,53 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Update_Remove_Subject_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Update_Remove_Subject_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Update_Remove_Subject_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Update_Remove_Subject_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Create_Employee_UI().setVisible(true);
+                new Update_Remove_Subject_UI().setVisible(true);
             }
         });
-
-
-
-
-
-
 
 
 
