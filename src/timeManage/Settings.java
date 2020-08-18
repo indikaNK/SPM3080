@@ -5,7 +5,16 @@
  */
 package timeManage;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
+import java.net.UnknownHostException;
 import java.time.LocalTime;
+import javax.swing.JOptionPane;
+import org.bson.conversions.Bson;
 
 /**
  *
@@ -17,9 +26,66 @@ public class Settings extends javax.swing.JPanel {
      * Creates new form Settings
      */
     int numberOfWorkingDays = 0;
+    DB SettingDB = null;
+    DBCollection col=null;
     
     public Settings() {
         initComponents();
+        
+        
+        try
+        {
+        SettingDB = DBManager.getDatabase();
+        }
+        catch (UnknownHostException ex)
+        {
+        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        }
+        col = SettingDB.getCollection("Setting");
+        
+        DBObject settingsObject= col.findOne();
+//         "TimeSlot" : "ONE_HOUR" , "WorkingHoursPerDay" : 8 , "WorkingMinutesPerDay" : 30}
+                
+       numberOfWorkingDays = (Integer)settingsObject.get("NoOfWorkingDays");
+        txt_no_of_wrkng_days_p_week.setText(Integer.toString(numberOfWorkingDays));
+        timePicker_starting_time.setText(settingsObject.get("StartTime").toString());
+        
+        String wrkngDays = settingsObject.get("WorkingDays").toString();
+        
+        if(wrkngDays.matches("(.*)MONDAY(.*)")){
+            jCheckBox_monday.setSelected(true);
+        }
+        if(wrkngDays.matches("(.*)TUESDAY(.*)")){
+            jCheckBox_tuesday.setSelected(true);
+        }
+        if(wrkngDays.matches("(.*)WEDNSDAY(.*)")){
+            jCheckBox_wednsday.setSelected(true);
+        }
+        if(wrkngDays.matches("(.*)THURSDAY(.*)")){
+            jCheckBox_thursday.setSelected(true);
+        }
+        if(wrkngDays.matches("(.*)FRIDAY(.*)")){
+            jCheckBox_friday.setSelected(true);
+        }
+        if(wrkngDays.matches("(.*)SATURDAY(.*)")){
+            jCheckBox_saturday.setSelected(true);
+        }
+        if(wrkngDays.matches("(.*)SUNDAY(.*)")){
+            jCheckBox_sunday.setSelected(true);
+        }
+        
+        String timeslot = settingsObject.get("TimeSlot").toString();
+        System.out.println();
+        if(timeslot.equals("ONE_HOUR") ){
+            jRadioButton_time_slots_1hr.setSelected(true);
+        }
+        if(timeslot.equals("30_MINUTES")){
+            jRadioButton_time_slots_1hr.setSelected(true);
+        }
+        
+        jSpinner_wrkng_hrs_p_day.setValue(settingsObject.get("WorkingHoursPerDay"));
+        jSpinner_wrkng_min_p_day.setValue(settingsObject.get("WorkingMinutesPerDay"));
+        
     }
 
     /**
@@ -302,6 +368,19 @@ public class Settings extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton_time_slots_1hrActionPerformed
 
+    private static DBObject createDBObject(Setting setting_)
+{
+            BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
+            docBuilder.append("SettingId", setting_.getSettingid());
+            docBuilder.append("NoOfWorkingDays", setting_.getNoOfWorkingDays());
+            docBuilder.append("WorkingDays", setting_.getWorkingDays());
+            docBuilder.append("StartTime", setting_.getStartingTime());
+            docBuilder.append("TimeSlot", setting_.getTimeSlot());
+            docBuilder.append("WorkingHoursPerDay", setting_.getWorkingHrsPerDay());
+            docBuilder.append("WorkingMinutesPerDay", setting_.getWorkingMinsPerDay());
+             return docBuilder.get();
+}
+    
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         int noOfWorkingDays = Integer.parseInt(txt_no_of_wrkng_days_p_week.getText());
         String[] workingDays = new String[7];
@@ -310,10 +389,10 @@ public class Settings extends javax.swing.JPanel {
             workingDays[i++] = "SUNDAY";
         }
         if(jCheckBox_monday.isSelected()){
-            workingDays[i++] = "Monday";
+            workingDays[i++] = "MONDAY";
         }
         if(jCheckBox_tuesday.isSelected()){
-            workingDays[i++] = "Tuesday";
+            workingDays[i++] = "TUESDAY";
         }
         if(jCheckBox_wednsday.isSelected()){
             workingDays[i++] = "WEDNSDAY";
@@ -344,17 +423,24 @@ public class Settings extends javax.swing.JPanel {
         
 //        int startTimeHours = (Integer)jSpinner_start_time_hrs.getValue();
 //        int startTimeMinutes = (Integer)jSpinner4_start_time_min.getValue();
-        LocalTime startTime = timePicker_starting_time.getTime();
+        String startTime = timePicker_starting_time.getTime().toString();
         
-        System.out.println("no of working days : "+ noOfWorkingDays);
-        System.out.println("working days : ");
-        int j=0;
-        while(j<workingDays.length){
-            System.out.println(workingDays[j++]);
-        }
-        System.out.println("working time per day : "+ workingHoursPerDay + ":"+workingMinutesPerDay);
-        System.out.println("time slot : "+ timeSlot);
-        System.out.println("Start time : "+ startTime);
+        Setting setting = new Setting(1,noOfWorkingDays,workingDays,startTime,timeSlot,workingHoursPerDay,workingMinutesPerDay);
+        DBObject doc = createDBObject(setting);
+//        DB SettingDB = null;
+//        try
+//        {
+//        SettingDB = DBManager.getDatabase();
+//        }
+//        catch (UnknownHostException ex)
+//        {
+//        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+//        }
+//        DBCollection col = SettingDB.getCollection("Setting");
+//        WriteResult result = col.insert(doc);
+        BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 1);
+        WriteResult updateResult = col.update(searchQuery,doc);
+        
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void txt_no_of_wrkng_days_p_weekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_no_of_wrkng_days_p_weekActionPerformed
@@ -362,7 +448,7 @@ public class Settings extends javax.swing.JPanel {
     }//GEN-LAST:event_txt_no_of_wrkng_days_p_weekActionPerformed
 
     private void jCheckBox_mondayStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox_mondayStateChanged
-        System.out.println("state changed");
+       
     }//GEN-LAST:event_jCheckBox_mondayStateChanged
 
     private void jCheckBox_mondayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_mondayActionPerformed
