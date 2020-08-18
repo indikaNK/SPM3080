@@ -44,50 +44,54 @@ public class Settings extends javax.swing.JPanel {
         col = SettingDB.getCollection("Setting");
         
         DBObject settingsObject= col.findOne();
-//         "TimeSlot" : "ONE_HOUR" , "WorkingHoursPerDay" : 8 , "WorkingMinutesPerDay" : 30}
-                
-       numberOfWorkingDays = (Integer)settingsObject.get("NoOfWorkingDays");
-        txt_no_of_wrkng_days_p_week.setText(Integer.toString(numberOfWorkingDays));
-        timePicker_starting_time.setText(settingsObject.get("StartTime").toString());
         
-        String wrkngDays = settingsObject.get("WorkingDays").toString();
+       if(settingsObject != null){
         
-        if(wrkngDays.matches("(.*)MONDAY(.*)")){
-            jCheckBox_monday.setSelected(true);
-        }
-        if(wrkngDays.matches("(.*)TUESDAY(.*)")){
-            jCheckBox_tuesday.setSelected(true);
-        }
-        if(wrkngDays.matches("(.*)WEDNSDAY(.*)")){
-            jCheckBox_wednsday.setSelected(true);
-        }
-        if(wrkngDays.matches("(.*)THURSDAY(.*)")){
-            jCheckBox_thursday.setSelected(true);
-        }
-        if(wrkngDays.matches("(.*)FRIDAY(.*)")){
-            jCheckBox_friday.setSelected(true);
-        }
-        if(wrkngDays.matches("(.*)SATURDAY(.*)")){
-            jCheckBox_saturday.setSelected(true);
-        }
-        if(wrkngDays.matches("(.*)SUNDAY(.*)")){
-            jCheckBox_sunday.setSelected(true);
-        }
+            numberOfWorkingDays = (Integer)settingsObject.get("NoOfWorkingDays");
+            txt_no_of_wrkng_days_p_week.setText(Integer.toString(numberOfWorkingDays));
+            timePicker_starting_time.setText(settingsObject.get("StartTime").toString());
+
+            String wrkngDays = settingsObject.get("WorkingDays").toString();
+
+            if(wrkngDays.matches("(.*)MONDAY(.*)")){
+                jCheckBox_monday.setSelected(true);
+            }
+            if(wrkngDays.matches("(.*)TUESDAY(.*)")){
+                jCheckBox_tuesday.setSelected(true);
+            }
+            if(wrkngDays.matches("(.*)WEDNSDAY(.*)")){
+                jCheckBox_wednsday.setSelected(true);
+            }
+            if(wrkngDays.matches("(.*)THURSDAY(.*)")){
+                jCheckBox_thursday.setSelected(true);
+            }
+            if(wrkngDays.matches("(.*)FRIDAY(.*)")){
+                jCheckBox_friday.setSelected(true);
+            }
+            if(wrkngDays.matches("(.*)SATURDAY(.*)")){
+                jCheckBox_saturday.setSelected(true);
+            }
+            if(wrkngDays.matches("(.*)SUNDAY(.*)")){
+                jCheckBox_sunday.setSelected(true);
+            }
+
+            String timeslot = settingsObject.get("TimeSlot").toString();
+            System.out.println();
+            if(timeslot.equals("ONE_HOUR") ){
+                jRadioButton_time_slots_1hr.setSelected(true);
+            }
+            if(timeslot.equals("30_MINUTES")){
+                jRadioButton_time_slot_30min.setSelected(true);
+            }
+            else{
+                jRadioButton_time_slots_1hr.setSelected(true);
+            }
+
+//            jSpinner_wrkng_hrs_p_day.setValue(settingsObject.get("WorkingHoursPerDay"));
+//            jSpinner_wrkng_min_p_day.setValue(settingsObject.get("WorkingMinutesPerDay"));
+            jComboBox1.setSelectedItem(settingsObject.get("WorkingTimePerDay"));
+       }
         
-        String timeslot = settingsObject.get("TimeSlot").toString();
-        System.out.println();
-        if(timeslot.equals("ONE_HOUR") ){
-            jRadioButton_time_slots_1hr.setSelected(true);
-        }
-        if(timeslot.equals("30_MINUTES")){
-            jRadioButton_time_slot_30min.setSelected(true);
-        }
-        else{
-            jRadioButton_time_slots_1hr.setSelected(true);
-        }
-        
-        jSpinner_wrkng_hrs_p_day.setValue(settingsObject.get("WorkingHoursPerDay"));
-        jSpinner_wrkng_min_p_day.setValue(settingsObject.get("WorkingMinutesPerDay"));
         
     }
 
@@ -114,14 +118,12 @@ public class Settings extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner_wrkng_hrs_p_day = new javax.swing.JSpinner();
-        jSpinner_wrkng_min_p_day = new javax.swing.JSpinner();
         jRadioButton_time_slots_1hr = new javax.swing.JRadioButton();
         jRadioButton_time_slot_30min = new javax.swing.JRadioButton();
         timePicker_starting_time = new com.github.lgooddatepicker.components.TimePicker();
         btn_save = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
 
         jLabel1.setText("SETTINGS");
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -209,10 +211,6 @@ public class Settings extends javax.swing.JPanel {
         jLabel6.setText("Starting Time");
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jSpinner_wrkng_hrs_p_day.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jSpinner_wrkng_min_p_day.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
         jRadioButton_time_slots_1hr.setText("One Hour");
         jRadioButton_time_slots_1hr.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jRadioButton_time_slots_1hr.addActionListener(new java.awt.event.ActionListener() {
@@ -239,8 +237,7 @@ public class Settings extends javax.swing.JPanel {
         jLabel7.setText("hrs");
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
 
-        jLabel8.setText("min");
-        jLabel8.setForeground(new java.awt.Color(102, 102, 102));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -282,14 +279,10 @@ public class Settings extends javax.swing.JPanel {
                                                             .addComponent(jLabel5)
                                                             .addComponent(jLabel4))
                                                         .addGap(27, 27, 27)
-                                                        .addComponent(jSpinner_wrkng_hrs_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(4, 4, 4)
-                                                        .addComponent(jLabel7)
+                                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(jSpinner_wrkng_min_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(jLabel8)))
-                                                .addGap(16, 16, 16))
+                                                        .addComponent(jLabel7)))
+                                                .addGap(44, 44, 44))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jRadioButton_time_slots_1hr)
@@ -333,11 +326,9 @@ public class Settings extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jSpinner_wrkng_hrs_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinner_wrkng_min_p_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8))
-                        .addGap(34, 34, 34)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(35, 35, 35)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jRadioButton_time_slots_1hr)
@@ -377,8 +368,7 @@ public class Settings extends javax.swing.JPanel {
             docBuilder.append("WorkingDays", setting_.getWorkingDays());
             docBuilder.append("StartTime", setting_.getStartingTime());
             docBuilder.append("TimeSlot", setting_.getTimeSlot());
-            docBuilder.append("WorkingHoursPerDay", setting_.getWorkingHrsPerDay());
-            docBuilder.append("WorkingMinutesPerDay", setting_.getWorkingMinsPerDay());
+            docBuilder.append("WorkingTimePerDay", setting_.getWorkingTimePerDay());
              return docBuilder.get();
 }
     
@@ -408,8 +398,9 @@ public class Settings extends javax.swing.JPanel {
             workingDays[i++] = "SATURDAY";
         }
         
-        int workingHoursPerDay = (Integer)jSpinner_wrkng_hrs_p_day.getValue();
-        int workingMinutesPerDay = (Integer)jSpinner_wrkng_min_p_day.getValue();
+        String workingTimePerDay = jComboBox1.getSelectedItem().toString();
+//        int workingHoursPerDay = (Integer)jSpinner_wrkng_hrs_p_day.getValue();
+//        int workingMinutesPerDay = (Integer)jSpinner_wrkng_min_p_day.getValue();
         
         String timeSlot="";
         if(jRadioButton_time_slots_1hr.isSelected()){
@@ -422,11 +413,12 @@ public class Settings extends javax.swing.JPanel {
         String startTime = timePicker_starting_time.getTime().toString();
         if(numberOfWorkingDays>0){
             try {
-            Setting setting = new Setting(1,numberOfWorkingDays,workingDays,startTime,timeSlot,workingHoursPerDay,workingMinutesPerDay);
+            Setting setting = new Setting(1,numberOfWorkingDays,workingDays,startTime,timeSlot,workingTimePerDay);
             DBObject doc = createDBObject(setting);
 
             BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 1);
-            WriteResult updateResult = col.update(searchQuery,doc);
+//            WriteResult updateResult = col.update(searchQuery,doc);
+            WriteResult updateResult = col.insert(doc);
            
             } catch (Exception e) {
                 System.out.println(e);
@@ -529,6 +521,7 @@ public class Settings extends javax.swing.JPanel {
     private javax.swing.JCheckBox jCheckBox_thursday;
     private javax.swing.JCheckBox jCheckBox_tuesday;
     private javax.swing.JCheckBox jCheckBox_wednsday;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -536,11 +529,8 @@ public class Settings extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JRadioButton jRadioButton_time_slot_30min;
     private javax.swing.JRadioButton jRadioButton_time_slots_1hr;
-    private javax.swing.JSpinner jSpinner_wrkng_hrs_p_day;
-    private javax.swing.JSpinner jSpinner_wrkng_min_p_day;
     private com.github.lgooddatepicker.components.TimePicker timePicker_starting_time;
     private javax.swing.JTextField txt_no_of_wrkng_days_p_week;
     // End of variables declaration//GEN-END:variables

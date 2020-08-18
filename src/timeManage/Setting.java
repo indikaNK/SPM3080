@@ -17,20 +17,18 @@ public class Setting {
     private String[] workingDays;
     private String startingTime;
     private String timeSlot;
-    private int workingHrsPerDay;
-    private int workingMinsPerDay;
+    private String workingTimePerDay;
 
     public Setting() {
     }
 
-    public Setting(int settingid, int noOfWorkingDays, String[] workingDays, String startingTimeHrs, String timeSlot, int workingHrsPerDay, int workingMinsPerDay) {
+    public Setting(int settingid, int noOfWorkingDays, String[] workingDays, String startingTimeHrs, String timeSlot, String workingTimePerDay) {
         this.settingid = settingid;
         this.noOfWorkingDays = noOfWorkingDays;
         this.workingDays = workingDays;
         this.startingTime = startingTimeHrs;
         this.timeSlot = timeSlot;
-        this.workingHrsPerDay = workingHrsPerDay;
-        this.workingMinsPerDay = workingMinsPerDay;
+        this.workingTimePerDay = workingTimePerDay;
     }
 
     /**
@@ -106,31 +104,15 @@ public class Setting {
     /**
      * @return the workingHrsPerDay
      */
-    public int getWorkingHrsPerDay() {
-        return workingHrsPerDay;
+    public String getWorkingTimePerDay() {
+        return workingTimePerDay;
     }
 
     /**
      * @param workingHrsPerDay the workingHrsPerDay to set
      */
-    public void setWorkingHrsPerDay(int workingHrsPerDay) {
-        this.workingHrsPerDay = workingHrsPerDay;
-    }
-
-    /**
-     * @return the workingMinsPerDay
-     */
-    public int getWorkingMinsPerDay() {
-        return workingMinsPerDay;
-    }
-
-    /**
-     * @param workingMinsPerDay the workingMinsPerDay to set
-     */
-    public void setWorkingMinsPerDay(int workingMinsPerDay) {
-        this.workingMinsPerDay = workingMinsPerDay;
-    }
-    
-    
+    public void setWorkingTimePerDay(int workingHrsPerDay) {
+        this.workingTimePerDay = workingTimePerDay;
+    }   
     
 }
