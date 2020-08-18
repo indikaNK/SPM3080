@@ -86,9 +86,6 @@ public class Settings extends javax.swing.JPanel {
             else{
                 jRadioButton_time_slots_1hr.setSelected(true);
             }
-
-//            jSpinner_wrkng_hrs_p_day.setValue(settingsObject.get("WorkingHoursPerDay"));
-//            jSpinner_wrkng_min_p_day.setValue(settingsObject.get("WorkingMinutesPerDay"));
             jComboBox1.setSelectedItem(settingsObject.get("WorkingTimePerDay"));
        }
         
@@ -399,8 +396,6 @@ public class Settings extends javax.swing.JPanel {
         }
         
         String workingTimePerDay = jComboBox1.getSelectedItem().toString();
-//        int workingHoursPerDay = (Integer)jSpinner_wrkng_hrs_p_day.getValue();
-//        int workingMinutesPerDay = (Integer)jSpinner_wrkng_min_p_day.getValue();
         
         String timeSlot="";
         if(jRadioButton_time_slots_1hr.isSelected()){
@@ -417,8 +412,8 @@ public class Settings extends javax.swing.JPanel {
             DBObject doc = createDBObject(setting);
 
             BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 1);
-//            WriteResult updateResult = col.update(searchQuery,doc);
-            WriteResult updateResult = col.insert(doc);
+            WriteResult updateResult = col.update(searchQuery,doc);
+//            WriteResult updateResult = col.insert(doc);
            
             } catch (Exception e) {
                 System.out.println(e);
