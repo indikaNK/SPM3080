@@ -15,7 +15,9 @@ public class DashboardPage extends javax.swing.JPanel {
      * Creates new form DashboardPage
      */
     public DashboardPage() {
+        super();
         initComponents();
+        
     }
 
     /**
@@ -54,6 +56,11 @@ public class DashboardPage extends javax.swing.JPanel {
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Settings");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(204, 0, 0));
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -103,6 +110,12 @@ public class DashboardPage extends javax.swing.JPanel {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.removeAll();
+        Dashboard db = new Dashboard();
+        db.showSettingsPage();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
