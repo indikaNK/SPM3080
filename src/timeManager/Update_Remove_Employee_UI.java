@@ -301,19 +301,19 @@ public class Update_Remove_Employee_UI extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
        //Remove object
-          String EID = jTextField1.getText();
-          Lecturer lecturer = new Lecturer(EID);
-          DBObject doc = createRemoveDBObject(lecturer);
-          DB myDB = null;
+          String eID = jTextField1.getText();
+          Lecturer l = new Lecturer(eID);
+          DBObject doc = createRemoveDBObject(l);
+          DB edb = null;
           try
           {
-           myDB = DBManager.getDatabase();
+           edb = DBManager.getDatabase();
           }
           catch (UnknownHostException e)
           {
            JOptionPane.showMessageDialog(null, "Remove Failed " + e.toString());
           }
-          DBCollection col = myDB.getCollection("Employee");
+          DBCollection col = edb.getCollection("Employee");
           WriteResult result = col.remove(doc);
            if(result.getN() > 0)
            {
@@ -411,7 +411,7 @@ public class Update_Remove_Employee_UI extends javax.swing.JPanel {
     private static DBObject createRemoveDBObject(Lecturer lecturer) {
         
         BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
-        docBuilder.append("EID", lecturer.EID);
+        docBuilder.append("Employee ID", lecturer.EID);
         return docBuilder.get();
         
     }

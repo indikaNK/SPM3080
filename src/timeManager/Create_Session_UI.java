@@ -5,6 +5,7 @@
  */
 package timeManager;
 
+import timeManager.*;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -15,17 +16,12 @@ import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-/**
- *
- * @author NK
- */
-public class Create_Employee_UI extends javax.swing.JPanel {
+public class Create_Session_UI extends javax.swing.JPanel {
 
     /**
-     * Creates new form Create_Employee
+     * Creates new form 
      */
-    public Create_Employee_UI() {
+    public Create_Session_UI() {
         initComponents();
     }
 
@@ -51,16 +47,18 @@ public class Create_Employee_UI extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
         jComboBox4 = new javax.swing.JComboBox<>();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
 
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Create Employee");
+        jLabel1.setText("Create Sessions");
 
         jButton1.setText("Submit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -69,19 +67,19 @@ public class Create_Employee_UI extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setText("Employee ID");
+        jLabel2.setText("Session ID");
 
-        jLabel3.setText("Name");
+        jLabel3.setText("Session Name");
 
-        jLabel4.setText("Faculty");
+        jLabel4.setText("Lecturer");
 
-        jLabel5.setText("Department");
+        jLabel5.setText("Tags");
 
-        jLabel6.setText("Center");
+        jLabel6.setText("Group ID");
 
-        jLabel7.setText("Building");
+        jLabel7.setText("Subject Code");
 
-        jLabel8.setText("Occupation");
+        jLabel8.setText("Subject");
 
         jButton2.setText("Home");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -90,30 +88,21 @@ public class Create_Employee_UI extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Faculty", "Computing", "Business", "Engineering" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Lecturer", "L1", "L2", "L3" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Depatment", "Department 1", "Department 2", "Department 3" }));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Center", "Center A", "Center B", "Center C" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Building", "B1", "B2", "B3" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Subject Code", " ", "Code 1", "Code 2" }));
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
             }
         });
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Job Title", "Professor", "LIC", "Senior Lecturer", "Lecturer", "Asistant Lecturer" }));
+        jLabel9.setText("Student Count");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -133,30 +122,30 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 161, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox5, 0, 601, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
@@ -164,7 +153,11 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(247, Short.MAX_VALUE))
         );
@@ -190,11 +183,11 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -202,8 +195,12 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 364, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -215,7 +212,7 @@ public class Create_Employee_UI extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //go back to home
         //code here
-        //Create_Employee_UI e = new Create_Employee_UI();
+        //Create_Employee_UI e = new Create_Session_UI();
         
         Dashboard b=new Dashboard();
         b.setVisible(true);
@@ -232,10 +229,6 @@ public class Create_Employee_UI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
-
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox4ActionPerformed
@@ -247,20 +240,22 @@ public class Create_Employee_UI extends javax.swing.JPanel {
         try{
         
             //int eID = Integer.parseInt(jTextField1.getText());
-            String eID = jTextField1.getText();
-            String employee_Name = jTextField2.getText();
-            String faculty = jComboBox1.getSelectedItem().toString();
-            String department = jComboBox2.getSelectedItem().toString();
-            String centre = jComboBox3.getSelectedItem().toString();
-            String building = jComboBox4.getSelectedItem().toString();
-            String occupation = jComboBox5.getSelectedItem().toString();
+            String session_ID = jTextField1.getText();
+            String session_Name = jTextField2.getText();
+            String lecturer = jComboBox1.getSelectedItem().toString();
+            String tags = jTextField3.getText();
+            String group_ID = jTextField4.getText();
+            String subject_Code = jComboBox4.getSelectedItem().toString();
+            String subject = jTextField5.getText();
+            String scount = jTextField6.getText();
+            int student_count = (Integer.decode(scount));
             
             //simple validations
-            if(eID.isEmpty() == true){
-                JOptionPane.showMessageDialog(null, "Employee ID is Empty");
+            if(session_ID.isEmpty() == true){
+                JOptionPane.showMessageDialog(null, "Session ID cannot be Empty");
             }else{
-            Lecturer lecturer = new Lecturer(eID, employee_Name, faculty, department, centre, building,occupation);
-                DBObject doc =  createDBObject(lecturer);
+            Sessions session = new Sessions(session_ID, session_Name, lecturer, tags, group_ID, subject_Code,subject,student_count);
+                DBObject doc =  createDBObject(session);
                 DB myDB = null;
                 
             try {
@@ -270,16 +265,18 @@ public class Create_Employee_UI extends javax.swing.JPanel {
             } catch (UnknownHostException e) {
                 JOptionPane.showMessageDialog(null, "Error When connecting To Database");
             }
-            DBCollection col = myDB.getCollection("Employee");
+            DBCollection col = myDB.getCollection("Sessions");
             WriteResult result = col.insert(doc);
             JOptionPane.showMessageDialog(null, "Record Inserted");
                         jTextField1.setText(null);
                         jTextField2.setText(null);
-                        jComboBox1.setSelectedItem("Select Faculty");
-                        jComboBox2.setSelectedItem("Select Department");
-                        jComboBox3.setSelectedItem("Select Center");
-                        jComboBox4.setSelectedItem("Select Building");
-                        jComboBox5.setSelectedItem("Select Occupation");
+                        jComboBox1.setSelectedItem("Select Lecturer");
+                        jTextField2.setText(null);
+                        jTextField3.setText(null);
+                        jTextField4.setText(null);
+                        jComboBox4.setSelectedItem("Select Subject Code");
+                        jTextField5.setText(null);
+                        jTextField6.setText(null);
             }
         }catch(Exception e){
                 JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!" + e.toString());
@@ -290,16 +287,18 @@ public class Create_Employee_UI extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
-    private static DBObject createDBObject(Lecturer lecturer)
+    private static DBObject createDBObject(Sessions session)
 {
             BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
-            docBuilder.append("Employee ID", lecturer.getEID());
-            docBuilder.append("Employee_Name", lecturer.getName());
-            docBuilder.append("Faculty", lecturer.getFaculty());
-            docBuilder.append("Department", lecturer.getDept());
-            docBuilder.append("Center", lecturer.getCenter());
-            docBuilder.append("Building", lecturer.getBuilding());
-            docBuilder.append("Occupation", lecturer.getLevel());
+            docBuilder.append("Session_ID", session.getSessionID());
+            docBuilder.append("Session_Name ", session.getSessionName());
+            docBuilder.append("Lecturer", session.getSLecturer());
+            docBuilder.append("Tags", session.getTags());
+            docBuilder.append("Group_ID", session.getGroupID());
+            docBuilder.append("Subject_Code", session.getSSubjectCode());
+            docBuilder.append("Subject", session.getSSubject());
+            docBuilder.append("Student_Count", session.getStudentCount());
+           
              return docBuilder.get();
 }
 
@@ -307,10 +306,7 @@ public class Create_Employee_UI extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -319,8 +315,13 @@ public class Create_Employee_UI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 
 
@@ -345,21 +346,27 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Create_Session_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Create_Session_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Create_Session_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Create_Employee_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Create_Session_UI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Create_Employee_UI().setVisible(true);
+                new Create_Session_UI().setVisible(true);
             }
         });
 

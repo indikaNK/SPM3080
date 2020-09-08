@@ -71,6 +71,12 @@ public class Create_Subject_UI extends javax.swing.JPanel {
             }
         });
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Subject Code");
 
         jLabel3.setText("Subject Name");
@@ -226,11 +232,10 @@ public class Create_Subject_UI extends javax.swing.JPanel {
         //when submit
         
         try{
-        
-        String name = jTextField1.getText();
-        String code = jTextField2.getText();
-        String year = jComboBox1.getInputContext().toString();
-        String semester = jComboBox2.getInputContext().toString();
+        String code = jTextField1.getText();
+        String name = jTextField2.getText();
+        String year = jComboBox1.getSelectedItem().toString();
+        String semester = jComboBox2.getSelectedItem().toString();
         int nLhrs = (Integer)jSpinner1.getValue();
         int nThrs = (Integer)jSpinner2.getValue();
         int nLabhrs = (Integer)jSpinner3.getValue();
@@ -241,7 +246,7 @@ public class Create_Subject_UI extends javax.swing.JPanel {
                 {
                 JOptionPane.showMessageDialog(null, "Subject Code is Mandatory");
                 }else{
-        Subjects subjects = new Subjects(name, code, year, semester, nLhrs, nThrs,nLabhrs,nEVhrs);
+        Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs,nLabhrs,nEVhrs);
         DBObject doc = createDBObject(subjects);
         DB myDB = null;
         try
@@ -271,6 +276,10 @@ public class Create_Subject_UI extends javax.swing.JPanel {
         
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     private static DBObject createDBObject(Subjects subjects)
 {

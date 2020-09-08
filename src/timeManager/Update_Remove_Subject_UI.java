@@ -17,11 +17,13 @@ import java.net.UnknownHostException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.DocumentBuilder;
 
 /**
  *
  * @author NK
  */
+
 public class Update_Remove_Subject_UI extends javax.swing.JPanel {
 
     /**
@@ -221,8 +223,6 @@ public class Update_Remove_Subject_UI extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //go back to home
         //code here
-        
-        
         Dashboard b=new Dashboard();
         b.setVisible(true);
         JPanel comp = (JPanel) evt.getSource();
@@ -241,21 +241,20 @@ public class Update_Remove_Subject_UI extends javax.swing.JPanel {
         
         try{
         
-        String name = jTextField1.getText();
-        String code = jTextField2.getText();
-        String year = jComboBox1.getInputContext().toString();
-        String semester = jComboBox2.getInputContext().toString();
+       String code = jTextField1.getText();
+        String name = jTextField2.getText();
+        String year = jComboBox1.getSelectedItem().toString();
+        String semester = jComboBox2.getSelectedItem().toString();
         int nLhrs = (Integer)jSpinner1.getValue();
         int nThrs = (Integer)jSpinner2.getValue();
         int nLabhrs = (Integer)jSpinner3.getValue();
         int nEVhrs = (Integer)jSpinner4.getValue();
-            
             //simple validations
                if (code.isEmpty())
                 {
                 JOptionPane.showMessageDialog(null, "Subject Code is Mandatory");
                 }else{
-        Subjects subjects = new Subjects(name, code, year, semester, nLhrs, nThrs,nLabhrs,nEVhrs);
+       Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs,nLabhrs,nEVhrs);
         DBObject doc = createDBObject(subjects);
         DB myDB = null;
         try
@@ -289,6 +288,28 @@ public class Update_Remove_Subject_UI extends javax.swing.JPanel {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
 //        Remove subject
+          String code = jTextField1.getText();;
+          Subjects s = new Subjects(code);
+          DBObject doc = createRemoveDBObject(s);
+          DB sdb = null;
+          try
+          {
+           sdb = DBManager.getDatabase();
+          }
+          catch (UnknownHostException e)
+          {
+           JOptionPane.showMessageDialog(null, "Remove Failed " + e.toString());
+          }
+          DBCollection col = sdb.getCollection("Subjects ");
+          WriteResult result = col.remove(doc);
+           if(result.getN() > 0)
+           {
+           JOptionPane.showMessageDialog(null, Integer.toString(result.getN()) + "Record(s) Removed Sucessfully");
+           }
+           else
+           {
+           JOptionPane.showMessageDialog(null, "Could not find record to remove");
+           }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private static DBObject createDBObject(Subjects subjects)
@@ -357,67 +378,7 @@ public class Update_Remove_Subject_UI extends javax.swing.JPanel {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+     
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -429,5 +390,12 @@ public class Update_Remove_Subject_UI extends javax.swing.JPanel {
 
 
 }
+
+    private DBObject createRemoveDBObject(Subjects s) {
+         BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
+        docBuilder.append("Subject Code",s.subjectCode);
+        return docBuilder.get();
+   
+    }
 
 }

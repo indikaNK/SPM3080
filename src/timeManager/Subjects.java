@@ -14,7 +14,7 @@ public class Subjects {
     //properties
     private String offeredYear;
     private String offeredSemester;
-    private String subjectCode;
+    public String subjectCode;
     private String subjectName;
     private int nLhrs;//number of lecture Hours
     private int nThrs;//number of tutorial Hours
@@ -22,15 +22,17 @@ public class Subjects {
     private int nEvhrs;//number of evaluation Hours
 
     //construcor
-    public Subjects(String subjectName,String offeredYear, String offeredSemester, String subjectCode, int nLhrs, int nThrs, int nLabhrs, int nEvhrs) {
+    public Subjects(String subjectCode,String subjectName ,String offeredYear, String offeredSemester, int nLhrs, int nThrs, int nLabhrs, int nEvhrs) {
+
+        this.subjectCode = subjectCode;
+        this.subjectName = subjectName;
         this.offeredYear = offeredYear;
         this.offeredSemester = offeredSemester;
-        this.subjectCode = subjectCode;
         this.nLhrs = nLhrs;
         this.nThrs = nThrs;
         this.nLabhrs = nLabhrs;
         this.nEvhrs = nEvhrs;
-        this.subjectName = subjectName;
+        
     }
 
     public String getSubjectName() {
@@ -97,5 +99,8 @@ public class Subjects {
         this.nEvhrs = nEvhrs;
     }
 
+    public Subjects(String subjectCode ){
+    this.subjectCode = subjectCode;
+    }
     
 }
