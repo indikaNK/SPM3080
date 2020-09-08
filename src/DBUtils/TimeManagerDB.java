@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package timeManage;
+package DBUtils;
+
+import Building.AddBuilding;
 
 /**
  *
@@ -15,7 +17,7 @@ public class TimeManagerDB {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    AddBook b = new AddBook();
+    AddBuilding b = new AddBuilding();
             b.setVisible(true);
     }
     

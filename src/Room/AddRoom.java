@@ -230,8 +230,7 @@ public class AddRoom extends javax.swing.JFrame {
         String floorNumber = (String)tfFloorNumber.getText();
         String location = (String)tfLocation.getText();
         String section = tfSection.getText();
-        String bname = "ooo lala lala laaaa";
-                //jLabel5.getText();
+        String bname = jLabel5.getText();
 
         if (roomNumber.length() == 0)
         {
@@ -350,7 +349,7 @@ public class AddRoom extends javax.swing.JFrame {
         try {
             MyDb = DBManager.getDatabase();
             BasicDBObject whereQuery = new BasicDBObject();
-            whereQuery.put("buildingName", buildingName);
+            whereQuery.put("bname", buildingName);
             DBCollection coll = MyDb.getCollection("Rooms");
             cursor = coll.find(whereQuery);
 
@@ -425,6 +424,7 @@ public class AddRoom extends javax.swing.JFrame {
             docBuilder.append("floorNumber", room.floorNumber);
             docBuilder.append("location", room.location);
             docBuilder.append("section", room.section);
+            docBuilder.append("bname", room.bname);
             return docBuilder.get();
 }
     
