@@ -46,6 +46,8 @@ public class Settings extends javax.swing.JPanel {
         {
         JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
         }
+        
+        //get settings table data
         col = SettingDB.getCollection("Setting");
         
         BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 2);
@@ -53,6 +55,7 @@ public class Settings extends javax.swing.JPanel {
         
        if(settingsObject != null){
         
+           //set values to ui components
             numberOfWorkingDays = (Integer)settingsObject.get("NoOfWorkingDays");
             txt_no_of_wrkng_days_p_week.setText(Integer.toString(numberOfWorkingDays));
             timePicker_starting_time.setText(settingsObject.get("StartTime").toString());
@@ -99,7 +102,7 @@ public class Settings extends javax.swing.JPanel {
             jComboBox1.setSelectedItem(settingsObject.get("WorkingTimePerDay"));
             
             
-            
+            //show time slots in a table
             generateTimeSlotsTable(startingtime,workingTime,slot_time);
        }
        
@@ -448,6 +451,7 @@ public class Settings extends javax.swing.JPanel {
 
     private static DBObject createDBObject(Setting setting_)
 {
+    //create Settings obect
             BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
             docBuilder.append("SettingId", setting_.getSettingid());
             docBuilder.append("NoOfWorkingDays", setting_.getNoOfWorkingDays());
@@ -495,6 +499,8 @@ public class Settings extends javax.swing.JPanel {
         }
         
         String startTime = timePicker_starting_time.getTime().toString();
+        
+        //save data to DB
         if(numberOfWorkingDays>0){
             try {
             Setting setting = new Setting(2,numberOfWorkingDays,workingDays,startTime,timeSlot,workingTimePerDay);
@@ -600,6 +606,9 @@ public class Settings extends javax.swing.JPanel {
     }//GEN-LAST:event_jRadioButton_time_slot_30minActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        //handle default button
+        
         try
         {
         SettingDB = DBManager.getDatabase();
@@ -692,7 +701,8 @@ public class Settings extends javax.swing.JPanel {
     }//GEN-LAST:event_timePicker_starting_timePropertyChange
   
     public void generateTimeSlotsTable(String starttime, String noOfWorkingTime, String timeslot){
-        
+     
+        // show time slots in a table
         String[] parts = starttime.split(":");
         int time = Integer.parseInt(parts[0])*60+Integer.parseInt(parts[1]);
         String[] partss = noOfWorkingTime.split(":");
