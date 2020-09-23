@@ -11,8 +11,29 @@ package timeManager;
  */
 public class Sessions {
     
-    String sessionID,sessionName,lecturer,tags,groupID,subjectCode,subject;
-    int studentCount;
+    String sessionID,lecturer,tags,groupID,subjectCode,subject;
+    int studentCount,duration;
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+    String [] lecturers;
+
+    Sessions(String session_ID, String lecturers, String tag, String group_ID, String subject_Code, String subject, int student_coun,int duration) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String[] getLecturers() {
+        return lecturers;
+    }
+
+    public void setLecturers(String[] lecturers) {
+        this.lecturers = lecturers;
+    }
 
     public String getSessionID() {
         return sessionID;
@@ -22,13 +43,6 @@ public class Sessions {
         this.sessionID = sessionID;
     }
 
-    public String getSessionName() {
-        return sessionName;
-    }
-
-    public void setSessionName(String sessionName) {
-        this.sessionName = sessionName;
-    }
 
     public String getSLecturer() {
         return lecturer;
@@ -78,15 +92,15 @@ public class Sessions {
         this.studentCount = studentCount;
     }
 
-    public Sessions(String sessionID, String sessionName, String lecturer, String tags, String groupID, String subjectCode, String subject, int studentCount) {
+    public Sessions(String sessionID, String sessionName, String lecturer, String tags, String groupID, String subjectCode, String subject, int studentCount,int duration) {
         this.sessionID = sessionID;
-        this.sessionName = sessionName;
         this.lecturer = lecturer;
         this.tags = tags;
         this.groupID = groupID;
         this.subjectCode = subjectCode;
         this.subject = subject;
         this.studentCount = studentCount;
+        this.duration = duration;
     }
     
     

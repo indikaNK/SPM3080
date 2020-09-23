@@ -16,13 +16,13 @@ public class Subjects {
     private String offeredSemester;
     public String subjectCode;
     private String subjectName;
-    private int nLhrs;//number of lecture Hours
-    private int nThrs;//number of tutorial Hours
-    private int nLabhrs;//number of lab Hours
-    private int nEvhrs;//number of evaluation Hours
+    private String nLhrs;//number of lecture Hours
+    private String nThrs;//number of tutorial Hours
+    private String nLabhrs;//number of lab Hours
+    private String nEvhrs;//number of evaluation Hours
 
     //construcor
-    public Subjects(String subjectCode,String subjectName ,String offeredYear, String offeredSemester, int nLhrs, int nThrs, int nLabhrs, int nEvhrs) {
+    public Subjects(String subjectCode,String subjectName ,String offeredYear, String offeredSemester, String nLhrs, String nThrs, String nLabhrs, String nEvhrs) {
 
         this.subjectCode = subjectCode;
         this.subjectName = subjectName;
@@ -67,35 +67,35 @@ public class Subjects {
         this.subjectCode = subjectCode;
     }
 
-    public float getnLhrs() {
+    public String getnLhrs() {
         return nLhrs;
     }
 
-    public void setnLhrs(int nLhrs) {
+    public void setnLhrs(String nLhrs) {
         this.nLhrs = nLhrs;
     }
 
-    public float getnThrs() {
+    public String getnThrs() {
         return nThrs;
     }
 
-    public void setnThrs(int nThrs) {
+    public void setnThrs(String nThrs) {
         this.nThrs = nThrs;
     }
 
-    public float getnLabhrs() {
+    public String getnLabhrs() {
         return nLabhrs;
     }
 
-    public void setnLabhrs(int nLabhrs) {
+    public void setnLabhrs(String nLabhrs) {
         this.nLabhrs = nLabhrs;
     }
 
-    public float getnEvhrs() {
+    public String getnEvhrs() {
         return nEvhrs;
     }
 
-    public void setnEvhrs(int nEvhrs) {
+    public void setnEvhrs(String nEvhrs) {
         this.nEvhrs = nEvhrs;
     }
 

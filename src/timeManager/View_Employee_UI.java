@@ -5,10 +5,13 @@
  */
 package timeManager;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import com.mongodb.client.FindIterable;
 import java.awt.Window;
 import java.beans.Statement;
@@ -28,103 +31,22 @@ import javax.swing.text.Document;
  */
 public class View_Employee_UI extends javax.swing.JPanel {
 
-            String eID = null;
-            String employee_Name = null;
-            String faculty = null;
-            String department = null;
-            String centre = null;
-            String building = null;
-            String occupation = null;
+    String eID = null;
+    String employee_Name = null;
+    String faculty = null;
+    String department = null;
+    String centre = null;
+    String building = null;
+    String occupation = null;
+
     /**
      * Creates new form View_Employee_UI
      */
     public View_Employee_UI() {
         initComponents();
-        
-        DB edb = null;
-        DBCollection col = null;
-        
-         //retrive data
-        try{
-            edb = DBManager.getDatabase();
-        }catch(UnknownHostException e){
-            JOptionPane.showMessageDialog(null, "Error Connecting To DB");
-        }   
-        col = edb.getCollection("Employee");
-        DBObject resultdb = col.findOne();
-        System.out.println(resultdb.get("Employee ID"));
-    
-        if( resultdb != null){
-             eID = (String)resultdb.get("Employee ID");
-             employee_Name = (String)resultdb.get("Employee_Name");
-             faculty = (String)resultdb.get("Faculty");
-             department = (String)resultdb.get("Department");
-             centre = (String)resultdb.get("Center");
-             building = (String)resultdb.get("Building");
-             occupation = (String)resultdb.get("Occupation");
-             
-             //System.out.println(eID+""+employee_Name+""+faculty+""+department+""+centre+""+building+""+occupation);
-        }
-        String[] columNames = {"Employee ID","Employee Name","Employee Faculty","Department","Center","Building","Occupation"};
-         DefaultTableModel dtm = new DefaultTableModel(columNames,0);
-        
-//            dtm.addColumn("Employee ID");
-//            dtm.addColumn("Employee Name");
-//            dtm.addColumn("Employee Faculty");
-//            dtm.addColumn("Department");
-//            dtm.addColumn("Center");
-//            dtm.addColumn("Building");
-//            dtm.addColumn("Occupation");
-            
-            String Query = "SELECT * FROM Employee";
-            
-            
-            try {
-            
-        } catch (Exception e) {
-        }
-//        //loop through records
-//        
-                DBCursor iterDoc = col.find();
-//                
-//   // Getting the iterator 
-//   Iterator i = iterDoc.iterator(); 
-//
-//                
-//                while(iterDoc.hasNext()){
-//                    //System.out.println(iterDoc.next());
-//                    dtm.addRow(new String[]{eID,employee_Name,faculty,department,centre,building,occupation});
-//
-//              
-//                }            
-//  jTable1.setModel(dtm);
-  
-      while(iterDoc.hasNext()) {
-        DBObject obj = iterDoc.next();
-             eID = (String)obj.get("Employee ID");
-             employee_Name = (String)obj.get("Employee_Name");
-             faculty = (String)obj.get("Faculty");
-             department = (String)obj.get("Department");
-             centre = (String)obj.get("Center");
-             building = (String)obj.get("Building");
-             occupation = (String)obj.get("Occupation");  
-        dtm.addRow(new String[]{eID,employee_Name,faculty,department,centre,building,occupation});
 
-    }
-    jTable1.setModel(dtm);
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+        //populate data
+        this.populate();
     }
 
     /**
@@ -139,12 +61,30 @@ public class View_Employee_UI extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jComboBox4 = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("View Employee");
+        setPreferredSize(new java.awt.Dimension(620, 740));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("VIEW EMPLOYEES");
 
         jButton1.setText("Home");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -154,9 +94,6 @@ public class View_Employee_UI extends javax.swing.JPanel {
         });
 
         jTextField1.setToolTipText("");
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("Search");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,7 +106,79 @@ public class View_Employee_UI extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Employee ID");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Name");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Faculty");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Faculty", "Computing", "Business", "Engineering" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Department");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Depatment", "Department 1", "Department 2", "Department 3" }));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Center");
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Center", "Center A", "Center B", "Center C" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel9.setText("Building");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Building", "B1", "B2", "B3" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Occupation");
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Job Title", "Professor", "LIC", "Senior Lecturer", "Lecturer", "Asistant Lecturer" }));
+
+        jButton2.setText("UPDATE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("SEARCH");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setLabel("REMOVE");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -180,16 +189,51 @@ public class View_Employee_UI extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(177, 177, 177)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton1))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(152, 152, 152))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 220, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 2, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -197,20 +241,52 @@ public class View_Employee_UI extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton1))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(118, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(jTextField1))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Dashboard b=new Dashboard();
+        Dashboard b = new Dashboard();
         b.setVisible(true);
         JPanel comp = (JPanel) evt.getSource();
         Window win = SwingUtilities.getWindowAncestor(comp);
@@ -218,13 +294,243 @@ public class View_Employee_UI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // what to do after a left click in a row
+
+        DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
+        //Create_Employee_UI ce = new Create_Employee_UI();
+        eID = tblModel.getValueAt(jTable1.getSelectedRow(), 0).toString();
+        employee_Name = tblModel.getValueAt(jTable1.getSelectedRow(), 1).toString();
+        faculty = tblModel.getValueAt(jTable1.getSelectedRow(), 2).toString();
+        department = tblModel.getValueAt(jTable1.getSelectedRow(), 3).toString();
+        centre = tblModel.getValueAt(jTable1.getSelectedRow(), 4).toString();
+        building = tblModel.getValueAt(jTable1.getSelectedRow(), 5).toString();
+        occupation = tblModel.getValueAt(jTable1.getSelectedRow(), 6).toString();
+
+//        System.out.println(eID);
+//        System.out.println(employee_Name);
+        jTextField3.setText(eID);
+        jTextField4.setText(employee_Name);
+        jComboBox1.setSelectedItem(faculty);
+        jComboBox2.setSelectedItem(department);
+        jComboBox3.setSelectedItem(centre);
+        jComboBox4.setSelectedItem(building);
+        jComboBox5.setSelectedItem(occupation);
+
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        //update records
+        String eID = jTextField3.getText();
+        String employee_Name = jTextField4.getText();
+        String faculty = jComboBox1.getSelectedItem().toString();
+        String department = jComboBox2.getSelectedItem().toString();
+        String centre = jComboBox3.getSelectedItem().toString();
+        String building = jComboBox4.getSelectedItem().toString();
+        String occupation = jComboBox5.getSelectedItem().toString();
+
+        System.out.println("eID" + eID + " ename " + employee_Name);
+        DB myDB = null;
+        try {
+            //connection to DB
+
+            myDB = DBManager.getDatabase();
+
+        } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(null, "Error When connecting To Database");
+        }
+        try {
+
+            DBCollection col = myDB.getCollection("Employee");
+
+            Lecturer lecturer = new Lecturer(eID, employee_Name, faculty, department, centre, building, occupation);
+            DBObject doc = createDBObject(lecturer);
+            BasicDBObject searchQuery = new BasicDBObject().append("Employee ID", eID);
+
+            WriteResult updateresult = col.update(searchQuery, doc);
+            this.populate();
+            System.out.println("res" + updateresult);
+            JOptionPane.showMessageDialog(null, "Record Updated");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Record Update Failed");
+        }
+
+        this.emptyFields();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        String EID = jTextField3.getText();
+        System.out.println("Employee ID" + EID);
+        Lecturer lec = new Lecturer(EID);
+        DBObject doc = createRemoveDBObject(lec);
+        DB edb = null;
+
+        try {
+            edb = DBManager.getDatabase();
+        } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(null, "Remove Failed " + e.toString());
+        }
+        DBCollection col = edb.getCollection("Employee");
+        WriteResult result = col.remove(doc);
+        if (result.getN() > 0) {
+            JOptionPane.showMessageDialog(null, Integer.toString(result.getN()) + "Record(s) Removed Sucessfully");
+            //make fields empty
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Could not find record to remove");
+        }
+
+        // populate
+        this.populate();
+        this.emptyFields();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
+
+    private static DBObject createRemoveDBObject(Lecturer book_) {
+        BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
+        docBuilder.append("Employee ID", book_.EID);
+        return docBuilder.get();
+    }
+
+    private void populate() {
+        DB edb = null;
+        DBCollection col1 = null;
+        //retrive data
+        try {
+            edb = DBManager.getDatabase();
+        } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(null, "Error Connecting To DB");
+        }
+        col1 = edb.getCollection("Employee");
+        DBObject resultdb = col1.findOne();
+        // System.out.println(resultdb.get("Employee ID"));
+
+        if (resultdb != null) {
+            eID = (String) resultdb.get("Employee ID");
+            employee_Name = (String) resultdb.get("Employee_Name");
+            faculty = (String) resultdb.get("Faculty");
+            department = (String) resultdb.get("Department");
+            centre = (String) resultdb.get("Center");
+            building = (String) resultdb.get("Building");
+            occupation = (String) resultdb.get("Occupation");
+
+            //System.out.println(eID+""+employee_Name+""+faculty+""+department+""+centre+""+building+""+occupation);
+        }
+        String[] columNames = {"Employee ID", "Name", "Faculty", "Department", "Center", "Building", "Occupation"};
+
+        DefaultTableModel dtm = new DefaultTableModel(columNames, 0);
+
+//            dtm.addColumn("Employee ID");
+//            dtm.addColumn("Employee Name");
+//            dtm.addColumn("Employee Faculty");
+//            dtm.addColumn("Department");
+//            dtm.addColumn("Center");
+//            dtm.addColumn("Building");
+//            dtm.addColumn("Occupation");
+        String Query = "SELECT * FROM Employee";
+
+        try {
+
+        } catch (Exception e) {
+        }
+//        //loop through records
+//        
+        DBCursor iterDoc = col1.find();
+//                
+//   // Getting the iterator 
+//   Iterator i = iterDoc.iterator(); 
+//
+//                
+//                while(iterDoc.hasNext()){
+//                    //System.out.println(iterDoc.next());
+//                    dtm.addRow(new String[]{eID,employee_Name,faculty,department,centre,building,occupation});
+//
+//              
+//                }            
+//  jTable1.setModel(dtm);
+
+        while (iterDoc.hasNext()) {
+            DBObject obj = iterDoc.next();
+            eID = (String) obj.get("Employee ID");
+            employee_Name = (String) obj.get("Employee_Name");
+            faculty = (String) obj.get("Faculty");
+            department = (String) obj.get("Department");
+            centre = (String) obj.get("Center");
+            building = (String) obj.get("Building");
+            occupation = (String) obj.get("Occupation");
+            dtm.addRow(new String[]{eID, employee_Name, faculty, department, centre, building, occupation});
+
+        }
+        //load data to table (POPULATE DATA)
+        jTable1.setModel(dtm);
+    }
+
+    private DBObject createDBObject(Lecturer lecturer) {
+
+        BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
+        docBuilder.append("Employee ID", lecturer.getEID());
+        docBuilder.append("Employee_Name", lecturer.getName());
+        docBuilder.append("Faculty", lecturer.getFaculty());
+        docBuilder.append("Department", lecturer.getDept());
+        docBuilder.append("Center", lecturer.getCenter());
+        docBuilder.append("Building", lecturer.getBuilding());
+        docBuilder.append("Occupation", lecturer.getLevel());
+        return docBuilder.get();
+
+    }
+
+    public void emptyFields() {
+        jTextField3.setText(null);
+        jTextField4.setText(null);
+        jComboBox1.setSelectedItem(null);
+        jComboBox2.setSelectedItem(null);
+        jComboBox3.setSelectedItem(null);
+        jComboBox4.setSelectedItem(null);
+        jComboBox5.setSelectedItem(null);
+    }
 }

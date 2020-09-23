@@ -59,7 +59,7 @@ public class Create_Subject_UI extends javax.swing.JPanel {
         jSpinner4 = new javax.swing.JSpinner();
 
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        setPreferredSize(new java.awt.Dimension(1024, 768));
+        setPreferredSize(new java.awt.Dimension(620, 740));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Create Subject");
@@ -77,18 +77,25 @@ public class Create_Subject_UI extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Subject Code");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Subject Name");
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Offered Year");
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Offered Semester");
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Lecture Hours");
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Tutorial Hours");
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Lab Hours");
 
         jButton2.setText("Home");
@@ -105,8 +112,9 @@ public class Create_Subject_UI extends javax.swing.JPanel {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Semester", "Semester 1", "Semester 2", "Semester 3" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Semester", "Semester 1", "Semester 2", " " }));
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Evaluation Hours");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -142,34 +150,40 @@ public class Create_Subject_UI extends javax.swing.JPanel {
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGap(223, 223, 223))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jButton2)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton2))
-                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -203,7 +217,7 @@ public class Create_Subject_UI extends javax.swing.JPanel {
                     .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(336, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel2, jTextField1});
@@ -213,14 +227,13 @@ public class Create_Subject_UI extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //go back to home
         //code here
-        
-        
-        Dashboard b=new Dashboard();
+
+        Dashboard b = new Dashboard();
         b.setVisible(true);
         JPanel comp = (JPanel) evt.getSource();
         Window win = SwingUtilities.getWindowAncestor(comp);
         win.dispose();
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -230,50 +243,50 @@ public class Create_Subject_UI extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         //when submit
-        
-        try{
         String code = jTextField1.getText();
         String name = jTextField2.getText();
         String year = jComboBox1.getSelectedItem().toString();
         String semester = jComboBox2.getSelectedItem().toString();
-        int nLhrs = (Integer)jSpinner1.getValue();
-        int nThrs = (Integer)jSpinner2.getValue();
-        int nLabhrs = (Integer)jSpinner3.getValue();
-        int nEVhrs = (Integer)jSpinner4.getValue();
-            
-            //simple validations
-               if (code.isEmpty())
-                {
-                JOptionPane.showMessageDialog(null, "Subject Code is Mandatory");
-                }else{
-        Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs,nLabhrs,nEVhrs);
-        DBObject doc = createDBObject(subjects);
-        DB myDB = null;
-        try
-        {
-        myDB = DBManager.getDatabase();
-        }
-        catch (UnknownHostException ex)
-        {
-        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
-        }
-        DBCollection col = myDB.getCollection("Subjects ");
-        WriteResult result = col.insert(doc);
-        JOptionPane.showMessageDialog(null, "Inserted Successfully");
-                        jTextField1.setText(null);
-                        jTextField2.setText(null);
-                        jComboBox1.setSelectedItem("Offered Year");
-                        jComboBox2.setSelectedItem("Offered Semester");
-                        jSpinner1.setValue(null);
-                        jSpinner3.setValue(null);
-                        jSpinner2.setValue(null);
-                        jSpinner4.setValue(null);
-        }
-        }catch(Exception e){
+        String nLhrs = jSpinner1.getValue().toString();
+        String nThrs = jSpinner2.getValue().toString();
+        String nLabhrs = jSpinner3.getValue().toString();
+        String nEVhrs = jSpinner4.getValue().toString();
+
+        System.out.println("code" + code + " " + name + " " + year + " " + semester + " " + nLhrs + " " + nThrs + " " + nLabhrs + " " + nEVhrs);
+
+        //simple validations
+        if (code.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Subject Code is Mandatory");
+        } else if (name.isEmpty() == true) {
+            JOptionPane.showMessageDialog(null, "Please Enter a Name");
+        } else if (year.equals("Select Year")) {
+            JOptionPane.showMessageDialog(null, "Please input Year");
+        } else if (semester.equals("Select Semester")) {
+            JOptionPane.showMessageDialog(null, "Please Add Semester");
+        } else {
+
+            Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs, nLabhrs, nEVhrs);
+            DBObject doc = createDBObject(subjects);
+            DB myDB = null;
+            try {
+                myDB = DBManager.getDatabase();
+            } catch (UnknownHostException ex) {
+                JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+            }
+            try {
+                DBCollection col = myDB.getCollection("Subjects ");
+                WriteResult result = col.insert(doc);
+                JOptionPane.showMessageDialog(null, "Inserted Successfully");
+            } catch (Exception e) {
+
                 JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!" + e.toString());
-        jTextField1.grabFocus();
+                jTextField1.grabFocus();
+
+            }
+
         }
-        
+
+        this.emptyFields();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -281,19 +294,18 @@ public class Create_Subject_UI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private static DBObject createDBObject(Subjects subjects)
-{
-            BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
-            docBuilder.append("Subject Code", subjects.getSubjectCode());
-            docBuilder.append("Subject Name", subjects.getSubjectName());
-            docBuilder.append("Offered Year", subjects.getOfferedYear());
-            docBuilder.append("Offerd Semester", subjects.getOfferedSemester());
-            docBuilder.append("Lecture Hours", subjects.getnLhrs());
-            docBuilder.append("Tutorial Hours", subjects.getnThrs());
-            docBuilder.append("Lab Hours", subjects.getnLabhrs());
-            docBuilder.append("Evaluation Hours", subjects.getnEvhrs());
-             return docBuilder.get();
-}
+    private static DBObject createDBObject(Subjects subjects) {
+        BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
+        docBuilder.append("Subject Code", subjects.getSubjectCode());
+        docBuilder.append("SubjectName", subjects.getSubjectName());
+        docBuilder.append("Offered Year", subjects.getOfferedYear());
+        docBuilder.append("Offerd Semester", subjects.getOfferedSemester());
+        docBuilder.append("Lecture Hours", subjects.getnLhrs());
+        docBuilder.append("Tutorial Hours", subjects.getnThrs());
+        docBuilder.append("Lab Hours", subjects.getnLabhrs());
+        docBuilder.append("Evaluation Hours", subjects.getnEvhrs());
+        return docBuilder.get();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -315,8 +327,6 @@ public class Create_Subject_UI extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-
-
 
     /**
      * @param args the command line arguments
@@ -359,8 +369,17 @@ public class Create_Subject_UI extends javax.swing.JPanel {
             }
         });
 
+    }
 
-
-}
+    public void emptyFields() {
+        jTextField1.setText(null);
+        jTextField2.setText(null);
+        jComboBox1.setSelectedItem(null);
+        jComboBox2.setSelectedItem(null);
+        jSpinner1.setValue(0);
+        jSpinner3.setValue(0);
+        jSpinner2.setValue(0);
+        jSpinner4.setValue(0);
+    }
 
 }

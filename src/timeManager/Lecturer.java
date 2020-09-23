@@ -11,6 +11,14 @@ package timeManager;
  */
 public class Lecturer {
     
+    public String  EID;    //lecturer ID
+    private String Name;
+    private String faculty;
+    private String dept; //department
+    private String center;
+    private String Building;
+    private String level;
+        
         public Lecturer(String EID, String Name, String faculty, String dept, String center, String Building, String level) {
         this.EID = EID;
         this.Name = Name;
@@ -21,14 +29,6 @@ public class Lecturer {
         this.level = level;
     }
     
-    public String  EID;    //lecturer ID
-    private String Name;
-    private String faculty;
-    private String dept; //department
-    private String center;
-    private String Building;
-    private String level;
-
     public String getEID() {
         return EID;
     }
