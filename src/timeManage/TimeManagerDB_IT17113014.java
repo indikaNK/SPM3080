@@ -16,7 +16,7 @@ public class TimeManagerDB_IT17113014 {
      */
     public static void main(String[] args) {
 //add what to be loaded first
-        Dashboard b =new Dashboard();
+        board b =new board();
         b.setVisible(true);
     
     

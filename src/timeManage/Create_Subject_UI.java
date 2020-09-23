@@ -228,7 +228,7 @@ public class Create_Subject_UI extends javax.swing.JPanel {
         //go back to home
         //code here
 
-        Dashboard b = new Dashboard();
+        board b = new board();
         b.setVisible(true);
         JPanel comp = (JPanel) evt.getSource();
         Window win = SwingUtilities.getWindowAncestor(comp);

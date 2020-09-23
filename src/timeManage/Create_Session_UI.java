@@ -228,7 +228,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
         //code here
         //Create_Employee_UI e = new Create_Session_UI();
         
-        Dashboard b=new Dashboard();
+        board b=new board();
         b.setVisible(true);
           JPanel comp = (JPanel) evt.getSource();
           Window win = SwingUtilities.getWindowAncestor(comp);
