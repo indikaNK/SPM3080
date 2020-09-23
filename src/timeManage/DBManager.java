@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 
 /**
  *
- * @author IT17113014
+ * 
  */
 public class DBManager {
 
@@ -23,7 +23,7 @@ public class DBManager {
  {
  MongoClient mongo;
  mongo = new MongoClient("localhost", 27017);
- database = mongo.getDB("spm_TimeManager_IT17113014");
+ database = mongo.getDB("TimeManageDB_java");
  }
  return database;
  }
