@@ -19,7 +19,7 @@ public class Dashboard extends javax.swing.JFrame {
         
         jDesktopPane1.removeAll();
         try {
-           DashboardPage dbPage = new DashboardPage();           
+           DashboardPage dbPage = new DashboardPage(jDesktopPane1);           
             jDesktopPane1.add(dbPage).setVisible(true);
             dbPage.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
 
@@ -253,7 +253,7 @@ public class Dashboard extends javax.swing.JFrame {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jDesktopPane1.removeAll();
         try {
-           DashboardPage dbPage = new DashboardPage();           
+           DashboardPage dbPage = new DashboardPage(jDesktopPane1);           
             jDesktopPane1.add(dbPage).setVisible(true);
             dbPage.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
 
