@@ -15,11 +15,8 @@ public class TimeManagerDB {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//add what to be loaded first
-        Dashboard b =new Dashboard();
-        b.setVisible(true);
-    
-    
+    Dashboard b = new Dashboard();
+            b.setVisible(true);
     }
     
 }
