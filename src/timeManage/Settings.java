@@ -137,29 +137,29 @@ public class Settings extends javax.swing.JPanel {
         btn_save = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
-        timePicker_starting_time = new com.github.lgooddatepicker.components.TimePicker();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        timePicker_starting_time = new com.github.lgooddatepicker.components.TimePicker();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("SETTINGS");
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("SETTINGS");
 
-        jLabel2.setText("Working Days");
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Working Days");
 
-        jCheckBox_sunday.setText("Sunday");
         jCheckBox_sunday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_sunday.setText("Sunday");
         jCheckBox_sunday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox_sundayActionPerformed(evt);
             }
         });
 
-        jCheckBox_monday.setText("Monday");
         jCheckBox_monday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_monday.setText("Monday");
         jCheckBox_monday.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jCheckBox_mondayStateChanged(evt);
@@ -171,40 +171,40 @@ public class Settings extends javax.swing.JPanel {
             }
         });
 
-        jCheckBox_tuesday.setText("Tuesday");
         jCheckBox_tuesday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_tuesday.setText("Tuesday");
         jCheckBox_tuesday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox_tuesdayActionPerformed(evt);
             }
         });
 
-        jCheckBox_wednsday.setText("Wednsday");
         jCheckBox_wednsday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_wednsday.setText("Wednsday");
         jCheckBox_wednsday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox_wednsdayActionPerformed(evt);
             }
         });
 
-        jCheckBox_thursday.setText("Thursday");
         jCheckBox_thursday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_thursday.setText("Thursday");
         jCheckBox_thursday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox_thursdayActionPerformed(evt);
             }
         });
 
-        jCheckBox_friday.setText("Friday");
         jCheckBox_friday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_friday.setText("Friday");
         jCheckBox_friday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox_fridayActionPerformed(evt);
             }
         });
 
-        jCheckBox_saturday.setText("Saturday");
         jCheckBox_saturday.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jCheckBox_saturday.setText("Saturday");
         jCheckBox_saturday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox_saturdayActionPerformed(evt);
@@ -218,44 +218,44 @@ public class Settings extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setText("Number of Working Days Per Week");
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Number of Working Days Per Week");
 
-        jLabel4.setText("Working Time Per Day");
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("Working Time Per Day");
 
-        jLabel5.setText("Time Slot Duration");
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Time Slot Duration");
 
-        jLabel6.setText("Starting Time");
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setText("Starting Time");
 
-        jRadioButton_time_slots_1hr.setText("One Hour");
         jRadioButton_time_slots_1hr.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRadioButton_time_slots_1hr.setText("One Hour");
         jRadioButton_time_slots_1hr.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton_time_slots_1hrActionPerformed(evt);
             }
         });
 
-        jRadioButton_time_slot_30min.setText("30Minutes");
         jRadioButton_time_slot_30min.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jRadioButton_time_slot_30min.setText("30Minutes");
         jRadioButton_time_slot_30min.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton_time_slot_30minActionPerformed(evt);
             }
         });
 
-        btn_save.setText("Save");
         btn_save.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btn_save.setText("Save");
         btn_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_saveActionPerformed(evt);
             }
         });
 
-        jLabel7.setText("hrs");
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setText("hrs");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
@@ -279,20 +279,15 @@ public class Settings extends javax.swing.JPanel {
             }
         });
 
-        timePicker_starting_time.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                timePicker_starting_timePropertyChange(evt);
-            }
-        });
-
-        jButton1.setText("Set Default");
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jButton1.setText("Set Default");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -316,7 +311,6 @@ public class Settings extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jTable1.setRowHeight(24);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
@@ -358,10 +352,6 @@ public class Settings extends javax.swing.JPanel {
                                     .addComponent(jLabel1))
                                 .addGap(138, 138, 138)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(48, 48, 48)
-                                        .addComponent(timePicker_starting_time, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                             .addComponent(jLabel5)
@@ -370,9 +360,13 @@ public class Settings extends javax.swing.JPanel {
                                             .addComponent(jRadioButton_time_slots_1hr)
                                             .addComponent(jRadioButton_time_slot_30min)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(27, 27, 27)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel6))
+                                        .addGap(9, 9, 9)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(timePicker_starting_time, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel7)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
@@ -414,7 +408,7 @@ public class Settings extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCheckBox_friday)
                             .addComponent(jLabel6)
-                            .addComponent(timePicker_starting_time, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(timePicker_starting_time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jCheckBox_saturday)))
                 .addGap(31, 31, 31)
