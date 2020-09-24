@@ -157,7 +157,7 @@ public class TimeTable extends javax.swing.JPanel {
         String stdGroup = jComboBox1.getSelectedItem().toString();
         ArrayList<String> sessionIdArray = new ArrayList<String>();
         
-        Object[][] ttable  = new Object[11][6];
+        Object[][] ttable  = new Object[10][6];
         
         //Get Session data from DB
        try
@@ -221,9 +221,14 @@ public class TimeTable extends javax.swing.JPanel {
                                 if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
                                     
                                     int[] x = searchLocation(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                    
-                                    ttable[x[0]][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"\n"
-                                            +sessionObj.get("Subject")+"\n"+scheduleObj.get("room");
+//                                    System.out.println(sessionObj.get("Duration"));
+                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                    int j=0;
+                                    while(j<duration){
+                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
+                                            +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
+                                        j++;
+                                    }
                                     
                                 }
                             }
