@@ -40,6 +40,8 @@ public class View_Subject_UI extends javax.swing.JPanel {
     String nLabhrs = null;
     String nEVhrs = null;
 
+    DataRetrive dbUtils = new DataRetrive();
+
     /**
      * Creates new form View_Subjects UI
      */
@@ -86,8 +88,9 @@ public class View_Subject_UI extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(620, 740));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("VIEW SUBJECTS");
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setText(" SUBJECTS");
+        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButton1.setText("Home");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -193,9 +196,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
                                     .addGap(18, 18, 18)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(152, 152, 152))))
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -224,7 +225,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
                                         .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addGap(0, 2, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -264,7 +265,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel11)
-                        .addGap(44, 89, Short.MAX_VALUE))
+                        .addGap(44, 78, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -273,7 +274,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
                         .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -282,15 +283,6 @@ public class View_Subject_UI extends javax.swing.JPanel {
                 .addGap(41, 41, 41))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        board b = new board();
-        b.setVisible(true);
-        JPanel comp = (JPanel) evt.getSource();
-        Window win = SwingUtilities.getWindowAncestor(comp);
-        win.dispose();
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // what to do after a left click in a row
@@ -332,12 +324,12 @@ public class View_Subject_UI extends javax.swing.JPanel {
         String nLabhrs = jSpinner3.getValue().toString();
         String nEVhrs = jSpinner4.getValue().toString();
 
-        System.out.println("code"+code+" "+name+" "+year+" "+semester+" "+nLhrs+" "+nThrs+" "+nLabhrs+" "+nEVhrs);
-        
-         DB myDB = null;
+        System.out.println("code" + code + " " + name + " " + year + " " + semester + " " + nLhrs + " " + nThrs + " " + nLabhrs + " " + nEVhrs);
+
+        DB myDB = null;
         try {
             //connection to DB
-           
+
             myDB = DBManager.getDatabase();
 
         } catch (UnknownHostException e) {
@@ -347,23 +339,26 @@ public class View_Subject_UI extends javax.swing.JPanel {
 
             DBCollection col = myDB.getCollection("Subjects ");
 
-                Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs, nLabhrs, nEVhrs);
-                DBObject doc = createDBObject(subjects);
+            Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs, nLabhrs, nEVhrs);
+            DBObject doc = createDBObject(subjects);
             BasicDBObject searchQuery = new BasicDBObject().append("Subject Code", code);
-            System.out.println("code1"+code);
+            System.out.println("code1" + code);
             WriteResult updateresult = col.update(searchQuery, doc);
             this.populate();
             System.out.println("res:::" + updateresult);
-            JOptionPane.showMessageDialog(null, "Record Updated");
-            this.emptyFields();
+
+            if (updateresult.getN() > 0) {
+                JOptionPane.showMessageDialog(null, "Record Updated");
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Record Update Failed");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Record Update Failed");
-            this.emptyFields();
+
         }
-
-       
-
+        this.emptyFields();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -388,21 +383,29 @@ public class View_Subject_UI extends javax.swing.JPanel {
         if (result.getN() > 0) {
             JOptionPane.showMessageDialog(null, Integer.toString(result.getN()) + "Record(s) Removed Sucessfully");
             //make fields empty
-            
-
 
         } else {
             JOptionPane.showMessageDialog(null, "Could not find record to remove");
-            
+
         }
 
         this.populate();
-      this.emptyFields();
+        this.emptyFields();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        board b = new board();
+        b.setVisible(true);
+        JPanel comp = (JPanel) evt.getSource();
+        Window win = SwingUtilities.getWindowAncestor(comp);
+        win.dispose();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -440,58 +443,28 @@ public class View_Subject_UI extends javax.swing.JPanel {
 //populate data
 
     private void populate() {
-        DB edb = null;
-        DBCollection col = null;
-        //retrive data
-        try {
-            edb = DBManager.getDatabase();
-        } catch (UnknownHostException e) {
-            JOptionPane.showMessageDialog(null, "Error Connecting To DB");
-        }
-        col = edb.getCollection("Subjects ");
-        DBObject resultdb = col.findOne(); //will return a document or null
 
-//        System.out.println("col:" + col);
-//        System.out.println("col. find is " + col.find());
-//        System.out.println("col.findone is " + col.findOne());
-//
-//        System.out.println("resultdb:" + resultdb);
-        
-if (resultdb != null) {
-            code = (String) resultdb.get("Subject Code");
-            name = (String) resultdb.get("SubjectName");
-            year = (String) resultdb.get("Offered Year");
-            semester = (String) resultdb.get("Offerd Semester");
-            nLhrs = (String) resultdb.get("Lecture Hours");
-            nLabhrs = (String) resultdb.get("Lab Hours");
-            nThrs = (String) resultdb.get("Tutorial Hours");
-            nEVhrs = (String) resultdb.get("Evaluation Hours");
-
-            System.out.println("code2" + code);
-
-        } else {
-            System.out.println("resultdb is null");
-        }
         String[] columNames = {"Subject Code", "Name", "Year", "Semester", "Lecture(hours)", "Lab(hours)", "Tutorial(hours)", "Evaluation(hours)"};
 
         DefaultTableModel dtm = new DefaultTableModel(columNames, 0);
-        DBCursor iterDoc = col.find();
+        DBCursor iterDoc = dbUtils.getAllSubject();
         while (iterDoc.hasNext()) {
             DBObject obj = iterDoc.next();
             code = (String) obj.get("Subject Code");
             name = (String) obj.get("SubjectName");
             year = (String) obj.get("Offered Year");
             semester = (String) obj.get("Offerd Semester");
-            nLhrs = (String) obj.get("Lecture Hours");
-            nLabhrs = (String) obj.get("Lab Hours");
-            nThrs = (String) obj.get("Tutorial Hours");
-            nEVhrs = (String) obj.get("Evaluation Hours");
+            nLhrs = (String) obj.get("Lecture Hours").toString();
+            nLabhrs = (String) obj.get("Lab Hours").toString();
+            nThrs = (String) obj.get("Tutorial Hours").toString();
+            nEVhrs = (String) obj.get("Evaluation Hours").toString();
 
             dtm.addRow(new String[]{code, name, year, semester, nLhrs, nLabhrs, nThrs, nEVhrs});
-System.out.println("code3" + code);
+            System.out.println("code3" + code);
         }
         //load data to table (POPULATE DATA)
         jTable1.setModel(dtm);
+
     }
 
     private DBObject createDBObject(Subjects subjects) {
@@ -506,16 +479,15 @@ System.out.println("code3" + code);
         docBuilder.append("Evaluation Hours", subjects.getnEvhrs());
         return docBuilder.get();
     }
-    
-    public void emptyFields()
-    {
-            jTextField3.setText(null);
-            jTextField4.setText(null);
-            jComboBox1.setSelectedItem(null);
-            jComboBox2.setSelectedItem(null);
-            jSpinner1.setValue(0);
-            jSpinner2.setValue(0);
-            jSpinner3.setValue(0);
-            jSpinner4.setValue(0);
+
+    public void emptyFields() {
+        jTextField3.setText(null);
+        jTextField4.setText(null);
+        jComboBox1.setSelectedItem(null);
+        jComboBox2.setSelectedItem(null);
+        jSpinner1.setValue(0);
+        jSpinner2.setValue(0);
+        jSpinner3.setValue(0);
+        jSpinner4.setValue(0);
     }
 }
