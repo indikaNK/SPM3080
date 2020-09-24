@@ -28,6 +28,8 @@ public class TimeTable extends javax.swing.JPanel {
         DB SessionDB = null;
         DB ScheduleDB = null;
         DBCollection col=null;
+        DBCollection col2=null;
+        DBCursor sessionObjects = null;
     /**
      * Creates new form TimeTable
      */
@@ -155,9 +157,6 @@ public class TimeTable extends javax.swing.JPanel {
         String stdGroup = jComboBox1.getSelectedItem().toString();
         ArrayList<String> sessionIdArray = new ArrayList<String>();
         
-//        int rowCount = 10;
-//        ArrayList<ArrayList<String>> ttable = new ArrayList<ArrayList<String>>();
-//        ArrayList<String> ttableRow = new ArrayList<String>();
         Object[][] ttable  = new Object[11][6];
         
         //Get Session data from DB
@@ -172,7 +171,7 @@ public class TimeTable extends javax.swing.JPanel {
         
         //get sessions table data
         col = SessionDB.getCollection("Sessions");
-        DBCursor sessionObjects =col.find();
+        sessionObjects =col.find();
         
         
         //Get sessions which matches the student group
@@ -180,14 +179,12 @@ public class TimeTable extends javax.swing.JPanel {
             while(sessionObjects.hasNext()){
                 DBObject sessionObj = sessionObjects.next();
                 if(sessionObj.get("Group_ID").equals(stdGroup)){
-//                    System.out.println(sessionObj);
                     if(sessionObj.get("Session_ID") != null){
                         sessionIdArray.add(sessionObj.get("Session_ID").toString());
                     }
                     
                 }
             }
-//            System.out.println(sessionIdArray);
         }
         
         //Get Schedule data from DB 
@@ -201,26 +198,43 @@ public class TimeTable extends javax.swing.JPanel {
         }
         
         //get Schedule table data
-        col = ScheduleDB.getCollection("Schedules");
-        DBCursor scheduleObjects =col.find();
-//        System.out.println("schdlObjssss: "+scheduleObjects.toString());
+        col2 = ScheduleDB.getCollection("Schedules");
+        DBCursor scheduleObjects =col2.find();
+        
+        
         
         //Get schedules which matches the sessionid
         if(scheduleObjects != null){
             while(scheduleObjects.hasNext()){
                 DBObject scheduleObj = scheduleObjects.next();
-//                System.out.println(scheduleObjects);
+                
                 int i=0;
                 while(i<sessionIdArray.size()){
+                    
                     if(scheduleObj.get("session").equals(sessionIdArray.get(i++))){
-                        int[] x = searchLocation(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                        System.out.println(x);
-                        ttable[x[0]][x[1]] = scheduleObj.get("session")+"\n"+scheduleObj.get("day")+"\n"+scheduleObj.get("startTime")+"\n"+scheduleObj.get("endTime")+"\n"+scheduleObj.get("room");
+                        
+                        sessionObjects =col.find();
+                        if(sessionObjects != null){
+                            while(sessionObjects.hasNext()){
+                                DBObject sessionObj = sessionObjects.next();
+                                
+                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+                                    
+                                    int[] x = searchLocation(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                    
+                                    ttable[x[0]][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"\n"
+                                            +sessionObj.get("Subject")+"\n"+scheduleObj.get("room");
+                                    
+                                }
+                            }
+                        }
+                        
                     }
                 }
             }
-//            System.out.println(ttable);
         }
+        
+        //Set times in timetable
             ttable[0][0] = "8.30-9.30";
             ttable[1][0] = "9.30-10.30";
             ttable[2][0] = "10.30-11.30";
@@ -231,6 +245,8 @@ public class TimeTable extends javax.swing.JPanel {
             ttable[7][0] = "15.30-16.30";
             ttable[8][0] = "16.30-17.30";
             ttable[9][0] = "17.30-18.30";
+            
+        //Set titles
         Object[] titles = new Object[] {"", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
         
         jDesktopPane1.removeAll();
