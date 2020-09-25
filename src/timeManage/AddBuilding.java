@@ -12,7 +12,11 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+//import com.sun.xml.internal.ws.util.StringUtils;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,12 +26,21 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AddBuilding extends javax.swing.JPanel {
 
+    ArrayList<String> selectedBuildings = new ArrayList<String>();
+    JDesktopPane jp;
+    
     /**
      * Creates new form AddBuilding
      */
     public AddBuilding() {
         initComponents();
         displayTable();
+    }
+    
+    public AddBuilding(JDesktopPane jp){
+        initComponents();
+        displayTable();
+        this.jp = jp;
     }
 
     /**
@@ -67,7 +80,7 @@ public class AddBuilding extends javax.swing.JPanel {
         buildingList.setModel(buildingList.getModel());
         buildingList.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(buildingList);
-        buildingList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        buildingList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         tfBuildingName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,23 +218,40 @@ public class AddBuilding extends javax.swing.JPanel {
     }//GEN-LAST:event_tfBuildingNameActionPerformed
 
     private void btnDeleteBuildingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteBuildingMouseClicked
-        // TODO add your handling code here:
-        int row = buildingList.getSelectedRow();
-        String buildingName = buildingList.getModel().getValueAt(row, 1).toString();
+        //select multimple rows to delete at once
+        int []rows = buildingList.getSelectedRows();
+        //convert the row ids and store them in an arraylist for easier handling
+        for(int i=0; i<rows.length; i++){
+            selectedBuildings.add(buildingList.getModel().getValueAt(rows[i], 1).toString());
+        }
+        // Confirm deleting process before moving on
+        int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected buildings?", "Delete Confirmation", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.NO_OPTION) {
+            //clear selected rows from arraylist
+            selectedBuildings.clear();
+        } else {
+            
+            DB MyDb = null;
+            try
+            {
+                MyDb = DBManager.getDatabase();
+            }
+            catch (UnknownHostException e)
+            {
+                JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
+            }
+            DBCollection col = MyDb.getCollection("Buildings");
+            BasicDBObject theQuery = new BasicDBObject();
 
-        DB MyDb = null;
-        try
-        {
-            MyDb = DBManager.getDatabase();
+            //delete selected buildings one by one
+            for(int i=0; i<selectedBuildings.size(); i++){
+                theQuery.put("buildingName", selectedBuildings.get(i));
+                WriteResult result = col.remove(theQuery);
+            }
+            selectedBuildings.clear();
+            //refresh table
+            displayTable();
         }
-        catch (UnknownHostException e)
-        {
-            JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
-        }
-        DBCollection col = MyDb.getCollection("Buildings");
-        BasicDBObject theQuery = new BasicDBObject();
-        theQuery.put("buildingName", buildingName);
-        WriteResult result = col.remove(theQuery);
     }//GEN-LAST:event_btnDeleteBuildingMouseClicked
 
     private void btnEditBuildingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditBuildingMouseClicked
@@ -242,7 +272,7 @@ public class AddBuilding extends javax.swing.JPanel {
         DBObject theQuery = new BasicDBObject("buildingName", buildingName);
         DBObject result = col.findOne(theQuery);
         tfBuildingName.setText((String)result.get("buildingName"));
-        //tfBuildingName.setEditable(false);
+        tfBuildingName.setEditable(false); //cannot edit building name since it acts as primary key
         tfCenter.setSelectedItem((String)result.get("center"));
         tfLocation.setText((String)result.get("location"));
         tfDepartment.setSelectedItem((String)result.get("department"));
@@ -259,9 +289,11 @@ public class AddBuilding extends javax.swing.JPanel {
             String location = (String)tfLocation.getText();
             String numberOfFloors = tfNumberOfFloors.getText();
 
-            if (buildingName.length() == 0)
+            if (buildingName.length() == 0 || location.length() == 0)
             {
-                JOptionPane.showMessageDialog(null, "Building Name is Mandatory");
+                JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+            }else if(!isNumeric(numberOfFloors)){
+                JOptionPane.showMessageDialog(null, "Please enter Number of Floors in numeric form!");
             }
             else
             {
@@ -290,6 +322,8 @@ public class AddBuilding extends javax.swing.JPanel {
                     tfLocation.setText(null);
                     tfDepartment.setSelectedItem(null);
                     tfNumberOfFloors.setText(null);
+                    //refresh table
+                    displayTable();
                 }else{
                     //if yes Edit existing building
                     BasicDBObject query = new BasicDBObject();
@@ -306,11 +340,18 @@ public class AddBuilding extends javax.swing.JPanel {
 
                     MyDb.getCollection("Buildings").update(query, updateObject);
                     JOptionPane.showMessageDialog(null, "Building Updated Succesfully!");
+                    tfBuildingName.setText(null);
+                    tfCenter.setSelectedItem(null);
+                    tfLocation.setText(null);
+                    tfDepartment.setSelectedItem(null);
+                    tfNumberOfFloors.setText(null);
+                    //refresh table
+                    displayTable();
                 }
             }
         } catch (Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!" + e.toString());
+            JOptionPane.showMessageDialog(null, "Insertion Failed!" + e.toString());
             tfBuildingName.grabFocus();
         }
     }//GEN-LAST:event_btnApplyChangesActionPerformed
@@ -334,14 +375,31 @@ public class AddBuilding extends javax.swing.JPanel {
         DBObject result = col.findOne(theQuery);
         String buildingId = result.get("_id").toString();
 
-        //pass data from building to room
-        //new AddRoom(buildingId);
-        
-        this.removeAll();
-        Dashboard db = new Dashboard();
-        db.showRoomPage(buildingId);
+        //pass data from building to room =================== problematic area //check thoroughly
+        //new AddRoom(buildingId); ====== old method //not used anymore
+        jp.removeAll();
+        try{
+            AddRoom roomPage = new AddRoom(buildingId);
+            jp.add(roomPage).setVisible(true);
+            roomPage.setSize(jp.getWidth(), jp.getHeight());
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Couldn't open room page!" + e);
+        }
+        //=======================================================================================
     }//GEN-LAST:event_btnEditRoomsActionPerformed
 
+    //regex to check if string is numeric ===============================
+    private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+ 
+    //method ============================================================
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false; 
+        }
+        return pattern.matcher(strNum).matches();
+    }
+    //===================================================================
+    
     private void addBuildingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBuildingActionPerformed
         try
         {
@@ -351,11 +409,13 @@ public class AddBuilding extends javax.swing.JPanel {
             String location = (String)tfLocation.getText();
             String numberOfFloors = tfNumberOfFloors.getText();
 
-            if (buildingName.length() == 0)
+            //validations for adding a building form
+            if (buildingName.length() == 0 || center.length() == 0 || department.length() == 0 || location.length() == 0 || numberOfFloors.length() == 0)
             {
-                JOptionPane.showMessageDialog(null, "Building Name is Mandatory");
-            }
-            else
+                JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+            }else if(!isNumeric(numberOfFloors)){
+                JOptionPane.showMessageDialog(null, "Please enter Number of Floors in numeric form!");
+            }else //insert the building into database
             {
                 Building building = new Building(buildingName, center, location, department, numberOfFloors);
                 DBObject doc = createDBObject(building);
@@ -366,20 +426,24 @@ public class AddBuilding extends javax.swing.JPanel {
                 }
                 catch (UnknownHostException ex)
                 {
-                    JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+                    JOptionPane.showMessageDialog(null, "Error When Connecting to DB!");
                 }
                 DBCollection col = MyDb.getCollection("Buildings");
                 WriteResult result = col.insert(doc);
-                JOptionPane.showMessageDialog(null, "Building added Successfully");
+                JOptionPane.showMessageDialog(null, "Building added Successfully.");
+                //empty form fields
                 tfBuildingName.setText(null);
                 tfCenter.setSelectedItem(null);
                 tfLocation.setText(null);
                 tfDepartment.setSelectedItem(null);
                 tfNumberOfFloors.setText(null);
+                
+                //refresh table
+                displayTable();
             }
         } catch (Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!" + e.toString());
+            JOptionPane.showMessageDialog(null, "Insertion Failed! Please try again!" + e.toString());
             tfBuildingName.grabFocus();
         }
 

@@ -13,6 +13,8 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.bson.types.ObjectId;
@@ -25,6 +27,7 @@ public class AddRoom extends javax.swing.JPanel {
     
     String buildingId, buildingName, buildingCenter, buildingDepartment, buildingLocation, buildingNumberOfFloors;
     ArrayList<String> selectedRoomNumbers = new ArrayList<String>();
+    JDesktopPane jp;
 
     /**
      * Creates new form AddRoom
@@ -40,6 +43,14 @@ public class AddRoom extends javax.swing.JPanel {
         DBIntialization();
         initComponents();
         displayTable();
+    }
+    
+    public AddRoom(String buildingId, JDesktopPane jp){
+        this.buildingId = buildingId;
+        DBIntialization();
+        initComponents();
+        displayTable();
+        this.jp = jp;
     }
 
     /**
@@ -81,6 +92,7 @@ public class AddRoom extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         roomList = new javax.swing.JTable();
         tfRoomNumber = new javax.swing.JTextField();
+        viewReservations = new javax.swing.JButton();
 
         rNote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +206,11 @@ public class AddRoom extends javax.swing.JPanel {
         jLabel3.setText("Location");
 
         btnApplyChanges.setText("Apply Changes");
+        btnApplyChanges.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApplyChangesActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Floor Number");
 
@@ -231,6 +248,13 @@ public class AddRoom extends javax.swing.JPanel {
             }
         });
 
+        viewReservations.setText("View All Reservations");
+        viewReservations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReservationsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,30 +262,38 @@ public class AddRoom extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(346, 346, 346)
                 .addComponent(jLabel5)
-                .addGap(474, 476, Short.MAX_VALUE))
+                .addGap(474, 478, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnApplyChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(tfType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(tfLocation, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(tfRoomNumber, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(tfSection, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(tfFloorNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(addRoom, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69)
+                            .addGap(135, 135, 135)
+                            .addComponent(tfRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(tfLocation, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tfFloorNumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(100, 100, 100)
+                        .addComponent(tfSection, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(addRoom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnApplyChanges, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(viewReservations)
+                        .addGap(18, 18, 18)
                         .addComponent(btnOptions)
                         .addGap(18, 18, 18)
                         .addComponent(btnEditRoom)
@@ -277,56 +309,76 @@ public class AddRoom extends javax.swing.JPanel {
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDeleteRoom)
+                            .addComponent(btnEditRoom)
+                            .addComponent(btnOptions)
+                            .addComponent(viewReservations)))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
-                        .addGap(28, 28, 28)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(tfType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addGap(28, 28, 28)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(tfFloorNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(tfSection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addRoom))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnApplyChanges)
-                    .addComponent(btnDeleteRoom)
-                    .addComponent(btnEditRoom)
-                    .addComponent(btnOptions))
-                .addGap(30, 30, 30))
+                        .addGap(18, 18, 18)
+                        .addComponent(addRoom)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnApplyChanges)))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteRoomActionPerformed
-        // TODO add your handling code here:
-        int row = roomList.getSelectedRow();
-        String roomNumber = roomList.getModel().getValueAt(row, 0).toString();
+        //select multimple rows to delete at once
+        int []rows = roomList.getSelectedRows();
+        //convert the row ids and store them in an arraylist for easier handling
+        for(int i=0; i<rows.length; i++){
+            selectedRoomNumbers.add(roomList.getModel().getValueAt(rows[i], 1).toString());
+        }
+        // Confirm deleting process before moving on
+        int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the selected rooms?", "Delete Confirmation", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.NO_OPTION) {
+            //clear selected rows from arraylist
+            selectedRoomNumbers.clear();
+        } else {
+            
+            DB MyDb = null;
+            try
+            {
+                MyDb = DBManager.getDatabase();
+            }
+            catch (UnknownHostException e)
+            {
+                JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
+            }
+            DBCollection col = MyDb.getCollection("Rooms");
+            BasicDBObject theQuery = new BasicDBObject();
 
-        DB MyDb = null;
-        try
-        {
-            MyDb = DBManager.getDatabase();
+            //delete selected buildings one by one
+            for(int i=0; i<selectedRoomNumbers.size(); i++){
+                theQuery.put("roomNumber", selectedRoomNumbers.get(i));
+                WriteResult result = col.remove(theQuery);
+            }
+            selectedRoomNumbers.clear();
+            //refresh table
+            displayTable();
         }
-        catch (UnknownHostException e)
-        {
-            JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
-        }
-        DBCollection col = MyDb.getCollection("Rooms");
-        BasicDBObject theQuery = new BasicDBObject();
-        theQuery.put("roomNumber", roomNumber);
-        WriteResult result = col.remove(theQuery);
     }//GEN-LAST:event_btnDeleteRoomActionPerformed
 
     private void btnEditRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditRoomActionPerformed
@@ -348,7 +400,7 @@ public class AddRoom extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "theQuery : "+ theQuery.toString());
         DBObject result = col.findOne(theQuery);
         tfRoomNumber.setText((String)result.get("roomNumber"));
-        //tfBuildingName.setEditable(false);
+        tfRoomNumber.setEditable(false);
         tfType.setSelectedItem((String)result.get("type"));
         tfLocation.setText((String)result.get("location"));
         tfFloorNumber.setText((String)result.get("floorNumber"));
@@ -381,16 +433,18 @@ public class AddRoom extends javax.swing.JPanel {
         {
             String roomNumber = tfRoomNumber.getText();
             String type = (String)tfType.getSelectedItem();
-            String floorNumber = (String)tfFloorNumber.getText();
-            String location = (String)tfLocation.getText();
+            String floorNumber = tfFloorNumber.getText();
+            String location = tfLocation.getText();
             String section = tfSection.getText();
             String bname = jLabel5.getText();
 
-            if (roomNumber.length() == 0)
+            //validations for adding a room form
+            if (roomNumber.length() == 0 || type.length() == 0 || floorNumber.length() == 0 || location.length() == 0 || section.length() == 0)
             {
-                JOptionPane.showMessageDialog(null, "Room Number is Mandatory");
-            }
-            else
+                JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+            }else if(!isNumeric(floorNumber)){
+                JOptionPane.showMessageDialog(null, "Please enter Floor Number in numeric form!");
+            }else //insert the building into database
             {
                 Room room = new Room(roomNumber, type, floorNumber, location, section, bname);
                 DBObject doc = createDBObject(room);
@@ -406,15 +460,19 @@ public class AddRoom extends javax.swing.JPanel {
                 DBCollection col = MyDb.getCollection("Rooms");
                 WriteResult result = col.insert(doc);
                 JOptionPane.showMessageDialog(null, "Room added Successfully");
+                //empty form fields
                 tfRoomNumber.setText(null);
                 tfType.setSelectedItem(null);
                 tfLocation.setText(null);
                 tfFloorNumber.setText(null);
                 tfSection.setText(null);
+                
+                //refresh table
+                displayTable();
             }
         } catch (Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!" + e.toString());
+            JOptionPane.showMessageDialog(null, "Insertion Failed! Please try again!" + e.toString());
             tfRoomNumber.grabFocus();
         }
 
@@ -492,6 +550,107 @@ public class AddRoom extends javax.swing.JPanel {
     private void rTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rTypeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rTypeActionPerformed
+
+    //regex to check if string is numeric ===============================
+    private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+ 
+    //method ============================================================
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false; 
+        }
+        return pattern.matcher(strNum).matches();
+    }
+    //===================================================================
+    
+    private void btnApplyChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyChangesActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            String roomNumber = tfRoomNumber.getText();
+            String type = (String)tfType.getSelectedItem();
+            String floorNumber = tfFloorNumber.getText();
+            String location = tfLocation.getText();
+            String section = tfSection.getText();
+
+            if (roomNumber.length() == 0 || type.length() == 0 || floorNumber.length() == 0 || location.length() == 0 || section.length() == 0)
+            {
+                JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+            }else if(!isNumeric(floorNumber) || !isNumeric(floorNumber)){
+                JOptionPane.showMessageDialog(null, "Please enter Floor Number in numeric form!");
+            }
+            else
+            {
+                //Check if name is there in DB
+                DB MyDb = null;
+                try
+                {
+                    MyDb = DBManager.getDatabase();
+                }
+                catch (UnknownHostException e)
+                {
+                    JOptionPane.showMessageDialog(null, "Error When Connecting to DB : " + e);
+                }
+                DBCollection col = MyDb.getCollection("Rooms");
+                BasicDBObject theQuery = new BasicDBObject("roomNumber", roomNumber);
+                DBObject result = col.findOne(theQuery);
+
+                if(result == null){
+                    //If not add as new room
+                    Room room = new Room(roomNumber, type, floorNumber, location, section, buildingName);
+                    DBObject doc = createDBObject(room);
+                    col.insert(doc);
+                    JOptionPane.showMessageDialog(null, "Room Added Successfully");
+                    tfRoomNumber.setText(null);
+                    tfType.setSelectedItem(null);
+                    tfFloorNumber.setText(null);
+                    tfLocation.setText(null);
+                    tfSection.setText(null);
+                    //refresh table
+                    displayTable();
+                }else{
+                    //if yes Edit existing room
+                    BasicDBObject query = new BasicDBObject();
+                    query.put("roomNumber", roomNumber);
+
+                    BasicDBObject newDocument = new BasicDBObject();
+                    newDocument.put("type", type);
+                    newDocument.put("floorNumber", floorNumber);
+                    newDocument.put("location", location);
+                    newDocument.put("section", section);
+
+                    BasicDBObject updateObject = new BasicDBObject();
+                    updateObject.put("$set", newDocument);
+
+                    MyDb.getCollection("Rooms").update(query, updateObject);
+                    JOptionPane.showMessageDialog(null, "Room Updated Succesfully!");
+                    tfRoomNumber.setText(null);
+                    tfType.setSelectedItem(null);
+                    tfFloorNumber.setText(null);
+                    tfLocation.setText(null);
+                    tfSection.setText(null);
+                    //refresh table
+                    displayTable();
+                }
+            }
+        } catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Insertion Failed!" + e.toString());
+            tfRoomNumber.grabFocus();
+        }
+    }//GEN-LAST:event_btnApplyChangesActionPerformed
+
+    private void viewReservationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservationsActionPerformed
+        // TODO add your handling code here:
+        jp.removeAll();
+        try{
+            ViewReservations reservationsPage = new ViewReservations();
+            jp.add(reservationsPage).setVisible(true);
+            reservationsPage.setSize(jp.getWidth(), jp.getHeight());
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Couldn't open reservations page!" + e);
+        }
+    }//GEN-LAST:event_viewReservationsActionPerformed
 
     //INITIALIZE variables
     public void DBIntialization(){
@@ -611,5 +770,6 @@ public class AddRoom extends javax.swing.JPanel {
     private javax.swing.JTextField tfRoomNumber;
     private javax.swing.JTextField tfSection;
     private javax.swing.JComboBox<String> tfType;
+    private javax.swing.JButton viewReservations;
     // End of variables declaration//GEN-END:variables
 }
