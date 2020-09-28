@@ -14,6 +14,8 @@ import com.mongodb.client.FindIterable;
 import java.awt.Dimension;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.text.Document;
 /**
@@ -38,6 +40,9 @@ public class TimeTable extends javax.swing.JPanel {
         int tableWidth = 6;
         String[] workingDays = null;
         Object[] titles =null;
+        HashMap<String, String> lectureList = null;
+        HashMap<String, String> stdGroupList = null;
+        HashMap<String, String> roomList = null;
     /**
      * Creates new form TimeTable
      */
@@ -78,6 +83,17 @@ public class TimeTable extends javax.swing.JPanel {
                 workingDays = str.split(",");
                 
         titles = createTableTitles();
+        
+        lectureList = getItemList("Employee ","Employee ID","Employee_Name");
+        roomList = getItemList("Rooms", "roomNumber", "type");
+        
+        lectureList.forEach((k, v) -> {
+            jComboBox3.addItem(v);
+        });
+        roomList.forEach((k, v) -> {
+            jComboBox2.addItem(k);
+        });
+        
     }
 
     /**
@@ -109,8 +125,6 @@ public class TimeTable extends javax.swing.JPanel {
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
         jLabel3.setText("Select Lecture");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "000150", "000152" }));
 
         jButton4.setText("Generate");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -219,8 +233,6 @@ public class TimeTable extends javax.swing.JPanel {
         jTabbedPane1.addTab("  Student Group  ", jPanel2);
 
         jLabel2.setText("Select Room");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A501", "A503" }));
 
         jButton3.setText("Generate");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -445,7 +457,6 @@ public class TimeTable extends javax.swing.JPanel {
                 }
             }
         }
-        System.out.println("idArray:"+sessionIdArray);
         
         DBCursor scheduleObjects =col2.find();
         
@@ -503,6 +514,12 @@ public class TimeTable extends javax.swing.JPanel {
         
         //Get selected student group
         String lecture = jComboBox3.getSelectedItem().toString();
+        for (Map.Entry ele : lectureList.entrySet()) {
+            String key = (String)ele.getKey();
+            if(ele.getValue().toString().equals(lecture)){
+                lecture = ele.getKey().toString();
+            }
+        }
         
         ArrayList<String> sessionIdArray = new ArrayList<String>();
         
@@ -717,6 +734,34 @@ public class TimeTable extends javax.swing.JPanel {
         }
         
         return titles;
+    }
+    
+    public HashMap<String, String> getItemList(String table_name, String id_col, String name_col){
+        
+        DB database=null;
+        HashMap<String, String> data = new HashMap<String, String>();
+        
+        
+        try
+        {
+        database = DBManager.getDatabase();
+        }
+        catch (UnknownHostException ex)
+        {
+        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        }
+        
+        //get sessions table data
+        col = database.getCollection(table_name);
+        DBCursor objects =col.find();
+        
+        if(objects != null){
+            while(objects.hasNext()){
+                DBObject obj = objects.next();
+                data.put(obj.get(id_col).toString(),obj.get(name_col).toString());
+            }
+        }
+        return data;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
