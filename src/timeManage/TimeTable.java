@@ -24,17 +24,57 @@ import javax.swing.text.Document;
 
 public class TimeTable extends javax.swing.JPanel {
 
-    
+        DB SettingDB = null;
         DB SessionDB = null;
         DB ScheduleDB = null;
         DBCollection col=null;
         DBCollection col2=null;
         DBCursor sessionObjects = null;
+        String startingTime = "";
+        String noOfWorkingHours = "";
+        String timeSlotDuration = "";
+        ArrayList<String> timeSlotArray = null;
+        int tableHieght = 10;
+        int tableWidth = 6;
+        String[] workingDays = null;
     /**
      * Creates new form TimeTable
      */
     public TimeTable() {
         initComponents();
+         try
+        {
+        SettingDB = DBManager.getDatabase();
+        }
+        catch (UnknownHostException ex)
+        {
+        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        }
+        
+        DBObject settingsObject=null;
+        try {
+            //get settings table data
+            col = SettingDB.getCollection("Setting");
+            BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 2);
+            settingsObject= col.findOne(searchQuery);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error When getting data from collection");
+        }
+        
+        startingTime = settingsObject.get("StartTime").toString();
+        noOfWorkingHours = settingsObject.get("WorkingTimePerDay").toString();
+        timeSlotDuration = settingsObject.get("TimeSlot").toString();
+        
+        
+        //generate time slots for table
+        timeSlotArray = generateTimeSlotsTable(startingTime, noOfWorkingHours, timeSlotDuration);
+        
+        tableHieght = timeSlotArray.size();
+        tableWidth = Integer.parseInt(settingsObject.get("NoOfWorkingDays").toString());
+        
+        String str = settingsObject.get("WorkingDays").toString();
+                str = str.replaceAll("[^a-zA-Z0-9,]", ""); 
+                workingDays = str.split(",");
     }
 
     /**
@@ -249,7 +289,7 @@ public class TimeTable extends javax.swing.JPanel {
         String stdGroup = jComboBox1.getSelectedItem().toString();
         ArrayList<String> sessionIdArray = new ArrayList<String>();
         
-        Object[][] ttable  = new Object[10][6];
+        Object[][] ttable  = new Object[tableHieght][tableWidth+1];
         
         //Get Session data from DB
        try
@@ -312,8 +352,7 @@ public class TimeTable extends javax.swing.JPanel {
                                 
                                 if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
                                     
-                                    int[] x = searchLocation(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-//                                    System.out.println(sessionObj.get("Duration"));
+                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
                                     int duration = Integer.parseInt(sessionObj.get("Duration").toString());
                                     int j=0;
                                     while(j<duration){
@@ -332,19 +371,14 @@ public class TimeTable extends javax.swing.JPanel {
         }
         
         //Set times in timetable
-            ttable[0][0] = "8.30-9.30";
-            ttable[1][0] = "9.30-10.30";
-            ttable[2][0] = "10.30-11.30";
-            ttable[3][0] = "11.30-12.30";
-            ttable[4][0] = "12.30-13.30";
-            ttable[5][0] = "13.30-14.30";
-            ttable[6][0] = "14.30-15.30";
-            ttable[7][0] = "15.30-16.30";
-            ttable[8][0] = "16.30-17.30";
-            ttable[9][0] = "17.30-18.30";
+            int i = 0;
+            while(i<tableHieght){
+                ttable[i][0] = timeSlotArray.get(i);
+                i++;
+            }
             
         //Set titles
-        Object[] titles = new Object[] {"", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        Object[] titles = createTableTitles();
         
         jDesktopPane1.removeAll();
         try {
@@ -370,7 +404,7 @@ public class TimeTable extends javax.swing.JPanel {
         
         ArrayList<String> sessionIdArray = new ArrayList<String>();
         
-        Object[][] ttable  = new Object[10][6];
+        Object[][] ttable  = new Object[tableHieght][tableWidth+1];
         
         //Get Session data from DB
        try
@@ -397,7 +431,6 @@ public class TimeTable extends javax.swing.JPanel {
                 String[] lecturers = str.split(",");
                 int k=0;
                 while(k<lecturers.length){
-                    System.out.println(k+"-->"+lecturers[k]);
                     if(lecturers[k].equals(lecture)){
                         if(sessionObj.get("Session_ID") != null){
                             sessionIdArray.add(sessionObj.get("Session_ID").toString());
@@ -409,7 +442,6 @@ public class TimeTable extends javax.swing.JPanel {
                 
             }
         }
-//        System.out.println(sessionIdArray);
         
         //Get Schedule data from DB 
         try
@@ -444,8 +476,7 @@ public class TimeTable extends javax.swing.JPanel {
                                 
                                 if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
                                     
-                                    int[] x = searchLocation(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-//                                    System.out.println(sessionObj.get("Duration"));
+                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
                                     int duration = Integer.parseInt(sessionObj.get("Duration").toString());
                                     int j=0;
                                     while(j<duration){
@@ -464,19 +495,14 @@ public class TimeTable extends javax.swing.JPanel {
         }
         
         //Set times in timetable
-            ttable[0][0] = "8.30-9.30";
-            ttable[1][0] = "9.30-10.30";
-            ttable[2][0] = "10.30-11.30";
-            ttable[3][0] = "11.30-12.30";
-            ttable[4][0] = "12.30-13.30";
-            ttable[5][0] = "13.30-14.30";
-            ttable[6][0] = "14.30-15.30";
-            ttable[7][0] = "15.30-16.30";
-            ttable[8][0] = "16.30-17.30";
-            ttable[9][0] = "17.30-18.30";
+            int i = 0;
+            while(i<tableHieght){
+                ttable[i][0] = timeSlotArray.get(i);
+                i++;
+            }
             
         //Set titles
-        Object[] titles = new Object[] {"", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        Object[] titles = createTableTitles();
         
         jDesktopPane3.removeAll();
         try {
@@ -488,53 +514,107 @@ public class TimeTable extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    public int[] searchLocation(String day, String starttime){
+    ////search time slot
+    public int[] searchTimeSlot(String day, String starttime){
         int[] loc = new int[2];
         
-        if(starttime.equals("8.30")){
-            loc[0] = 0;
-        }else if(starttime.equals("9.30")){
-            loc[0] = 1;
-        }else if(starttime.equals("10.30")){
-            loc[0] = 2;
-        }else if(starttime.equals("11.30")){
-            loc[0] = 3;
-        }else if(starttime.equals("12.30")){
-            loc[0] = 4;
-        }else if(starttime.equals("13.30")){
-            loc[0] = 5;
-        }else if(starttime.equals("14.30")){
-            loc[0] = 6;
-        }else if(starttime.equals("15.30")){
-            loc[0] = 7;
-        }else if(starttime.equals("16.30")){
-            loc[0] = 8;
-        }else if(starttime.equals("17.30")){
-            loc[0] = 9;
-        }else{
-            return null;
+        int i = 0;
+        while(i<tableHieght){
+            String start= timeSlotArray.get(i).substring(0, 5);
+            if(starttime.equals(start)){
+                loc[0] = i;
+            }
+            i++;
         }
         
-        if(day.equals("MONDAY")){
-            loc[1] = 1;
-        }else if(day.equals("TUESDAY")){
-            loc[1] = 2;
-        }else if(day.equals("WEDNESDAY")){
-            loc[1] = 3;
-        }else if(day.equals("THURSDAY")){
-            loc[1] = 4;
-        }else if(day.equals("FRIDAY")){
-            loc[1] = 5;
-        }
-//        else if(day.equals("SATURDAY")){
-//            loc[1] = 0;
-//        }else if(day.equals("SUNDAY")){
-//            loc[1] = 0;
-//        }
-        else {
-            return null;
+        int j = 0;
+        while(j<tableWidth){
+            String daay= workingDays[j];
+            if(day.equals(daay)){
+                loc[1] = j+1;
+            }
+            j++;
         }
         return loc;
+    }
+    
+    
+    //generate time slots
+    public ArrayList<String> generateTimeSlotsTable(String starttime, String noOfWorkingTime, String timeslot){
+     
+        // show time slots in a table
+        String[] parts = starttime.split(":");
+        int time = Integer.parseInt(parts[0])*60+Integer.parseInt(parts[1]);
+        String[] partss = noOfWorkingTime.split(":");
+        int workingTime = Integer.parseInt(partss[0])*60+Integer.parseInt(partss[1]);
+        
+        int end = time+workingTime;
+        
+        int slottime ;
+        if(timeslot.equals("30_MINUTES")){
+            slottime = 30;
+        }else{
+            slottime = 60;
+        }
+        
+        ArrayList<String> time_slots_arr = new ArrayList<String>();
+        
+        
+        
+        while(time< end){
+            String start_h = String.valueOf(time/60);
+            if(start_h.length()<2){
+                start_h = "0"+start_h;
+            }
+            String start_m = String.valueOf(time%60);
+            if(start_m.length()<2){
+                start_m = start_m+"0";
+            }
+            String end_h = String.valueOf((time+slottime)/60);
+            if(end_h.length()<2){
+                end_h = "0"+end_h;
+            }
+            String end_m = String.valueOf((time+slottime)%60);
+            if(end_m.length()<2){
+                end_m = end_m+"0";
+            }
+            String slot = start_h+":"+start_m+" - "+end_h+":"+end_m;
+            time_slots_arr.add(slot);
+            time = time+slottime;
+        }
+        
+//        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+//        
+//        model.setRowCount(0);
+//        int a=0;
+//        while(a<time_slots_arr.size()){
+//            model.addRow(new Object[]{time_slots_arr.get(a++)});
+//        }
+        return time_slots_arr;
+        
+    }
+    
+    public Object[] createTableTitles(){
+        Object[] titles=null;
+        if(tableWidth==7){
+             titles = new Object[] {"", workingDays[0], workingDays[1], workingDays[2], workingDays[3], workingDays[4], workingDays[5], workingDays[6]};
+        }else if(tableWidth==6){
+             titles = new Object[] {"", workingDays[0], workingDays[1], workingDays[2], workingDays[3], workingDays[4], workingDays[5]};
+        }else if(tableWidth==5){
+             titles = new Object[] {"", workingDays[0], workingDays[1], workingDays[2], workingDays[3], workingDays[4]};
+        }else if(tableWidth==4){
+             titles = new Object[] {"", workingDays[0], workingDays[1], workingDays[2], workingDays[3]};
+        }else if(tableWidth==3){
+             titles = new Object[] {"", workingDays[0], workingDays[1], workingDays[2]};
+        }else if(tableWidth==2){
+             titles = new Object[] {"", workingDays[0], workingDays[1]};
+        }else if(tableWidth==1){
+             titles = new Object[] {"", workingDays[0]};
+        }else if(tableWidth==0){
+             titles = new Object[] {""};
+        }
+        
+        return titles;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
