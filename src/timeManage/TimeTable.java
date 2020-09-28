@@ -37,6 +37,7 @@ public class TimeTable extends javax.swing.JPanel {
         int tableHieght = 10;
         int tableWidth = 6;
         String[] workingDays = null;
+        Object[] titles =null;
     /**
      * Creates new form TimeTable
      */
@@ -75,6 +76,8 @@ public class TimeTable extends javax.swing.JPanel {
         String str = settingsObject.get("WorkingDays").toString();
                 str = str.replaceAll("[^a-zA-Z0-9,]", ""); 
                 workingDays = str.split(",");
+                
+        titles = createTableTitles();
     }
 
     /**
@@ -378,7 +381,7 @@ public class TimeTable extends javax.swing.JPanel {
             }
             
         //Set titles
-        Object[] titles = createTableTitles();
+//        Object[] titles = createTableTitles();
         
         jDesktopPane1.removeAll();
         try {
@@ -392,11 +395,110 @@ public class TimeTable extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        
+        //Get selected room
+        String room = jComboBox2.getSelectedItem().toString();
+        
+        ArrayList<String> sessionIdArray = new ArrayList<String>();
+        
+        
+        Object[][] ttable  = new Object[tableHieght][tableWidth+1];
+        
+        //Get Session data from DB
+       try
+        {
+        SessionDB = DBManager.getDatabase();
+        }
+        catch (UnknownHostException ex)
+        {
+        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        }
+        
+        //get sessions table data
+        col = SessionDB.getCollection("Sessions");
+//        sessionObjects =col.find();
+        
+        //Get Schedule data from DB 
+        try
+        {
+        ScheduleDB = DBManager.getDatabase();
+        }
+        catch (UnknownHostException ex)
+        {
+        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        }
+        
+        //get Schedule table data
+        col2 = ScheduleDB.getCollection("Schedules");
+        DBCursor scheduleObjects1 =col2.find();
+        
+        
+        //Get session IDs which matches the room
+        if(scheduleObjects1 != null){
+            while(scheduleObjects1.hasNext()){
+                DBObject scheduleObj1 = scheduleObjects1.next();
+                if(scheduleObj1.get("room").equals(room)){
+                    if(scheduleObj1.get("session") != null){
+                        sessionIdArray.add(scheduleObj1.get("session").toString());
+                    }
+                    
+                }
+            }
+        }
+        System.out.println("idArray:"+sessionIdArray);
+        
+        DBCursor scheduleObjects =col2.find();
+        
+        //Get schedules which matches the sessionid
+        if(scheduleObjects != null){
+            while(scheduleObjects.hasNext()){
+                DBObject scheduleObj = scheduleObjects.next();
+                int i=0;
+                while(i<sessionIdArray.size()){
+                    if(scheduleObj.get("session").equals(sessionIdArray.get(i++))){
+                        sessionObjects =col.find();
+                        if(sessionObjects != null){
+                            while(sessionObjects.hasNext()){
+                                DBObject sessionObj = sessionObjects.next();
+                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                    int j=0;
+                                    while(j<duration){
+                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Subject_Code")+"-"+sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+sessionObj.get("Group_ID");
+                                        j++;
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        //Set times in timetable
+            int i = 0;
+            while(i<tableHieght){
+                ttable[i][0] = timeSlotArray.get(i);
+                i++;
+            }
+            
+        //Set titles
+//        Object[] titles = createTableTitles();
+        
+        jDesktopPane2.removeAll();
+        try {
+           CustomTableModel tt = new CustomTableModel(ttable,titles);           
+            jDesktopPane2.add(tt).setVisible(true);
+            tt.setSize(jDesktopPane2.getWidth(), jDesktopPane2.getHeight());
+
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-                                                 
         // TODO add your handling code here:
         
         //Get selected student group
