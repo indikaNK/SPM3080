@@ -3,6 +3,9 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="options">
+      <Events>
+        <EventHandler event="componentHidden" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="optionsComponentHidden"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -26,13 +29,13 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="rType" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="rNote" alignment="0" min="-2" pref="231" max="-2" attributes="0"/>
-                              <Component id="rDateTime" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="rEndTime" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                                   <Component id="reserve" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="rDateTime" min="-2" max="-2" attributes="0"/>
+                              <Component id="rEndTime" min="-2" max="-2" attributes="0"/>
+                              <Component id="rNote" min="-2" pref="231" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -53,20 +56,20 @@
                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="rType" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="rDateTime" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="rEndTime" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="rEndTime" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="rNote" alignment="0" min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                      <Component id="rNote" min="-2" pref="56" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                   <Component id="reserve" min="-2" max="-2" attributes="0"/>
@@ -94,10 +97,6 @@
               <Connection code="this.selectedRoomNumbers.toString()" type="code"/>
             </Property>
           </Properties>
-        </Component>
-        <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="rDateTime">
-        </Component>
-        <Component class="com.github.lgooddatepicker.components.TimePicker" name="rEndTime">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
@@ -145,6 +144,10 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Additional Info"/>
           </Properties>
+        </Component>
+        <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="rDateTime">
+        </Component>
+        <Component class="com.github.lgooddatepicker.components.TimePicker" name="rEndTime">
         </Component>
       </SubComponents>
     </Container>
@@ -332,7 +335,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnOptions">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Reserve Room"/>
+        <Property name="text" type="java.lang.String" value="Options"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOptionsActionPerformed"/>

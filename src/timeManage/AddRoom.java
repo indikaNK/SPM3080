@@ -66,14 +66,14 @@ public class AddRoom extends javax.swing.JPanel {
         rNote = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        rDateTime = new com.github.lgooddatepicker.components.DateTimePicker();
-        rEndTime = new com.github.lgooddatepicker.components.TimePicker();
         jLabel8 = new javax.swing.JLabel();
         reserve = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         rType = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        rDateTime = new com.github.lgooddatepicker.components.DateTimePicker();
+        rEndTime = new com.github.lgooddatepicker.components.TimePicker();
         tfLocation = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         tfSection = new javax.swing.JTextField();
@@ -93,6 +93,12 @@ public class AddRoom extends javax.swing.JPanel {
         roomList = new javax.swing.JTable();
         tfRoomNumber = new javax.swing.JTextField();
         viewReservations = new javax.swing.JButton();
+
+        options.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                optionsComponentHidden(evt);
+            }
+        });
 
         rNote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,12 +153,12 @@ public class AddRoom extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rNote, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(optionsLayout.createSequentialGroup()
                                 .addGap(47, 47, 47)
-                                .addComponent(reserve)))))
+                                .addComponent(reserve))
+                            .addComponent(rDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rNote, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         optionsLayout.setVerticalGroup(
@@ -166,14 +172,14 @@ public class AddRoom extends javax.swing.JPanel {
                 .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(rType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
+                .addGap(13, 13, 13)
                 .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(rDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
+                    .addComponent(jLabel10)
+                    .addComponent(rEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
@@ -214,7 +220,7 @@ public class AddRoom extends javax.swing.JPanel {
 
         jLabel4.setText("Floor Number");
 
-        btnOptions.setText("Reserve Room");
+        btnOptions.setText("Options");
         btnOptions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOptionsActionPerformed(evt);
@@ -414,7 +420,7 @@ public class AddRoom extends javax.swing.JPanel {
         for(int i=0; i<rows.length; i++){
             selectedRoomNumbers.add(roomList.getModel().getValueAt(rows[i], 0).toString());
         }
-
+        //if rooms are selected > open jdialogbox
         if(selectedRoomNumbers.size() != 0){
             //open jdialog
             options.pack();
@@ -651,6 +657,11 @@ public class AddRoom extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Couldn't open reservations page!" + e);
         }
     }//GEN-LAST:event_viewReservationsActionPerformed
+
+    private void optionsComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_optionsComponentHidden
+        // TODO add your handling code here:
+        this.selectedRoomNumbers.clear();
+    }//GEN-LAST:event_optionsComponentHidden
 
     //INITIALIZE variables
     public void DBIntialization(){

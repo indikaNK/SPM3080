@@ -272,7 +272,7 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.jDesktopPane1.removeAll();
         try {
-           AddBuilding locationPage = new AddBuilding();           
+           AddBuilding locationPage = new AddBuilding(jDesktopPane1);           
            this.jDesktopPane1.add(locationPage).setVisible(true);
            locationPage.setSize(this.jDesktopPane1.getWidth(), this.jDesktopPane1.getHeight());
 
@@ -280,11 +280,6 @@ public class Dashboard extends javax.swing.JFrame {
            System.out.println(e);
         }
     }//GEN-LAST:event_btnLocationActionPerformed
-
-    public void showRoomPage(String buildingId){
-        this.jDesktopPane1.removeAll();
-        
-    }
     
     /**
      * @param args the command line arguments
