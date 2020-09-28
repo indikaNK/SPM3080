@@ -47,11 +47,15 @@ public class Settings extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
         }
         
-        //get settings table data
-        col = SettingDB.getCollection("Setting");
-        
-        BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 2);
-        DBObject settingsObject= col.findOne(searchQuery);
+        DBObject settingsObject=null;
+        try {
+            //get settings table data
+            col = SettingDB.getCollection("Setting");
+            BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 2);
+            settingsObject= col.findOne(searchQuery);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error When getting data from collection");
+        }
         
        if(settingsObject != null){
         
