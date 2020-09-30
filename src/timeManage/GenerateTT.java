@@ -88,10 +88,6 @@ public class GenerateTT extends javax.swing.JPanel {
                 keyList.add(weekdays[j]+"-"+tslot.get(i));
             }
         }
-//        System.out.println("dddd");
-//        timeslot.forEach((k, v) -> {
-//                System.out.println(k+"-"+v);
-//            });
     }
     
     public ArrayList<String> generateTimeSlots(String starttime, String noOfWorkingTime, String timeslot){
@@ -218,17 +214,136 @@ public class GenerateTT extends javax.swing.JPanel {
         if(conSessionObject != null){
             while(conSessionObject.hasNext()){
                 DBObject conSession = conSessionObject.next();
-                System.out.println(conSession.get("C_id"));
-                int r = getRandomNumber();
-                System.out.println(keyList.get(r));
+                String csId = conSession.get("C_id").toString();
+                int duration = Integer.parseInt(conSession.get("duration").toString());
                 
-                boolean res = checkAvailability("MONDAY-08:30-09:30","Dilshan De Silva","abc","asd");
+                List<Document> lecList =(List<Document>) conSession.get("lecturer");
+            
                 
-                System.out.println("res-"+res);
+                //********************************
+//                ArrayList<String> list1=new ArrayList<String>();
+//                ArrayList<String> list = timeslot.get("MONDAY-10:30-11:30");
+//                int i=0;
+//                while(i<list.size()){
+//                    list1.add(list.get(i++));
+//                }
+//                list1.add("S0001");
+//                timeslot.put("MONDAY-10:30-11:30",list1);
+//                
+                //***************************************************
+                
+                setAtAvailableSlot(csId,lecList,conSession.get("groupId").toString(),"",duration);
+                
             }
         }
         
     }
+    
+    public void getSession(){
+        
+        DBCollection col=null;
+        
+        DBCursor sessionObject=null;
+        try {
+            //get settings table data
+            col = db.getCollection("Sessions");
+            sessionObject =col.find();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error When getting data from collection");
+        }
+        
+        if(sessionObject != null){
+            while(sessionObject.hasNext()){
+                DBObject ssession = sessionObject.next();
+                String SId = ssession.get("Session_ID").toString();
+                int duration = Integer.parseInt(ssession.get("Duration").toString());
+                
+                List<Document> lecList =(List<Document>) ssession.get("Lecturers");
+            
+                
+                //********************************
+//                ArrayList<String> list1=new ArrayList<String>();
+//                ArrayList<String> list = timeslot.get("MONDAY-10:30-11:30");
+//                int i=0;
+//                while(i<list.size()){
+//                    list1.add(list.get(i++));
+//                }
+//                list1.add("S0001");
+//                timeslot.put("MONDAY-10:30-11:30",list1);
+//                
+                //***************************************************
+                
+                setAtAvailableSlot(SId,lecList,ssession.get("Group_ID").toString(),"",duration);
+                
+            }
+        }
+        
+    }
+    
+    public void setAtAvailableSlot(String cid, List<Document> lecList,String group, String room, int duration){
+        String lecturer="";
+        boolean res = true;
+        int dur = duration;
+        
+        int r = getRandomNumber();
+        
+        int i = 0;
+        while(i<lecList.size()){
+            
+            Object lec = lecList.get(i);
+            lecturer = lec.toString();
+            
+            //check lecturer in name or id
+            try {
+                Integer.parseInt(lecturer);
+                lecturer = getLecturerNameFromEmployeeTable(lecturer);
+            } catch (Exception e) {
+            }
+            
+            res = checkAvailability(keyList.get(r),lecturer,group,room);
+            if(!res){
+                break;
+            }
+            i++;
+        }
+        
+        if(res){
+            String key = keyList.get(r);
+            while(dur>0){
+                
+                ArrayList<String> list1=new ArrayList<String>();
+                ArrayList<String> list = timeslot.get(key);
+                int j=0;
+                while(j<list.size()){
+                    list1.add(list.get(j++));
+                }
+                list1.add(cid);
+                timeslot.put(key,list1);
+                
+                dur--;
+                key = getNextKey(key);
+            }
+            
+        }else{
+            setAtAvailableSlot( cid, lecList, group, room, duration);
+        }
+        
+    }
+    
+    public String getNextKey(String key){
+    
+        String[] str= key.split("-");
+        String stime = str[2];
+        String etime = str[2];
+        int hrs = Integer.parseInt(etime.substring(0,2))+1;
+        DecimalFormat formatter = new DecimalFormat("00");
+        String hrsFormatted = formatter.format(hrs);
+        String etimeMM = etime.substring(3,5);
+        
+        return str[0]+"-"+stime+"-"+hrsFormatted+":"+etimeMM;
+    }
+    
+    
     
     public int getRandomNumber(){
         
@@ -248,13 +363,12 @@ public class GenerateTT extends javax.swing.JPanel {
         int i=0;
         while(i<sessionidArray.size()){
             String sessionId = sessionidArray.get(i);
-            System.out.println(sessionId);
             if(sessionId.substring(0, 1).equals("S")){
-                
+               retValue = checkWithSessions(sessionId,lecture,group,room);
             }else if(sessionId.substring(0, 1).equals("P")){
-               retValue=checkWithParallelSessions(sessionId,lecture,group,room);
+               retValue = checkWithParallelSessions(sessionId,lecture,group,room);
             }else if(sessionId.substring(0, 1).equals("C")){
-            
+               retValue = checkWithConsecutiveSessions(sessionId,lecture,group,room);
             }else{
                 System.out.println("error in checkavailability : wrong sessionID");
             }
@@ -267,6 +381,7 @@ public class GenerateTT extends javax.swing.JPanel {
     }
     
     public boolean checkWithParallelSessions(String id, String lecture,String group, String room){
+        
         DBCollection col=null;
         
         DBObject psObject=null;
@@ -300,7 +415,103 @@ public class GenerateTT extends javax.swing.JPanel {
         
         return true;
     }
+    
+    public boolean checkWithConsecutiveSessions(String id, String lecture,String group, String room){
+        
+         DBCollection col=null;
+        
+        DBObject csObject=null;
+        try {
+            //get settings table data
+            col = db.getCollection("ConstSession");
+            BasicDBObject searchQuery = new BasicDBObject().append("C_id", id);
+            csObject= col.findOne(searchQuery);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error When getting data from collection");
+        }
+        
+        if(csObject != null){
+            List<Document> lecList =(List<Document>) csObject.get("lecturer");
+            
+            int i = 0;
+            while(i<lecList.size()){
+                Object lec = lecList.get(i);
+                
+                if(lec.equals(lecture)){
+                    return false;
+                }
+                i++;
+            }
+            String grp = csObject.get("groupId").toString();
+            if(grp.equals(group)){
+                    return false;
+                }
+        }
+        
+        return true;
+    }
+    
+    public boolean checkWithSessions(String id, String lecture,String group, String room){
+        
+        DBCollection col=null;
+        
+        DBObject psObject=null;
+        try {
+            //get settings table data
+            col = db.getCollection("Sessions");
+            BasicDBObject searchQuery = new BasicDBObject().append("Session_ID", id);
+            psObject= col.findOne(searchQuery);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error When getting data from collection");
+        }
+        
+        if(psObject != null){
+            List<Document> lecList =(List<Document>) psObject.get("Lecturers");
+            int i = 0;
+            while(i<lecList.size()){
+                Object lec = lecList.get(i);
+                String lecc = lec.toString();
+                //check lecturer in name or id
+                try {
+                    Integer.parseInt(lecc);
+                    lecc = getLecturerNameFromEmployeeTable(lecc);
+                } catch (Exception e) {
+                }
+                
+                if(lecc.equals(lecture)){
+                    return false;
+                }
+                i++;
+            }
+            String grp = psObject.get("Group_ID").toString();
+            if(grp.equals(group)){
+                    return false;
+                }
+        }
+        
+        return true;
+    }
 
+    public String getLecturerNameFromEmployeeTable(String id){
+        DBCollection col=null;
+        
+        DBObject empObject=null;
+        try {
+            //get settings table data
+            col = db.getCollection("Employee ");
+            BasicDBObject searchQuery = new BasicDBObject().append("Employee ID", id);
+            empObject= col.findOne(searchQuery);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error When getting data from collection");
+        }
+        
+        if(empObject != null){
+            return empObject.get("Employee_Name").toString();
+        }else{
+            JOptionPane.showMessageDialog(null, "There is no any Lecturer with id:"+id);
+        }
+        return null;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -394,19 +605,11 @@ public class GenerateTT extends javax.swing.JPanel {
             addTimeSlotsToHashMap();
             getParallelSessions();
             getConsecutiveSession();
+            getSession();
             
-//            
-//            System.out.println("hashmap");
-//            timeslot.forEach((k, v) -> {
-//                System.out.println(k+"-"+v);
-//            });
-//           
-//            
-//            System.out.println("key-list");
-//            int i=0;
-//            while(i<keyList.size()){
-//                System.out.println(keyList.get(i++));
-//            }
+            timeslot.forEach((k, v) -> {
+                System.out.println(k+"-"+v);
+            });
             
             JOptionPane.showMessageDialog(null, "Successfully generated!");
         } catch (Exception e) {
