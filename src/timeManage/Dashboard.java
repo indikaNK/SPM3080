@@ -144,6 +144,11 @@ public class Dashboard extends javax.swing.JFrame {
         jButton10.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton10.setForeground(new java.awt.Color(255, 255, 255));
         jButton10.setText("VIEW TIME TABLES");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         jButton11.setBackground(new java.awt.Color(0, 153, 153));
         jButton11.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -271,7 +276,7 @@ public class Dashboard extends javax.swing.JFrame {
         
         jDesktopPane1.removeAll();
         try {
-           TimeTable tt = new TimeTable();           
+           GenerateTT tt = new GenerateTT();           
             jDesktopPane1.add(tt).setVisible(true);
             tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
 
@@ -279,6 +284,19 @@ public class Dashboard extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        
+        jDesktopPane1.removeAll();
+        try {
+           TimeTable tt = new TimeTable();           
+            jDesktopPane1.add(tt).setVisible(true);
+            tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+
+        } catch (Exception e) {
+        }
+        
+    }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
      * @param args the command line arguments
