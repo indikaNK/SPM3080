@@ -76,7 +76,7 @@ public class Settings extends javax.swing.JPanel {
             if(wrkngDays.matches("(.*)TUESDAY(.*)")){
                 jCheckBox_tuesday.setSelected(true);
             }
-            if(wrkngDays.matches("(.*)WEDNSDAY(.*)")){
+            if(wrkngDays.matches("(.*)WEDNESDAY(.*)")){
                 jCheckBox_wednsday.setSelected(true);
             }
             if(wrkngDays.matches("(.*)THURSDAY(.*)")){
@@ -477,7 +477,7 @@ public class Settings extends javax.swing.JPanel {
             workingDays[i++] = "TUESDAY";
         }
         if(jCheckBox_wednsday.isSelected()){
-            workingDays[i++] = "WEDNSDAY";
+            workingDays[i++] = "WEDNESDAY";
         }
         if(jCheckBox_thursday.isSelected()){
             workingDays[i++] = "THURSDAY";
@@ -643,7 +643,7 @@ public class Settings extends javax.swing.JPanel {
             if(wrkngDays.matches("(.*)TUESDAY(.*)")){
                 jCheckBox_tuesday.setSelected(true);
             }
-            if(wrkngDays.matches("(.*)WEDNSDAY(.*)")){
+            if(wrkngDays.matches("(.*)WEDNESDAY(.*)")){
                 jCheckBox_wednsday.setSelected(true);
             }
             if(wrkngDays.matches("(.*)THURSDAY(.*)")){

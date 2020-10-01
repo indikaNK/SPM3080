@@ -316,7 +316,7 @@ public class GenerateTT extends javax.swing.JPanel {
                 int l =Integer.parseInt(lecturer);
                 lecturer = getLecturerNameFromEmployeeTable(lecturer);
             } catch (Exception e) {
-                System.out.println(e);
+//                System.out.println(e);
             }
             
             res = checkAvailability(keyList.get(r),lecturer,group,room);
@@ -468,7 +468,7 @@ public class GenerateTT extends javax.swing.JPanel {
             
             int i = 0;
             while(i<sesList.size()){
-                HashMap<String,String> ses = (HashMap<String,String>) sesList.get(0);
+                HashMap<String,String> ses = (HashMap<String,String>) sesList.get(i);
                 String lec = ses.get("lecturer").toString();
                 String grp = ses.get("group").toString();
                     if(lec.equals(lecture)){
@@ -624,16 +624,12 @@ public class GenerateTT extends javax.swing.JPanel {
             int i=0;
             
             while(i<sidArray.size()){
-                System.out.println(sidArray.get(0));
                 if(!list.contains(sidArray.get(i))){
                     list.add(sidArray.get(i));
                 }
                 i++;
             }
         });
-        for(int j=0;j<list.size();j++){
-            System.out.println(list.get(j));
-        }
                 return list;
     }
 
@@ -660,6 +656,7 @@ public class GenerateTT extends javax.swing.JPanel {
     
     
     public void rearrangeSchedules(){
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////");
         DBCollection col=null;
         DBCursor schdlObject=null;
         ArrayList<String> siidList = getSessionIDList();
@@ -671,6 +668,12 @@ public class GenerateTT extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error When getting data from collection");
         }
+        
+        
+            DBCollection col1 = db.getCollection("RE_Schedules");
+            col1.drop();
+        
+        System.out.println("siidList:"+siidList);
         for(int i=0;i<siidList.size();i++){
             int min=2000;
             int max=0;
@@ -681,6 +684,8 @@ public class GenerateTT extends javax.swing.JPanel {
             String endTime="";
             
             schdlObject =col.find();
+            
+            
             if(schdlObject != null){
                 while(schdlObject.hasNext()){
                     DBObject schdl = schdlObject.next();
@@ -704,18 +709,19 @@ public class GenerateTT extends javax.swing.JPanel {
                         }
                     }
                 }
-//                System.out.println("****************");
-//                System.out.println("session: "+session);
-//                System.out.println("day: "+day);
-//                System.out.println("stime: "+startTime);
-//                System.out.println("etime: "+endTime);
-//                System.out.println("room: "+room);
-//                System.out.println("****************");
+                System.out.println("****************");
+                System.out.println("session: "+session);
+                System.out.println("day: "+day);
+                System.out.println("stime: "+startTime);
+                System.out.println("etime: "+endTime);
+                System.out.println("room: "+room);
+                System.out.println("****************");
                 try {
-                    DBCollection col1 = db.getCollection("RE_Schedules");
-
+//                    col1 = db.getCollection("RE_Schedules");
                     Schedules_t schedules = new Schedules_t(session, day, startTime, endTime, room);
+                    System.out.println(schedules);
                         DBObject doc = createDBObject(schedules);
+                        System.out.println(doc);
                         WriteResult result = col1.insert(doc);
                 } catch (Exception e) {
                     System.out.println(e);
@@ -824,13 +830,25 @@ public class GenerateTT extends javax.swing.JPanel {
             getSettingsPageDetails();
             addTimeSlotsToHashMap();
             getParallelSessions();
+            System.out.println("after get P session");
+            timeslot.forEach((k, v) -> {
+                System.out.println(k+"->"+v);
+            });
             getConsecutiveSession();
+            System.out.println("after get C session");
+            timeslot.forEach((k, v) -> {
+                System.out.println(k+"->"+v);
+            });
             getSession();
+            System.out.println("after get session");
+            timeslot.forEach((k, v) -> {
+                System.out.println(k+"->"+v);
+            });
             saveToSchedulesTable();
             rearrangeSchedules();
             
 //            timeslot.forEach((k, v) -> {
-//                System.out.println(k+"-"+v);
+//                System.out.println(k+"->"+v);
 //            });
             
             JOptionPane.showMessageDialog(null, "Successfully generated!");

@@ -5,6 +5,7 @@
  */
 package timeManage;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -15,6 +16,8 @@ import java.awt.Dimension;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import javax.swing.*;
 import javax.swing.text.Document;
@@ -26,12 +29,14 @@ import javax.swing.text.Document;
 
 public class TimeTable extends javax.swing.JPanel {
 
-        DB SettingDB = null;
-        DB SessionDB = null;
-        DB ScheduleDB = null;
+        DB db = null;
         DBCollection col=null;
         DBCollection col2=null;
+        DBCollection col3=null;
+        DBCollection col4=null;
         DBCursor sessionObjects = null;
+        DBCursor prlsessioObjects = null;
+        DBCursor cnvsessionObjects = null;
         String startingTime = "";
         String noOfWorkingHours = "";
         String timeSlotDuration = "";
@@ -50,7 +55,7 @@ public class TimeTable extends javax.swing.JPanel {
         initComponents();
          try
         {
-        SettingDB = DBManager.getDatabase();
+        db = DBManager.getDatabase();
         }
         catch (UnknownHostException ex)
         {
@@ -60,7 +65,7 @@ public class TimeTable extends javax.swing.JPanel {
         DBObject settingsObject=null;
         try {
             //get settings table data
-            col = SettingDB.getCollection("Setting");
+            col = db.getCollection("Setting");
             BasicDBObject searchQuery = new BasicDBObject().append("SettingId", 2);
             settingsObject= col.findOne(searchQuery);
         } catch (Exception e) {
@@ -306,18 +311,10 @@ public class TimeTable extends javax.swing.JPanel {
         
         Object[][] ttable  = new Object[tableHieght][tableWidth+1];
         
-        //Get Session data from DB
-       try
-        {
-        SessionDB = DBManager.getDatabase();
-        }
-        catch (UnknownHostException ex)
-        {
-        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
-        }
+        
         
         //get sessions table data
-        col = SessionDB.getCollection("Sessions");
+        col = db.getCollection("Sessions");
         sessionObjects =col.find();
         
         
@@ -334,18 +331,8 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
-        //Get Schedule data from DB 
-        try
-        {
-        ScheduleDB = DBManager.getDatabase();
-        }
-        catch (UnknownHostException ex)
-        {
-        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
-        }
-        
         //get Schedule table data
-        col2 = ScheduleDB.getCollection("RE_Schedules");
+        col2 = db.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
         
         
@@ -416,32 +403,16 @@ public class TimeTable extends javax.swing.JPanel {
         
         Object[][] ttable  = new Object[tableHieght][tableWidth+1];
         
-        //Get Session data from DB
-       try
-        {
-        SessionDB = DBManager.getDatabase();
-        }
-        catch (UnknownHostException ex)
-        {
-        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
-        }
+        
         
         //get sessions table data
-        col = SessionDB.getCollection("Sessions");
+        col = db.getCollection("Sessions");
 //        sessionObjects =col.find();
         
-        //Get Schedule data from DB 
-        try
-        {
-        ScheduleDB = DBManager.getDatabase();
-        }
-        catch (UnknownHostException ex)
-        {
-        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
-        }
+        
         
         //get Schedule table data
-        col2 = ScheduleDB.getCollection("RE_Schedules");
+        col2 = db.getCollection("RE_Schedules");
         DBCursor scheduleObjects1 =col2.find();
         
         
@@ -513,10 +484,11 @@ public class TimeTable extends javax.swing.JPanel {
         // TODO add your handling code here:
         
         //Get selected student group
-        String lecture = jComboBox3.getSelectedItem().toString();
+        String lectureStr = jComboBox3.getSelectedItem().toString();
+        String lecture = "";
         for (Map.Entry ele : lectureList.entrySet()) {
             String key = (String)ele.getKey();
-            if(ele.getValue().toString().equals(lecture)){
+            if(ele.getValue().toString().equals(lectureStr)){
                 lecture = ele.getKey().toString();
             }
         }
@@ -525,22 +497,14 @@ public class TimeTable extends javax.swing.JPanel {
         
         Object[][] ttable  = new Object[tableHieght][tableWidth+1];
         
-        //Get Session data from DB
-       try
-        {
-        SessionDB = DBManager.getDatabase();
-        }
-        catch (UnknownHostException ex)
-        {
-        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
-        }
+        
         
         //get sessions table data
-        col = SessionDB.getCollection("Sessions");
+        col = db.getCollection("Sessions");
         sessionObjects =col.find();
         
         
-        //Get sessions which matches the student group
+        //Get sessions which matches the lecturer
         if(sessionObjects != null){
             while(sessionObjects.hasNext()){
                 DBObject sessionObj = sessionObjects.next();
@@ -562,21 +526,96 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
-        //Get Schedule data from DB 
-        try
-        {
-        ScheduleDB = DBManager.getDatabase();
+        //get parallel sessions table data
+        col = db.getCollection("ParallelSessions");
+        prlsessioObjects =col.find();
+        
+        //Get parallel sessions which matches the lecturer
+        if(prlsessioObjects != null){
+            while(prlsessioObjects.hasNext()){
+                DBObject prlsessionObj = prlsessioObjects.next();
+                
+                List<Document> sesList =(List<Document>) prlsessionObj.get("session");
+                boolean lecIsHere = false;
+                int i = 0;
+                while(i<sesList.size()){
+                    HashMap<String,String> ses = (HashMap<String,String>) sesList.get(i);
+                    String lec = ses.get("lecturer").toString();
+                    if(lec.equals(lectureStr)){
+                            
+                            lecIsHere = true;
+                    }
+                    i++;
+                }
+                if(lecIsHere){
+                    sessionIdArray.add(prlsessionObj.get("P_id").toString());
+                }
+                
+            }
+            
         }
-        catch (UnknownHostException ex)
-        {
-        JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        
+        //get consecutive sessions table data
+        col = db.getCollection("ConstSession");
+        cnvsessionObjects =col.find();
+        
+        //Get consecutive sessions which matches the lecturer
+        if(cnvsessionObjects != null){
+            while(cnvsessionObjects.hasNext()){
+                DBObject cnvsessionObj = cnvsessionObjects.next();
+                
+                ArrayList<String> list = new ArrayList<String>();
+                ListIterator<Object> lecList;
+                try {
+                    lecList = ((BasicDBList) cnvsessionObj.get("lecturer")).listIterator();
+
+
+                    while(lecList.hasNext()){
+
+                        Object nextItem = lecList.next();
+
+
+
+                        list.add((String) nextItem);
+
+
+                    }
+                } catch (Exception e) {
+                }
+                
+                boolean lecIsHere = false;
+                int i = 0;
+                while(i<list.size()){
+                    String lec = list.get(i);
+                    if(lec.equals(lectureStr)){
+                            lecIsHere = true;
+                    }
+                    i++;
+                }
+                if(lecIsHere){
+                    sessionIdArray.add(cnvsessionObj.get("C_id").toString());
+                }
+                
+            }
         }
+        
+        //testing
+            for(int i=0;i<sessionIdArray.size();i++){
+                System.out.println("with pids:"+sessionIdArray.get(i));
+            }
         
         //get Schedule table data
-        col2 = ScheduleDB.getCollection("RE_Schedules");
+        col2 = db.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
         
+        col = db.getCollection("Sessions");
+        DBCursor sessionObjects =col.find();
         
+        col3 = db.getCollection("ParallelSessions");
+        DBCursor prlsessObjects =col3.find();
+        
+        col4 = db.getCollection("ConstSession");
+        DBCursor cnvsessObjects =col4.find();
         
         //Get schedules which matches the sessionid
         if(scheduleObjects != null){
@@ -586,29 +625,47 @@ public class TimeTable extends javax.swing.JPanel {
                 int i=0;
                 while(i<sessionIdArray.size()){
                     
-                    if(scheduleObj.get("session").equals(sessionIdArray.get(i++))){
+                    if(scheduleObj.get("session").equals(sessionIdArray.get(i))){
+                        String arrItemSessId = sessionIdArray.get(i);
+                        String idType= arrItemSessId.substring(0,1);
                         
-                        sessionObjects =col.find();
-                        if(sessionObjects != null){
-                            while(sessionObjects.hasNext()){
-                                DBObject sessionObj = sessionObjects.next();
-                                
-                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+                        if(idType.equals("S")){
+                            
+                            sessionObjects =col.find();
+                            
+                            if(sessionObjects != null){
+                                while(sessionObjects.hasNext()){
+                                    DBObject sessionObj = sessionObjects.next();
                                     
-                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
-                                    int j=0;
-                                    while(j<duration){
-                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
-                                            +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
-                                        j++;
+                                    if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+                                        System.out.println("day-"+scheduleObj.get("day").toString());
+                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+                                        System.out.println("dur-"+sessionObj.get("Duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        System.out.println("x-"+x[0]+","+x[1]);
+                                        int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        int j=0;
+                                        while(j<duration){
+                                            System.out.println("j:"+j);
+                                            ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
+                                                +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
+                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
+                                            j++;
+                                        }
+
                                     }
-                                    
                                 }
                             }
+                        }else if(idType.equals("P")){
+                            System.out.println("inside P");
+                        }
+                        else if(idType.equals("C")){
+                            System.out.println("inside C");
                         }
                         
+                        
                     }
+                    i++;
                 }
             }
         }
