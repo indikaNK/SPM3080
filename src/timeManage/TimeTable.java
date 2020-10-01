@@ -331,11 +331,70 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
-        //get Schedule table data
+        //get parallel sessions table data
+        col = db.getCollection("ParallelSessions");
+        prlsessioObjects =col.find();
+        
+        //Get parallel sessions which matches the group
+        if(prlsessioObjects != null){
+            while(prlsessioObjects.hasNext()){
+                DBObject prlsessionObj = prlsessioObjects.next();
+                
+                List<Document> sesList =(List<Document>) prlsessionObj.get("session");
+                boolean grpIsHere = false;
+                int i = 0;
+                while(i<sesList.size()){
+                    HashMap<String,String> ses = (HashMap<String,String>) sesList.get(i);
+                    String grp = ses.get("group").toString();
+                    grp = grp.substring(0, 11);
+                    if(grp.equals(stdGroup)){
+                            
+                            grpIsHere = true;
+                    }
+                    i++;
+                }
+                if(grpIsHere){
+                    sessionIdArray.add(prlsessionObj.get("P_id").toString());
+                }
+                
+            }
+            
+        }
+        
+        //get consecutive sessions table data
+        col = db.getCollection("ConstSession");
+        cnvsessionObjects =col.find();
+        
+        
+        //Get sessions which matches the student group
+        if(cnvsessionObjects != null){
+            while(cnvsessionObjects.hasNext()){
+                DBObject cnvsessionObj = cnvsessionObjects.next();
+                if(cnvsessionObj.get("groupId").equals(stdGroup)){
+                    if(cnvsessionObj.get("C_id") != null){
+                        sessionIdArray.add(cnvsessionObj.get("C_id").toString());
+                    }
+                    
+                }
+            }
+        }
+        
+        //testing
+            for(int i=0;i<sessionIdArray.size();i++){
+                System.out.println("with pidsss:"+sessionIdArray.get(i));
+            }
+        
         col2 = db.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
         
+        col = db.getCollection("Sessions");
+        DBCursor sessionObjects =col.find();
         
+        col3 = db.getCollection("ParallelSessions");
+        DBCursor prlsessObjects =col3.find();
+        
+        col4 = db.getCollection("ConstSession");
+        DBCursor cnvsessObjects =col4.find();
         
         //Get schedules which matches the sessionid
         if(scheduleObjects != null){
@@ -345,29 +404,156 @@ public class TimeTable extends javax.swing.JPanel {
                 int i=0;
                 while(i<sessionIdArray.size()){
                     
-                    if(scheduleObj.get("session").equals(sessionIdArray.get(i++))){
+                    if(scheduleObj.get("session").equals(sessionIdArray.get(i))){
+                        String arrItemSessId = sessionIdArray.get(i);
+                        String idType= arrItemSessId.substring(0,1);
                         
-                        sessionObjects =col.find();
-                        if(sessionObjects != null){
-                            while(sessionObjects.hasNext()){
-                                DBObject sessionObj = sessionObjects.next();
-                                
-                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+                        if(idType.equals("S")){
+                            
+                            sessionObjects =col.find();
+                            
+                            if(sessionObjects != null){
+                                while(sessionObjects.hasNext()){
+                                    DBObject sessionObj = sessionObjects.next();
                                     
-                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
-                                    int j=0;
-                                    while(j<duration){
-                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
-                                            +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
-                                        j++;
+                                    if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+                                        System.out.println("day-"+scheduleObj.get("day").toString());
+                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+                                        System.out.println("dur-"+sessionObj.get("Duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        System.out.println("x-"+x[0]+","+x[1]);
+                                        int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        int j=0;
+                                        while(j<duration){
+                                            System.out.println("j:"+j);
+                                            ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
+                                                +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
+                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
+                                            j++;
+                                        }
+
                                     }
+                                }
+                            }
+                        }else if(idType.equals("P")){
+                            System.out.println("inside P");
+                            prlsessObjects =col3.find();
+                            
+                            if(prlsessObjects != null){
+                                while(prlsessObjects.hasNext()){
+                                    DBObject prlsessionObj = prlsessObjects.next();
+                                    if(prlsessionObj.get("P_id").equals(scheduleObj.get("session"))){
+//                                        System.out.println("day-"+scheduleObj.get("day").toString());
+//                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+//                                        System.out.println("dur-"+prlsessionObj.get("duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        String dur = prlsessionObj.get("duration").toString();
+                                        int duration = Integer.parseInt(dur);
+                
+                                        List<Document> sesList =(List<Document>) prlsessionObj.get("session");
+//                                        boolean lecIsHere = false;
+                                        
+                                        String[] lecturer = new String[sesList.size()];
+                                        String[] subject = new String[sesList.size()];
+                                        String[] scode = new String[sesList.size()];
+                                        String[] group = new String[sesList.size()];
+                                        String[] tag = new String[sesList.size()];
+                                        String[] count = new String[sesList.size()];
+                                        int q = 0;
+                                        while(q<sesList.size()){
+                                            Object ob= sesList.get(q);
+                                            String obj = ob.toString();
+                                            int indexA = obj.indexOf("count")+8;
+                                            int indexB = obj.indexOf("}");
+                                            
+                                            count[q] = obj.substring(indexA,indexB);
+                                            System.out.println("count:"+count[q]);
+                                            HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
+                                            lecturer[q] = ses.get("lecturer");
+                                            subject[q] = ses.get("subject");
+                                            scode[q] = ses.get("scode");
+                                            group[q] = ses.get("group");
+                                            tag[q] = ses.get("tag");
+                                            
+                                            q++;
+                                        }
+                                        
+                                        for(int j=0;j<duration;j++){
+                                            System.out.println("j:"+j);
+                                            
+                                            for(int k=0;k<sesList.size();k++){
+                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+scheduleObj.get("room");
+                                            }
+                                            
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                        else if(idType.equals("C")){
+                            System.out.println("inside C");
+                            
+                            cnvsessObjects =col4.find();
+                            
+                            if(cnvsessObjects != null){
+                                while(cnvsessObjects.hasNext()){
+                                    DBObject cnvsessionObj = cnvsessObjects.next();
                                     
+                                    if(cnvsessionObj.get("C_id").equals(scheduleObj.get("session"))){
+                                        System.out.println("day-"+scheduleObj.get("day").toString());
+                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+                                        System.out.println("dur-"+cnvsessionObj.get("duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        System.out.println("x-"+x[0]+","+x[1]);
+                                        int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
+                                        
+                                         List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
+                                        String tags = "";
+                                        for(int m=0;m<tagList.size();m++){
+                                            tags = tags+tagList.get(m);
+                                            if(m+1<tagList.size()){
+                                                tags = tags+",";
+                                            }
+                                        }
+                                        System.out.println("tags-"+tags);
+                                        int j=0;
+                                        while(j<duration){
+                                            System.out.println("j:"+j);
+                                            ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
+                                                +cnvsessionObj.get("subject")+" ("+tags+")\n"+scheduleObj.get("room");
+                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
+                                            j++;
+                                        }
+
+                                    }
                                 }
                             }
                         }
                         
+//                        sessionObjects =col.find();
+//                        if(sessionObjects != null){
+//                            while(sessionObjects.hasNext()){
+//                                DBObject sessionObj = sessionObjects.next();
+//                                
+//                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+//                                    
+//                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+//                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+//                                    int j=0;
+//                                    while(j<duration){
+//                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
+//                                            +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
+//                                        j++;
+//                                    }
+//                                    
+//                                }
+//                            }
+//                        }
+                        
                     }
+                    i++;
                 }
             }
         }
@@ -429,7 +615,17 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
+        col2 = db.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
+        
+        col = db.getCollection("Sessions");
+        DBCursor sessionObjects =col.find();
+        
+        col3 = db.getCollection("ParallelSessions");
+        DBCursor prlsessObjects =col3.find();
+        
+        col4 = db.getCollection("ConstSession");
+        DBCursor cnvsessObjects =col4.find();
         
         //Get schedules which matches the sessionid
         if(scheduleObjects != null){
@@ -437,25 +633,152 @@ public class TimeTable extends javax.swing.JPanel {
                 DBObject scheduleObj = scheduleObjects.next();
                 int i=0;
                 while(i<sessionIdArray.size()){
-                    if(scheduleObj.get("session").equals(sessionIdArray.get(i++))){
-                        sessionObjects =col.find();
-                        if(sessionObjects != null){
-                            while(sessionObjects.hasNext()){
-                                DBObject sessionObj = sessionObjects.next();
-                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
-                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
-                                    int j=0;
-                                    while(j<duration){
-                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Subject_Code")+"-"+sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+sessionObj.get("Group_ID");
-                                        j++;
-                                    }
+                    if(scheduleObj.get("session").equals(sessionIdArray.get(i))){
+                        String arrItemSessId = sessionIdArray.get(i);
+                        String idType= arrItemSessId.substring(0,1);
+                        
+                        if(idType.equals("S")){
+                            
+                            sessionObjects =col.find();
+                            
+                            if(sessionObjects != null){
+                                while(sessionObjects.hasNext()){
+                                    DBObject sessionObj = sessionObjects.next();
                                     
+                                    if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+                                        System.out.println("day-"+scheduleObj.get("day").toString());
+                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+                                        System.out.println("dur-"+sessionObj.get("Duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        System.out.println("x-"+x[0]+","+x[1]);
+                                        int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        int j=0;
+                                        while(j<duration){
+                                            System.out.println("j:"+j);
+                                            ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
+                                                +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
+                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
+                                            j++;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }else if(idType.equals("P")){
+                            System.out.println("inside P");
+                            prlsessObjects =col3.find();
+                            
+                            if(prlsessObjects != null){
+                                while(prlsessObjects.hasNext()){
+                                    DBObject prlsessionObj = prlsessObjects.next();
+                                    if(prlsessionObj.get("P_id").equals(scheduleObj.get("session"))){
+//                                        System.out.println("day-"+scheduleObj.get("day").toString());
+//                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+//                                        System.out.println("dur-"+prlsessionObj.get("duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        String dur = prlsessionObj.get("duration").toString();
+                                        int duration = Integer.parseInt(dur);
+                
+                                        List<Document> sesList =(List<Document>) prlsessionObj.get("session");
+//                                        boolean lecIsHere = false;
+                                        
+                                        String[] lecturer = new String[sesList.size()];
+                                        String[] subject = new String[sesList.size()];
+                                        String[] scode = new String[sesList.size()];
+                                        String[] group = new String[sesList.size()];
+                                        String[] tag = new String[sesList.size()];
+                                        String[] count = new String[sesList.size()];
+                                        int q = 0;
+                                        while(q<sesList.size()){
+                                            Object ob= sesList.get(q);
+                                            String obj = ob.toString();
+                                            int indexA = obj.indexOf("count")+8;
+                                            int indexB = obj.indexOf("}");
+                                            
+                                            count[q] = obj.substring(indexA,indexB);
+                                            System.out.println("count:"+count[q]);
+                                            HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
+                                            lecturer[q] = ses.get("lecturer");
+                                            subject[q] = ses.get("subject");
+                                            scode[q] = ses.get("scode");
+                                            group[q] = ses.get("group");
+                                            tag[q] = ses.get("tag");
+                                            
+                                            q++;
+                                        }
+                                        
+                                        for(int j=0;j<duration;j++){
+                                            System.out.println("j:"+j);
+                                            
+                                            for(int k=0;k<sesList.size();k++){
+                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+scheduleObj.get("room");
+                                            }
+                                            
+                                        }
+
+                                    }
                                 }
                             }
                         }
+                        else if(idType.equals("C")){
+                            System.out.println("inside C");
+                            
+                            cnvsessObjects =col4.find();
+                            
+                            if(cnvsessObjects != null){
+                                while(cnvsessObjects.hasNext()){
+                                    DBObject cnvsessionObj = cnvsessObjects.next();
+                                    
+                                    if(cnvsessionObj.get("C_id").equals(scheduleObj.get("session"))){
+                                        System.out.println("day-"+scheduleObj.get("day").toString());
+                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+                                        System.out.println("dur-"+cnvsessionObj.get("duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        System.out.println("x-"+x[0]+","+x[1]);
+                                        int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
+                                        
+                                         List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
+                                        String tags = "";
+                                        for(int m=0;m<tagList.size();m++){
+                                            tags = tags+tagList.get(m);
+                                            if(m+1<tagList.size()){
+                                                tags = tags+",";
+                                            }
+                                        }
+                                        System.out.println("tags-"+tags);
+                                        int j=0;
+                                        while(j<duration){
+                                            System.out.println("j:"+j);
+                                            ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
+                                                +cnvsessionObj.get("subject")+" ("+tags+")\n"+scheduleObj.get("room");
+                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
+                                            j++;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+//                        sessionObjects =col.find();
+//                        if(sessionObjects != null){
+//                            while(sessionObjects.hasNext()){
+//                                DBObject sessionObj = sessionObjects.next();
+//                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
+//                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+//                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+//                                    int j=0;
+//                                    while(j<duration){
+//                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Subject_Code")+"-"+sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+sessionObj.get("Group_ID");
+//                                        j++;
+//                                    }
+//                                    
+//                                }
+//                            }
+//                        }
                         
                     }
+                    i++;
                 }
             }
         }
@@ -483,7 +806,7 @@ public class TimeTable extends javax.swing.JPanel {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         
-        //Get selected student group
+        //Get selected lecturer
         String lectureStr = jComboBox3.getSelectedItem().toString();
         String lecture = "";
         for (Map.Entry ele : lectureList.entrySet()) {
@@ -568,17 +891,10 @@ public class TimeTable extends javax.swing.JPanel {
                 ListIterator<Object> lecList;
                 try {
                     lecList = ((BasicDBList) cnvsessionObj.get("lecturer")).listIterator();
-
-
+                    
                     while(lecList.hasNext()){
-
                         Object nextItem = lecList.next();
-
-
-
                         list.add((String) nextItem);
-
-
                     }
                 } catch (Exception e) {
                 }
@@ -658,9 +974,99 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }else if(idType.equals("P")){
                             System.out.println("inside P");
+                            prlsessObjects =col3.find();
+                            
+                            if(prlsessObjects != null){
+                                while(prlsessObjects.hasNext()){
+                                    DBObject prlsessionObj = prlsessObjects.next();
+                                    if(prlsessionObj.get("P_id").equals(scheduleObj.get("session"))){
+//                                        System.out.println("day-"+scheduleObj.get("day").toString());
+//                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+//                                        System.out.println("dur-"+prlsessionObj.get("duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        String dur = prlsessionObj.get("duration").toString();
+                                        int duration = Integer.parseInt(dur);
+                
+                                        List<Document> sesList =(List<Document>) prlsessionObj.get("session");
+//                                        boolean lecIsHere = false;
+                                        
+                                        String[] lecturer = new String[sesList.size()];
+                                        String[] subject = new String[sesList.size()];
+                                        String[] scode = new String[sesList.size()];
+                                        String[] group = new String[sesList.size()];
+                                        String[] tag = new String[sesList.size()];
+                                        String[] count = new String[sesList.size()];
+                                        int q = 0;
+                                        while(q<sesList.size()){
+                                            Object ob= sesList.get(q);
+                                            String obj = ob.toString();
+                                            int indexA = obj.indexOf("count")+8;
+                                            int indexB = obj.indexOf("}");
+                                            
+                                            count[q] = obj.substring(indexA,indexB);
+                                            System.out.println("count:"+count[q]);
+                                            HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
+                                            lecturer[q] = ses.get("lecturer");
+                                            subject[q] = ses.get("subject");
+                                            scode[q] = ses.get("scode");
+                                            group[q] = ses.get("group");
+                                            tag[q] = ses.get("tag");
+                                            
+                                            q++;
+                                        }
+                                        
+                                        for(int j=0;j<duration;j++){
+                                            System.out.println("j:"+j);
+                                            
+                                            for(int k=0;k<sesList.size();k++){
+                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+scheduleObj.get("room");
+                                            }
+                                            
+                                        }
+
+                                    }
+                                }
+                            }
                         }
                         else if(idType.equals("C")){
                             System.out.println("inside C");
+                            
+                            cnvsessObjects =col4.find();
+                            
+                            if(cnvsessObjects != null){
+                                while(cnvsessObjects.hasNext()){
+                                    DBObject cnvsessionObj = cnvsessObjects.next();
+                                    
+                                    if(cnvsessionObj.get("C_id").equals(scheduleObj.get("session"))){
+                                        System.out.println("day-"+scheduleObj.get("day").toString());
+                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
+                                        System.out.println("dur-"+cnvsessionObj.get("duration").toString());
+                                        int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
+                                        System.out.println("x-"+x[0]+","+x[1]);
+                                        int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
+                                        
+                                         List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
+                                        String tags = "";
+                                        for(int m=0;m<tagList.size();m++){
+                                            tags = tags+tagList.get(m);
+                                            if(m+1<tagList.size()){
+                                                tags = tags+",";
+                                            }
+                                        }
+                                        System.out.println("tags-"+tags);
+                                        int j=0;
+                                        while(j<duration){
+                                            System.out.println("j:"+j);
+                                            ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
+                                                +cnvsessionObj.get("subject")+" ("+tags+")\n"+scheduleObj.get("room");
+                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
+                                            j++;
+                                        }
+
+                                    }
+                                }
+                            }
                         }
                         
                         
