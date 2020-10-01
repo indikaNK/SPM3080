@@ -73,7 +73,7 @@ public class DataRetrive {
         DBObject resultdb = col1.findOne();
         if (resultdb != null) {
             session_ID = (String) resultdb.get("Session_ID");
-            lecturers = (String) resultdb.get("Lecturers");
+            lecturers =  resultdb.get("Lecturers").toString();
             tag = (String) resultdb.get("Tag");
             group_ID = (String) resultdb.get("Group_ID");
             subject_Code = resultdb.get("Subject_Code").toString();

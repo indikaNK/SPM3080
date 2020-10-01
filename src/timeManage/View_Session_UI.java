@@ -66,10 +66,15 @@ public class View_Session_UI extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(620, 740));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 153));
         jLabel1.setText("VIEW - SESSION ");
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -98,6 +103,12 @@ public class View_Session_UI extends javax.swing.JPanel {
             }
         });
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Group-ID", "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Lecturer", "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Subject", "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,26 +116,34 @@ public class View_Session_UI extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(153, 153, 153)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 182, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 262, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(167, 167, 167))
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -162,6 +181,9 @@ public class View_Session_UI extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
@@ -176,94 +198,47 @@ public class View_Session_UI extends javax.swing.JPanel {
 
     private void populate() {
 
-        
-        
         String[] columNames = {"SID", "Lecturer(s)", "Tag", "Group-ID", "Subject-code", "Subject", "student-count", "Duration"};
 
         DefaultTableModel dtm = new DefaultTableModel(columNames, 0);
         DBCursor iterDoc = dbUtils.getAllSession();
-        
+
         while (iterDoc.hasNext()) {
             DBObject obj = iterDoc.next();
             session_ID = (String) obj.get("Session_ID");
-            lecturers = (String) obj.get("Lecturers");
+            //String lecturers =  obj.get("Lecturers").toString();
+//            lecturers = lecturers.replaceAll("[^a-zA-Z0-9]", "");
+//            String[] lecs = lecturers.split(",");
             tag = (String) obj.get("Tag");
             group_ID = (String) obj.get("Group_ID");
             subject_Code = obj.get("Subject_Code").toString();
             subject = (String) obj.get("Subject").toString();
             scount = (String) obj.get("Student_Count").toString();
             duration = (String) obj.get("Duration").toString();
-
+            int l = 0;
+           // while(l > lecturers.length()){
+                System.out.println(lecturers);
+                l++;
+                
+           // }
             dtm.addRow(new String[]{session_ID, lecturers, tag, group_ID, subject_Code, subject, scount, duration});
 //            System.out.println("code3" + code);
         }
         //load data to table (POPULATE DATA)
         jTable1.setModel(dtm);
 
-        
-//        DB edb = null;
-//        DBCollection col = null;
-//        //retrive data
-//        try {
-//            edb = DBManager.getDatabase();
-//        } catch (UnknownHostException e) {
-//            JOptionPane.showMessageDialog(null, "Error Connecting To DB");
-//        }
-//        col = edb.getCollection("Sessions");
-//        DBObject resultdb = col.findOne(); //will return a document or null
-//
-////        System.out.println("col:" + col);
-////        System.out.println("col. find is " + col.find());
-////        System.out.println("col.findone is " + col.findOne());
-////
-////        System.out.println("resultdb:" + resultdb);
-//        if (resultdb != null) {
-//            session_ID = (String) resultdb.get("Session_ID");
-//            lecturers = (String) resultdb.get("Lecturers");
-//            tag = (String) resultdb.get("Tag");
-//            group_ID = (String) resultdb.get("Group_ID");
-//            subject_Code = resultdb.get("Subject_Code").toString();
-//            subject = (String) resultdb.get("Subject").toString();
-//            scount = (String) resultdb.get("Student_Count").toString();
-//            duration = (String) resultdb.get("Duration").toString();
-//
-//           
-//
-//        } else {
-//            System.out.println("resultdb is null");
-//        }
-//        String[] columNames = {"SID", "Lecturer(s)", "Tag", "Group-ID", "Subject-code", "Subject", "student-count", "Duration"};
-//
-//        DefaultTableModel dtm = new DefaultTableModel(columNames, 0);
-//        DBCursor iterDoc = col.find();
-//        while (iterDoc.hasNext()) {
-//            DBObject obj = iterDoc.next();
-//            session_ID = (String) obj.get("Session_ID");
-//            lecturers = (String) obj.get("Lecturers");
-//            tag = (String) obj.get("Tag");
-//            group_ID = (String) obj.get("Group_ID");
-//            subject_Code = obj.get("Subject_Code").toString();
-//            subject = (String) obj.get("Subject").toString();
-//            scount = (String) obj.get("Student_Count").toString();
-//            duration = (String) obj.get("Duration").toString();
-//
-//            dtm.addRow(new String[]{session_ID, lecturers, tag, group_ID, subject_Code, subject, scount, duration});
-////            System.out.println("code3" + code);
-//        }
-//        //load data to table (POPULATE DATA)
-//        jTable1.setModel(dtm);
-    }
+  }
 
-    private DBObject createDBObject(Subjects subjects) {
+    private DBObject createDBObject(Sessions session) {
         BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
-        docBuilder.append("Subject Code", subjects.getSubjectCode());
-        docBuilder.append("SubjectName", subjects.getSubjectName());
-        docBuilder.append("Offered Year", subjects.getOfferedYear());
-        docBuilder.append("Offerd Semester", subjects.getOfferedSemester());
-        docBuilder.append("Lecture Hours", subjects.getnLhrs());
-        docBuilder.append("Tutorial Hours", subjects.getnThrs());
-        docBuilder.append("Lab Hours", subjects.getnLabhrs());
-        docBuilder.append("Evaluation Hours", subjects.getnEvhrs());
+        docBuilder.append("Session_ID", session.getSessionID());
+        //docBuilder.append("Lecturers", session.getLecturers());
+        docBuilder.append("Tag", session.getTags());
+        docBuilder.append("Group_ID", session.getGroupID());
+        docBuilder.append("Subject_Code", session.getSSubjectCode());
+        docBuilder.append("Subject", session.getSSubject());
+        docBuilder.append("Student_Count", session.getStudentCount());
+        docBuilder.append("Duration", session.getStudentCount());
         return docBuilder.get();
     }
 
