@@ -46,8 +46,8 @@ public class SessionPage extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setBackground(new java.awt.Color(153, 153, 255));
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(102, 102, 247));
+        jButton1.setFont(new java.awt.Font("Adobe Gothic Std B", 1, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("VIEW SESSIONS");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -56,8 +56,8 @@ public class SessionPage extends javax.swing.JPanel {
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(153, 255, 153));
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton5.setBackground(new java.awt.Color(90, 173, 173));
+        jButton5.setFont(new java.awt.Font("Adobe Gothic Std B", 1, 24)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("CREATE SESSIONS");
         jButton5.addActionListener(new java.awt.event.ActionListener() {

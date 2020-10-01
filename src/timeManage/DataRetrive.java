@@ -31,7 +31,7 @@ public class DataRetrive {
     String subject = null;
     String scount = null;
     String duration = null;
-    
+
     //subjects
     String code = null;
     String name = null;
@@ -76,7 +76,7 @@ public class DataRetrive {
         DBObject resultdb = col1.findOne();
         if (resultdb != null) {
             session_ID = (String) resultdb.get("Session_ID");
-            lecturers =  resultdb.get("Lecturers").toString();
+            lecturers = resultdb.get("Lecturers").toString();
             tag = (String) resultdb.get("Tag");
             group_ID = (String) resultdb.get("Group_ID");
             subject_Code = resultdb.get("Subject_Code").toString();
@@ -86,8 +86,8 @@ public class DataRetrive {
         }
         return col1.find();
     }
-    
-        public DBCursor getAllSubject() {
+
+    public DBCursor getAllSubject() {
         DB edb = null;
         DBCollection col1;
         try {
@@ -95,7 +95,7 @@ public class DataRetrive {
         } catch (UnknownHostException e) {
             JOptionPane.showMessageDialog(null, "Error Connecting To DB");
         }
-         col1 = edb.getCollection("Subjects ");
+        col1 = edb.getCollection("Subjects ");
         DBObject resultdb = col1.findOne();
         if (resultdb != null) {
             code = (String) resultdb.get("Subject Code");
@@ -109,47 +109,75 @@ public class DataRetrive {
         }
         return col1.find();
     }
-    
-    public ArrayList<Sessions> testSearch() {
+
+    //search method
+    public ArrayList<Sessions> testSearch(String subject, String groupId, String lecturerrs) {
         DB edb = null;
         DBCollection col1;
-        
-        //dummy values
-        String subject = "SE3050";
-        String groupId = "Y1.S1.IT.01";
-        
+
+//        dummy values
+//        String subject = "SE3050";
+//        String groupId = "Y1.S1.IT.01";
+//          String lecturers = "000150";  
         ArrayList<Sessions> sessions = new ArrayList<>();
-        
+
         try {
             edb = DBManager.getDatabase();
         } catch (UnknownHostException e) {
             JOptionPane.showMessageDialog(null, "Error Connecting To DB");
         }
         col1 = edb.getCollection("Sessions");
-        
-        DBObject query = new BasicDBObject("Group_ID", groupId).append("Subject_Code", subject);
-        
+
+        DBObject query = new BasicDBObject("Group_ID", groupId).append("Subject_Code", subject).append("Lecturers", lecturers);
+
+        System.out.println("groupID" + groupId + "\nscode" + subject+ "\nslecturers" + lecturers);
+
         //{{"Subject_Code": subject}, {"Group_ID": groupId}}
         DBCursor resultdb = col1.find(query);
+
+        System.out.println("dbcursor : " + resultdb.toString());
         if (resultdb.hasNext()) {
 
             DBObject obj = resultdb.next();
+            System.out.println("obj : " + obj.toString());
+
             Sessions s = new Sessions();
             s.setDuration(obj.get("Duration").toString());
             s.setGroupID(obj.get("Group_ID").toString());
-            s.setLecturers((ArrayList<String>)obj.get("Lecturers"));
+            s.setLecturers((ArrayList<String>) obj.get("Lecturers"));
             s.setSSubject(obj.get("Subject").toString());
             s.setSessionID(obj.get("Session_ID").toString());
             s.setSSubjectCode(obj.get("Subject_Code").toString());
             s.setStudentCount(obj.get("Student_Count").toString());
             s.setTags(obj.get("Tag").toString());
-            
+
             sessions.add(s);
         }
-        
+
         return sessions;
     }
-    
-    
+
+    public String getLecName(String ID) {
+        DB edb = null;
+        DBCollection col1;
+        try {
+            edb = DBManager.getDatabase();
+        } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(null, "Error Connecting To DB");
+
+        }
+
+        col1 = edb.getCollection("Employee ");
+        BasicDBObject searchQuery = new BasicDBObject().append("Employee ID", ID);
+        DBObject result = col1.findOne(searchQuery);
+        System.out.println("beforeif:"+searchQuery);
+        
+        if (result != null) {
+            System.out.println("result:"+result);
+            return result.get("Employee_Name").toString();
+        }
+
+        return null;
+    }
 
 }
