@@ -6,10 +6,12 @@
 package timeManage;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import static java.lang.Integer.max;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
@@ -559,6 +561,81 @@ public class GenerateTT extends javax.swing.JPanel {
         
         return true;
     }
+    
+    public void saveToSchedulesTable(){
+        
+        DBCollection col = db.getCollection("Schedules");
+        col.drop();
+        
+        HashMap<String, ArrayList<String>> finaltimeslots = timeslot;
+        
+        finaltimeslots.forEach((k, v) -> {
+            
+            String key = k;
+            String[] strArr = key.split("-");
+            
+            String day= strArr[0];
+            String stime = strArr[1];
+            String etime = strArr[2];
+            
+            ArrayList<String> sidArray = v;
+            
+            
+            int i=0;
+            while(i<sidArray.size()){
+                try {
+                    Schedules_t schedules = new Schedules_t(sidArray.get(i), day, stime, etime, "");
+                    DBObject doc = createDBObject(schedules);
+//                    
+//                    System.out.println("********");
+//                    System.out.println("doc:"+doc);
+//                    System.out.println("**********");
+                    WriteResult result = col.insert(doc);
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                    Notification notification = new Notification("Error when updating");
+                    notification.setLocation(600, 400);
+                    notification.setVisible(true);
+                }
+                i++;
+            }
+        });
+        
+
+    }
+    
+    private static DBObject createDBObject(Schedules_t schedules_)
+        {
+    //create Settings obect
+            BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
+            docBuilder.append("session", schedules_.getSession());
+            docBuilder.append("day", schedules_.getDay());
+            docBuilder.append("startTime", schedules_.getStartTime());
+            docBuilder.append("endTime", schedules_.getEndTime());
+            docBuilder.append("room", schedules_.getRoom());
+             return docBuilder.get();
+        }
+    
+    public ArrayList<String> getSessionIDList(){
+        ArrayList<String> list = new ArrayList<String>();
+        timeslot.forEach((k, v) -> {
+            ArrayList<String> sidArray = v;
+            int i=0;
+            
+            while(i<sidArray.size()){
+                System.out.println(sidArray.get(0));
+                if(!list.contains(sidArray.get(i))){
+                    list.add(sidArray.get(i));
+                }
+                i++;
+            }
+        });
+        for(int j=0;j<list.size();j++){
+            System.out.println(list.get(j));
+        }
+                return list;
+    }
 
     public String getLecturerNameFromEmployeeTable(String id){
         DBCollection col=null;
@@ -579,6 +656,71 @@ public class GenerateTT extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "There is no any Lecturer with id:"+id);
         }
         return null;
+    }
+    
+    
+    public void rearrangeSchedules(){
+        DBCollection col=null;
+        DBCursor schdlObject=null;
+        ArrayList<String> siidList = getSessionIDList();
+        
+        try {
+            //get settings table data
+            col = db.getCollection("Schedules");
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error When getting data from collection");
+        }
+        for(int i=0;i<siidList.size();i++){
+            int min=2000;
+            int max=0;
+            String session=siidList.get(i);
+            String day ="";
+            String room ="";
+            String startTime="";
+            String endTime="";
+            
+            schdlObject =col.find();
+            if(schdlObject != null){
+                while(schdlObject.hasNext()){
+                    DBObject schdl = schdlObject.next();
+                    String id = schdl.get("session").toString();
+                    
+                    if(id.equals(siidList.get(i))){
+                         day = schdl.get("day").toString();
+                        String stime = schdl.get("startTime").toString();
+                        String eTime = schdl.get("endTime").toString();
+                         room = schdl.get("room").toString();
+                        
+                        int stimeInt = stringTimeToInt(stime);
+                        int etimeInt = stringTimeToInt(eTime);
+                        if(stimeInt<min){
+                            startTime = stime;
+                            min = stimeInt;
+                        }
+                        if(etimeInt>max){
+                            endTime = eTime;
+                            max = stimeInt;
+                        }
+                    }
+                }
+                System.out.println("****************");
+                System.out.println("session: "+session);
+                System.out.println("day: "+day);
+                System.out.println("stime: "+startTime);
+                System.out.println("etime: "+endTime);
+                System.out.println("room: "+room);
+                System.out.println("****************");
+            }
+        
+        }
+        
+    }
+    
+    public int stringTimeToInt(String t){
+        int hrs = Integer.parseInt(t.substring(0,2));
+        int min = Integer.parseInt(t.substring(3,5));
+        return hrs*60+min;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -674,10 +816,12 @@ public class GenerateTT extends javax.swing.JPanel {
             getParallelSessions();
             getConsecutiveSession();
             getSession();
+            saveToSchedulesTable();
+            rearrangeSchedules();
             
-            timeslot.forEach((k, v) -> {
-                System.out.println(k+"-"+v);
-            });
+//            timeslot.forEach((k, v) -> {
+//                System.out.println(k+"-"+v);
+//            });
             
             JOptionPane.showMessageDialog(null, "Successfully generated!");
         } catch (Exception e) {
