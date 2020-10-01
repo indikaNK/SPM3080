@@ -10,7 +10,6 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sun.org.apache.bcel.internal.generic.ATHROW;
 import static java.lang.Integer.max;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
@@ -30,7 +29,7 @@ public class GenerateTT extends javax.swing.JPanel {
 
     
     HashMap<String, ArrayList<String>> timeslot = new HashMap<String, ArrayList<String>>();
-    String starttime,noOfWorkingHrs, slot_time = "";
+    String starttime,noOfWorkingHrs, slot_time,dayendtime = "";
     ArrayList<String> sessions =new ArrayList<String>();
     ArrayList<String> keyList =new ArrayList<String>();
     DB db = null;
@@ -45,6 +44,8 @@ public class GenerateTT extends javax.swing.JPanel {
     
     }
     
+    
+    //get starting time, no of working hour & tyme slot type
     public void getSettingsPageDetails(){
         
         DB SettingDB = null;
@@ -72,7 +73,17 @@ public class GenerateTT extends javax.swing.JPanel {
        if(settingsObject != null){
             starttime = settingsObject.get("StartTime").toString();
             noOfWorkingHrs= settingsObject.get("WorkingTimePerDay").toString();
-            slot_time = settingsObject.get("TimeSlot").toString();  
+            slot_time = settingsObject.get("TimeSlot").toString();
+            
+            int startHrs = Integer.parseInt(starttime.substring(0,2));
+            String endMin = starttime.substring(3,5);
+            int workingHrs = Integer.parseInt(noOfWorkingHrs.substring(0,2));
+            int eetime = startHrs+workingHrs;
+            
+            DecimalFormat formatter = new DecimalFormat("00");
+            String hrsFormatted = formatter.format(eetime);
+            
+            dayendtime = hrsFormatted+":"+endMin;
        }
         
     }
@@ -160,21 +171,58 @@ public class GenerateTT extends javax.swing.JPanel {
                 int duration = Integer.parseInt(parSession.get("duration").toString());
                 
                 String start = stime;
-                
-                while(duration>=1){
+                if(slot_time.equals("30_MINUTES")){
+                    int due = duration*2;
+                    while(due>=1){
                     
-                    //generate end time
-                    int hrs = Integer.parseInt(start.substring(0, 2))+1;
-                    DecimalFormat formatter = new DecimalFormat("00");
-                    String hrsFormatted = formatter.format(hrs);  
+                        //generate end time
+//                        int hrs = Integer.parseInt(start.substring(0, 2))+1;
+//                        DecimalFormat formatter = new DecimalFormat("00");
+//                        String hrsFormatted = formatter.format(hrs);  
+//
+//                        String min = start.substring(3, 5);
+//                        String etime = hrsFormatted+":"+min;
+                        int hrs = Integer.parseInt(start.substring(0,2));
+                        int min = Integer.parseInt(start.substring(3,5));
+                        String etime="";
+                        if(min == 30){
+                            DecimalFormat formatter = new DecimalFormat("00");
+                            String hrsFormatted = formatter.format(hrs+1);
+                            
+                            min = 0;
+                            String minFormatted = formatter.format(min);
+                            
+                            etime = hrsFormatted+":"+minFormatted;
+                        }else{
+                            min = min+30;
+                            DecimalFormat formatter = new DecimalFormat("00");
+                            String minFormatted = formatter.format(min);
+                            String hrsFormatted = formatter.format(hrs);
+                            
+                            etime = hrsFormatted+":"+minFormatted;
+                        }
+                        
+                        nextHourTimeSLot(day, start, etime, pid);
+                        due--;
+                        start = etime;
+                    }
+                }else{
+                    int due = duration;
+                    while(due>=1){
+                    
+                        //generate end time
+                        int hrs = Integer.parseInt(start.substring(0, 2))+1;
+                        DecimalFormat formatter = new DecimalFormat("00");
+                        String hrsFormatted = formatter.format(hrs);  
 
-                    String min = start.substring(3, 5);
-                    String etime = hrsFormatted+":"+min;
-                    
-                    nextHourTimeSLot(day, start, etime, pid);
-                    
-                    duration--;
-                    start = etime;
+                        String min = start.substring(3, 5);
+                        String etime = hrsFormatted+":"+min;
+
+                        nextHourTimeSLot(day, start, etime, pid);
+
+                        due--;
+                        start = etime;
+                    }
                 }
                 
             }
@@ -199,7 +247,6 @@ public class GenerateTT extends javax.swing.JPanel {
     }
     
     public void getConsecutiveSession(){
-        
         DBCollection col=null;
         
         DBCursor conSessionObject=null;
@@ -210,7 +257,6 @@ public class GenerateTT extends javax.swing.JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error When getting data from collection");
         }
-        
         if(conSessionObject != null){
             while(conSessionObject.hasNext()){
                 DBObject conSession = conSessionObject.next();
@@ -218,29 +264,12 @@ public class GenerateTT extends javax.swing.JPanel {
                 int duration = Integer.parseInt(conSession.get("duration").toString());
                 
                 List<Document> lecList =(List<Document>) conSession.get("lecturer");
-            
-                
-                //********************************
-//                ArrayList<String> list1=new ArrayList<String>();
-//                ArrayList<String> list = timeslot.get("MONDAY-10:30-11:30");
-//                int i=0;
-//                while(i<list.size()){
-//                    list1.add(list.get(i++));
-//                }
-//                list1.add("S0001");
-//                timeslot.put("MONDAY-10:30-11:30",list1);
-//                
-                //***************************************************
-                
                 setAtAvailableSlot(csId,lecList,conSession.get("groupId").toString(),"",duration);
-                
             }
         }
-        
     }
     
     public void getSession(){
-        
         DBCollection col=null;
         
         DBCursor sessionObject=null;
@@ -260,19 +289,6 @@ public class GenerateTT extends javax.swing.JPanel {
                 
                 List<Document> lecList =(List<Document>) ssession.get("Lecturers");
             
-                
-                //********************************
-//                ArrayList<String> list1=new ArrayList<String>();
-//                ArrayList<String> list = timeslot.get("MONDAY-10:30-11:30");
-//                int i=0;
-//                while(i<list.size()){
-//                    list1.add(list.get(i++));
-//                }
-//                list1.add("S0001");
-//                timeslot.put("MONDAY-10:30-11:30",list1);
-//                
-                //***************************************************
-                
                 setAtAvailableSlot(SId,lecList,ssession.get("Group_ID").toString(),"",duration);
                 
             }
@@ -284,20 +300,21 @@ public class GenerateTT extends javax.swing.JPanel {
         String lecturer="";
         boolean res = true;
         int dur = duration;
-        
+        if(slot_time.equals("30_MINUTES")){
+            dur = dur*2;
+        }
         int r = getRandomNumber();
-        
         int i = 0;
         while(i<lecList.size()){
-            
             Object lec = lecList.get(i);
             lecturer = lec.toString();
             
             //check lecturer in name or id
             try {
-                Integer.parseInt(lecturer);
+                int l =Integer.parseInt(lecturer);
                 lecturer = getLecturerNameFromEmployeeTable(lecturer);
             } catch (Exception e) {
+                System.out.println(e);
             }
             
             res = checkAvailability(keyList.get(r),lecturer,group,room);
@@ -307,12 +324,34 @@ public class GenerateTT extends javax.swing.JPanel {
             i++;
         }
         
-        if(res){
-            String key = keyList.get(r);
+        String key = keyList.get(r);
+        String[] strArr = key.split("-");
+        String keyT= strArr[1];
+        
+        int hrs = Integer.parseInt(dayendtime.substring(0,2));
+        int min = Integer.parseInt(dayendtime.substring(3,5));
+        int time = (hrs*60)+min;
+        
+        int keyHrs = Integer.parseInt(keyT.substring(0,2));
+        int keyMin = Integer.parseInt(keyT.substring(3,5));
+        int keyTime = (keyHrs*60)+keyMin;
+        
+        boolean isSuitable = true;
+        
+        if(duration==3 && keyTime>(time-180)){
+            isSuitable = false;
+        }else if(duration==2 && keyTime>(time-120)){
+            isSuitable = false;
+        }else if(duration==1 && keyTime>(time-60)){
+            isSuitable = false;
+        }
+        
+        if(res && isSuitable){
+            
             while(dur>0){
-                
                 ArrayList<String> list1=new ArrayList<String>();
                 ArrayList<String> list = timeslot.get(key);
+                
                 int j=0;
                 while(j<list.size()){
                     list1.add(list.get(j++));
@@ -335,12 +374,40 @@ public class GenerateTT extends javax.swing.JPanel {
         String[] str= key.split("-");
         String stime = str[2];
         String etime = str[2];
-        int hrs = Integer.parseInt(etime.substring(0,2))+1;
-        DecimalFormat formatter = new DecimalFormat("00");
-        String hrsFormatted = formatter.format(hrs);
-        String etimeMM = etime.substring(3,5);
+        if(slot_time.equals("30_MINUTES")){
+            
+            int hrs = Integer.parseInt(etime.substring(0,2));
+            int min = Integer.parseInt(etime.substring(3,5));
+            
+            if(min==30){
+                min = 0;
+                hrs++;
+                
+                DecimalFormat formatter = new DecimalFormat("00");
+                String hrsFormatted = formatter.format(hrs);
+                String minFormatted = formatter.format(min);
+                
+                etime = hrsFormatted+":"+minFormatted;
+                
+            }else{
+                min = 30;
+                
+                DecimalFormat formatter = new DecimalFormat("00");
+                String hrsFormatted = formatter.format(hrs);
+                String minFormatted = formatter.format(min);
+                
+                etime = hrsFormatted+":"+minFormatted;
+            }
+            
+        }else{
+            int hrs = Integer.parseInt(etime.substring(0,2))+1;
+            DecimalFormat formatter = new DecimalFormat("00");
+            String hrsFormatted = formatter.format(hrs);
+            String etimeMM = etime.substring(3,5);
+            etime = hrsFormatted+":"+etimeMM;
+        }
         
-        return str[0]+"-"+stime+"-"+hrsFormatted+":"+etimeMM;
+        return str[0]+"-"+stime+"-"+etime;
     }
     
     
@@ -353,6 +420,7 @@ public class GenerateTT extends javax.swing.JPanel {
     }
     
     public boolean checkAvailability(String key, String lecture, String group, String room){
+        
         boolean retValue = true;
         String lec = "";
         String grp = "";
@@ -375,7 +443,6 @@ public class GenerateTT extends javax.swing.JPanel {
             
             i++;
         }
-        
         
         return retValue;
     }
@@ -473,7 +540,8 @@ public class GenerateTT extends javax.swing.JPanel {
                 String lecc = lec.toString();
                 //check lecturer in name or id
                 try {
-                    Integer.parseInt(lecc);
+                    
+                    int l = Integer.parseInt(lecc);
                     lecc = getLecturerNameFromEmployeeTable(lecc);
                 } catch (Exception e) {
                 }
