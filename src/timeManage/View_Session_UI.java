@@ -18,6 +18,7 @@ import java.awt.Window;
 import java.beans.Statement;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -40,6 +41,9 @@ public class View_Session_UI extends javax.swing.JPanel {
     String subject = null;
     String scount = null;
     String duration = null;
+    HashMap<String, String> lectureList = null;
+    HashMap<String, String> subjectList = null;
+    HashMap<String, String> sessionList = null;
 
     DataRetrive dbUtils = new DataRetrive();
 
@@ -48,6 +52,29 @@ public class View_Session_UI extends javax.swing.JPanel {
      */
     public View_Session_UI() {
         initComponents();
+
+        //load lectures from db     
+        lectureList = getItemList("Employee ", "Employee ID", "Employee_Name");
+        lectureList.forEach((k, v) -> {
+            System.out.println("lec" + lectureList);
+
+            jComboBox2.addItem(v);
+        });
+        //load subjects from db
+        subjectList = getItemList("Subjects ", "Subject Code", "SubjectName");
+        subjectList.forEach((k, v) -> {
+            System.out.println("sub" + subjectList);
+
+            jComboBox3.addItem(k);
+        });
+
+        //load sessions from db
+        sessionList = getItemList("Sessions", "Session_ID", "Group_ID");
+        sessionList.forEach((k, v) -> {
+            System.out.println("session:" + sessionList);
+
+            jComboBox1.addItem(v);
+        });
 
         //populate data
         this.populate();
@@ -103,11 +130,11 @@ public class View_Session_UI extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Group-ID", "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Group-ID", " " }));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Lecturer", "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Lecturer", " " }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Subject", "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Subject", " " }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -161,21 +188,24 @@ public class View_Session_UI extends javax.swing.JPanel {
         scount = tblModel.getValueAt(jTable1.getSelectedRow(), 6).toString();
         duration = tblModel.getValueAt(jTable1.getSelectedRow(), 7).toString();
 
-//        System.out.println("code" + code);
-//          System.out.println("nLhrs"+nLhrs+"\nnThrs"+nThrs+"\n");
-//        jTextField3.setText(code);
-//        jTextField4.setText(name);
-//        jComboBox1.setSelectedItem(year);
-//        jComboBox2.setSelectedItem(semester);
-//        jSpinner1.setValue(Integer.parseInt(nLhrs));
-//        jSpinner2.setValue(Integer.parseInt(nThrs));
-//        jSpinner3.setValue(Integer.parseInt(nLabhrs));
-//        jSpinner4.setValue(Integer.parseInt(nEVhrs));
 
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+       //get inputs
+        lecturers = jComboBox2.getSelectedItem().toString();
+        subject_Code = jComboBox3.getSelectedItem().toString();
+        group_ID = jComboBox1.getSelectedItem().toString();
+        
+        System.out.println("\n L:"+lecturers+"\n SCode:"+subject_Code+"\n GID:"+group_ID);
+        
+        //search session table
+        
+        
+       
+        
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
@@ -206,9 +236,9 @@ public class View_Session_UI extends javax.swing.JPanel {
         while (iterDoc.hasNext()) {
             DBObject obj = iterDoc.next();
             session_ID = (String) obj.get("Session_ID");
-            //String lecturers =  obj.get("Lecturers").toString();
-//            lecturers = lecturers.replaceAll("[^a-zA-Z0-9]", "");
-//            String[] lecs = lecturers.split(",");
+            String lecturers = obj.get("Lecturers").toString();
+            lecturers = lecturers.replaceAll("[^a-zA-Z0-9]", "");
+            String[] lecs = lecturers.split(",");
             tag = (String) obj.get("Tag");
             group_ID = (String) obj.get("Group_ID");
             subject_Code = obj.get("Subject_Code").toString();
@@ -216,23 +246,23 @@ public class View_Session_UI extends javax.swing.JPanel {
             scount = (String) obj.get("Student_Count").toString();
             duration = (String) obj.get("Duration").toString();
             int l = 0;
-           // while(l > lecturers.length()){
-                System.out.println(lecturers);
-                l++;
-                
-           // }
-            dtm.addRow(new String[]{session_ID, lecturers, tag, group_ID, subject_Code, subject, scount, duration});
+            // while(l > lecturers.length()){
+            System.out.println(lecturers);
+            l++;
+
+            // }
+            dtm.addRow(new String[]{session_ID, lecs[0].concat(tag), tag, group_ID, subject_Code, subject, scount, duration});
 //            System.out.println("code3" + code);
         }
         //load data to table (POPULATE DATA)
         jTable1.setModel(dtm);
 
-  }
+    }
 
     private DBObject createDBObject(Sessions session) {
         BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
         docBuilder.append("Session_ID", session.getSessionID());
-        //docBuilder.append("Lecturers", session.getLecturers());
+        docBuilder.append("Lecturers", session.getLecturers());
         docBuilder.append("Tag", session.getTags());
         docBuilder.append("Group_ID", session.getGroupID());
         docBuilder.append("Subject_Code", session.getSSubjectCode());
@@ -251,5 +281,29 @@ public class View_Session_UI extends javax.swing.JPanel {
 //        jSpinner2.setValue(0);
 //        jSpinner3.setValue(0);
 //        jSpinner4.setValue(0);
+    }
+
+    public HashMap<String, String> getItemList(String table_name, String id_col, String name_col) {
+
+        DB database = null;
+        HashMap<String, String> data = new HashMap<String, String>();
+
+        try {
+            database = DBManager.getDatabase();
+        } catch (UnknownHostException ex) {
+            JOptionPane.showMessageDialog(null, "Error When Connecting to DB");
+        }
+
+        //get sessions table data
+        DBCollection coll = database.getCollection(table_name);
+        DBCursor objects = coll.find();
+
+        if (objects != null) {
+            while (objects.hasNext()) {
+                DBObject obj = objects.next();
+                data.put(obj.get(id_col).toString(), obj.get(name_col).toString());
+            }
+        }
+        return data;
     }
 }
