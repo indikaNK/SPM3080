@@ -704,13 +704,23 @@ public class GenerateTT extends javax.swing.JPanel {
                         }
                     }
                 }
-                System.out.println("****************");
-                System.out.println("session: "+session);
-                System.out.println("day: "+day);
-                System.out.println("stime: "+startTime);
-                System.out.println("etime: "+endTime);
-                System.out.println("room: "+room);
-                System.out.println("****************");
+//                System.out.println("****************");
+//                System.out.println("session: "+session);
+//                System.out.println("day: "+day);
+//                System.out.println("stime: "+startTime);
+//                System.out.println("etime: "+endTime);
+//                System.out.println("room: "+room);
+//                System.out.println("****************");
+                try {
+                    DBCollection col1 = db.getCollection("RE_Schedules");
+
+                    Schedules_t schedules = new Schedules_t(session, day, startTime, endTime, room);
+                        DBObject doc = createDBObject(schedules);
+                        WriteResult result = col1.insert(doc);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                
             }
         
         }

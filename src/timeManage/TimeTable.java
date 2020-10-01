@@ -345,7 +345,7 @@ public class TimeTable extends javax.swing.JPanel {
         }
         
         //get Schedule table data
-        col2 = ScheduleDB.getCollection("Schedules");
+        col2 = ScheduleDB.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
         
         
@@ -441,7 +441,7 @@ public class TimeTable extends javax.swing.JPanel {
         }
         
         //get Schedule table data
-        col2 = ScheduleDB.getCollection("Schedules");
+        col2 = ScheduleDB.getCollection("RE_Schedules");
         DBCursor scheduleObjects1 =col2.find();
         
         
@@ -573,7 +573,7 @@ public class TimeTable extends javax.swing.JPanel {
         }
         
         //get Schedule table data
-        col2 = ScheduleDB.getCollection("Schedules");
+        col2 = ScheduleDB.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
         
         
