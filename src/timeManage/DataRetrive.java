@@ -1,5 +1,6 @@
 package timeManage;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -8,6 +9,8 @@ import com.mongodb.DBObject;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import javax.management.Query;
 
 public class DataRetrive {
 
@@ -107,7 +110,45 @@ public class DataRetrive {
         return col1.find();
     }
     
-    
+    public ArrayList<Sessions> testSearch() {
+        DB edb = null;
+        DBCollection col1;
+        
+        //dummy values
+        String subject = "SE3050";
+        String groupId = "Y1.S1.IT.01";
+        
+        ArrayList<Sessions> sessions = new ArrayList<>();
+        
+        try {
+            edb = DBManager.getDatabase();
+        } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(null, "Error Connecting To DB");
+        }
+        col1 = edb.getCollection("Sessions");
+        
+        DBObject query = new BasicDBObject("Group_ID", groupId).append("Subject_Code", subject);
+        
+        //{{"Subject_Code": subject}, {"Group_ID": groupId}}
+        DBCursor resultdb = col1.find(query);
+        if (resultdb.hasNext()) {
+
+            DBObject obj = resultdb.next();
+            Sessions s = new Sessions();
+            s.setDuration(obj.get("Duration").toString());
+            s.setGroupID(obj.get("Group_ID").toString());
+            s.setLecturers((ArrayList<String>)obj.get("Lecturers"));
+            s.setSSubject(obj.get("Subject").toString());
+            s.setSessionID(obj.get("Session_ID").toString());
+            s.setSSubjectCode(obj.get("Subject_Code").toString());
+            s.setStudentCount(obj.get("Student_Count").toString());
+            s.setTags(obj.get("Tag").toString());
+            
+            sessions.add(s);
+        }
+        
+        return sessions;
+    }
     
     
 

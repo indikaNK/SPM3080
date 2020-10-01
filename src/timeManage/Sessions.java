@@ -17,6 +17,10 @@ public class Sessions {
     String studentCount,duration;
     ArrayList<String> lecturers = new ArrayList<String>();
 
+    public Sessions(){
+        
+    }
+    
     public ArrayList<String> getLecturers() {
         return lecturers;
     }

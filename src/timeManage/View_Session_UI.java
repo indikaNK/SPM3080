@@ -18,6 +18,7 @@ import java.awt.Window;
 import java.beans.Statement;
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -123,6 +124,9 @@ public class View_Session_UI extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
+        jButton3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(90, 173, 173));
         jButton3.setText("SEARCH");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,10 +134,13 @@ public class View_Session_UI extends javax.swing.JPanel {
             }
         });
 
+        jComboBox1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Group-ID", " " }));
 
+        jComboBox2.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Lecturer", " " }));
 
+        jComboBox3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select By Subject", " " }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -201,9 +208,25 @@ public class View_Session_UI extends javax.swing.JPanel {
         System.out.println("\n L:"+lecturers+"\n SCode:"+subject_Code+"\n GID:"+group_ID);
         
         //search session table
+        ArrayList<Sessions> sessions = dbUtils.testSearch();
+        this.populateSearchedData(sessions);
         
-        
-       
+          //Get sessions which matches the student group
+//        if(cursor != null){
+//            while(cursor.hasNext()){
+//                DBObject sessionObj = cursor.next();
+//                if(sessionObj.get("Group_ID").equals(group_ID)){
+//                        
+//                    
+//                    
+//
+////                    if(sessionObj.get("Session_ID") != null){
+////                        sessionIdArray.add(sessionObj.get("Session_ID").toString());
+////                    }
+//                    
+//                }
+//            }
+//        }
         
         
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -259,6 +282,40 @@ public class View_Session_UI extends javax.swing.JPanel {
 
     }
 
+    private void populateSearchedData(ArrayList<Sessions> sessions) {
+
+        String[] columNames = {"SID", "Lecturer(s)", "Tag", "Group-ID", "Subject-code", "Subject", "student-count", "Duration"};
+
+        DefaultTableModel dtm = new DefaultTableModel(columNames, 0);
+
+        for(Sessions s : sessions) {
+            
+            session_ID = s.getSessionID();
+            
+            String lecturers = s.getLecturers().toString(); //yeah ela for now mehema tyamu ok test it
+            lecturers = lecturers.replaceAll("[^a-zA-Z0-9]", "");
+            String[] lecs = lecturers.split(",");
+            
+            tag = s.getTags();
+            group_ID = s.getGroupID();
+            subject_Code = s.getSSubjectCode();
+            subject = s.getSSubject();
+            scount = s.getStudentCount();
+            duration = s.getDuration();
+            int l = 0;
+            // while(l > lecturers.length()){
+            System.out.println(lecturers);
+            l++;
+
+            // }
+            dtm.addRow(new String[]{session_ID, lecs[0].concat(tag), tag, group_ID, subject_Code, subject, scount, duration});
+//            System.out.println("code3" + code);
+        }
+        //load data to table (POPULATE DATA)
+        jTable1.setModel(dtm);
+
+    }
+    
     private DBObject createDBObject(Sessions session) {
         BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
         docBuilder.append("Session_ID", session.getSessionID());
@@ -306,4 +363,5 @@ public class View_Session_UI extends javax.swing.JPanel {
         }
         return data;
     }
+    
 }
