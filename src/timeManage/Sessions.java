@@ -5,35 +5,53 @@
  */
 package timeManage;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author NK
  */
 public class Sessions {
     
-    String sessionID,lecturer,tags,groupID,subjectCode,subject;
-    int studentCount,duration;
+    String sessionID,tags,groupID,subjectCode,subject;
+    String studentCount,duration;
+    ArrayList<String> lecturers = new ArrayList<String>();
 
-    public int getDuration() {
-        return duration;
+    public Sessions(){
+        
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-    String [] lecturers;
-
-    Sessions(String session_ID, String lecturers, String tag, String group_ID, String subject_Code, String subject, int student_coun,int duration) {
+    Sessions(String session_ID, String lecturers, String tag, String group_ID, String subject_Code, String subject, String scount, String duration) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    public String[] getLecturers() {
+    
+    public ArrayList<String> getLecturers() {
         return lecturers;
     }
 
-    public void setLecturers(String[] lecturers) {
+    public void setLecturers(ArrayList<String> lecturers) {
         this.lecturers = lecturers;
     }
+
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+    //String [] lecturers;
+
+
+
+//    public String[] getLecturers() {
+//        return lecturers;
+//    }
+//
+//    public void setLecturers(String[] lecturers) {
+//        this.lecturers = lecturers;
+//    }
 
     public String getSessionID() {
         return sessionID;
@@ -44,13 +62,13 @@ public class Sessions {
     }
 
 
-    public String getSLecturer() {
-        return lecturer;
-    }
-
-    public void setSLecturer(String lecturer) {
-        this.lecturer = lecturer;
-    }
+//    public String getSLecturer() {
+//        return lecturer;
+//    }
+//
+//    public void setSLecturer(String lecturer) {
+//        this.lecturer = lecturer;
+//    }
 
     public String getTags() {
         return tags;
@@ -84,17 +102,17 @@ public class Sessions {
         this.subject = subject;
     }
 
-    public int getStudentCount() {
+    public String getStudentCount() {
         return studentCount;
     }
 
-    public void setStudentCount(int studentCount) {
+    public void setStudentCount(String studentCount) {
         this.studentCount = studentCount;
     }
 
-    public Sessions(String sessionID, String sessionName, String lecturer, String tags, String groupID, String subjectCode, String subject, int studentCount,int duration) {
+    public Sessions(String sessionID, ArrayList<String> lecturer, String tags, String groupID, String subjectCode, String subject, String studentCount,String duration) {
         this.sessionID = sessionID;
-        this.lecturer = lecturer;
+        this.lecturers = lecturer;
         this.tags = tags;
         this.groupID = groupID;
         this.subjectCode = subjectCode;
