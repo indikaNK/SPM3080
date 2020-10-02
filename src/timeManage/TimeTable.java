@@ -13,7 +13,14 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.net.UnknownHostException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +55,9 @@ public class TimeTable extends javax.swing.JPanel {
         HashMap<String, String> lectureList = null;
         HashMap<String, String> stdGroupList = null;
         HashMap<String, String> roomList = null;
+        CustomTableModel tt_lec = new CustomTableModel();
+        CustomTableModel tt_grp = new CustomTableModel();
+        CustomTableModel tt_rm = new CustomTableModel();
     /**
      * Creates new form TimeTable
      */
@@ -116,16 +126,19 @@ public class TimeTable extends javax.swing.JPanel {
         jComboBox3 = new javax.swing.JComboBox();
         jButton4 = new javax.swing.JButton();
         jDesktopPane3 = new javax.swing.JDesktopPane();
+        jButton6 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox();
+        jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
         jButton3 = new javax.swing.JButton();
         jDesktopPane2 = new javax.swing.JDesktopPane();
+        jButton1 = new javax.swing.JButton();
 
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
@@ -149,19 +162,28 @@ public class TimeTable extends javax.swing.JPanel {
             .addGap(0, 495, Short.MAX_VALUE)
         );
 
+        jButton6.setText("Print");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
-                        .addComponent(jButton4))
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addComponent(jDesktopPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -174,7 +196,8 @@ public class TimeTable extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jButton4)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6))
                 .addGap(18, 18, 18)
                 .addComponent(jDesktopPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(52, Short.MAX_VALUE))
@@ -204,19 +227,28 @@ public class TimeTable extends javax.swing.JPanel {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Y1.S1.IT.01", "Y3.S1.SE.01" }));
 
+        jButton5.setText("Print");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
-                        .addComponent(jButton2))
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -229,7 +261,8 @@ public class TimeTable extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5))
                 .addGap(18, 18, 18)
                 .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(52, Short.MAX_VALUE))
@@ -257,19 +290,28 @@ public class TimeTable extends javax.swing.JPanel {
             .addGap(0, 495, Short.MAX_VALUE)
         );
 
+        jButton1.setText("Print");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
-                        .addComponent(jButton3))
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addComponent(jDesktopPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -282,7 +324,8 @@ public class TimeTable extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jButton3)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jDesktopPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(52, Short.MAX_VALUE))
@@ -532,26 +575,6 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }
                         
-//                        sessionObjects =col.find();
-//                        if(sessionObjects != null){
-//                            while(sessionObjects.hasNext()){
-//                                DBObject sessionObj = sessionObjects.next();
-//                                
-//                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
-//                                    
-//                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-//                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
-//                                    int j=0;
-//                                    while(j<duration){
-//                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
-//                                            +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+scheduleObj.get("room");
-//                                        j++;
-//                                    }
-//                                    
-//                                }
-//                            }
-//                        }
-                        
                     }
                     i++;
                 }
@@ -570,9 +593,9 @@ public class TimeTable extends javax.swing.JPanel {
         
         jDesktopPane1.removeAll();
         try {
-           CustomTableModel tt = new CustomTableModel(ttable,titles);           
-            jDesktopPane1.add(tt).setVisible(true);
-            tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+           tt_grp = new CustomTableModel(ttable,titles);           
+            jDesktopPane1.add(tt_grp).setVisible(true);
+            tt_grp.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
 
         } catch (Exception e) {
         }
@@ -760,23 +783,7 @@ public class TimeTable extends javax.swing.JPanel {
                                 }
                             }
                         }
-//                        sessionObjects =col.find();
-//                        if(sessionObjects != null){
-//                            while(sessionObjects.hasNext()){
-//                                DBObject sessionObj = sessionObjects.next();
-//                                if(sessionObj.get("Session_ID").equals(scheduleObj.get("session"))){
-//                                    int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-//                                    int duration = Integer.parseInt(sessionObj.get("Duration").toString());
-//                                    int j=0;
-//                                    while(j<duration){
-//                                        ttable[(x[0]+j)][x[1]] = sessionObj.get("Subject_Code")+"-"+sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+sessionObj.get("Group_ID");
-//                                        j++;
-//                                    }
-//                                    
-//                                }
-//                            }
-//                        }
-                        
+                       
                     }
                     i++;
                 }
@@ -795,9 +802,9 @@ public class TimeTable extends javax.swing.JPanel {
         
         jDesktopPane2.removeAll();
         try {
-           CustomTableModel tt = new CustomTableModel(ttable,titles);           
-            jDesktopPane2.add(tt).setVisible(true);
-            tt.setSize(jDesktopPane2.getWidth(), jDesktopPane2.getHeight());
+           tt_rm = new CustomTableModel(ttable,titles);           
+            jDesktopPane2.add(tt_rm).setVisible(true);
+            tt_rm.setSize(jDesktopPane2.getWidth(), jDesktopPane2.getHeight());
 
         } catch (Exception e) {
         }
@@ -1088,14 +1095,62 @@ public class TimeTable extends javax.swing.JPanel {
         
         jDesktopPane3.removeAll();
         try {
-           CustomTableModel tt = new CustomTableModel(ttable,titles);           
-            jDesktopPane3.add(tt).setVisible(true);
-            tt.setSize(jDesktopPane3.getWidth(), jDesktopPane3.getHeight());
+           tt_lec = new CustomTableModel(ttable,titles);           
+            jDesktopPane3.add(tt_lec).setVisible(true);
+            tt_lec.setSize(jDesktopPane3.getWidth(), jDesktopPane3.getHeight());
 
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        printRecord(jDesktopPane1);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        printRecord(jDesktopPane3);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        printRecord(jDesktopPane2);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void printRecord(JDesktopPane pane){
+        
+        PrinterJob printerJob = PrinterJob.getPrinterJob();
+        
+        printerJob.setJobName("Print Lecturer Time Table");
+        
+        printerJob.setPrintable(new Printable() {
+
+            @Override
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                if(pageIndex>0){
+                    return Printable.NO_SUCH_PAGE;
+                }
+                
+                Graphics2D graphics2D = (Graphics2D)graphics;
+                
+                graphics2D.translate(pageFormat.getImageableX()*2, pageFormat.getImageableY()*2);
+                
+                graphics2D.scale(0.5,0.5);
+                
+                pane.paint(graphics2D);
+                
+                return Printable.PAGE_EXISTS;
+            }
+        });
+        
+        boolean returningResult = printerJob.printDialog();
+        
+        if(returningResult){
+            try {
+                printerJob.print();
+            } catch (PrinterException printerException) {
+                JOptionPane.showMessageDialog(this, "print Error: "+printerException.getMessage());
+            }
+        }
+    }
     ////search time slot
     public int[] searchTimeSlot(String day, String starttime){
         int[] loc = new int[2];
@@ -1228,9 +1283,12 @@ public class TimeTable extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
