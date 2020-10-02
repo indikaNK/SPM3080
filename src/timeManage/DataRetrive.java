@@ -115,11 +115,12 @@ public class DataRetrive {
         DB edb = null;
         DBCollection col1;
 
+        
 
 //        dummy values
 //        String subject = "SE3050";
 //        String groupId = "Y1.S1.IT.01";
-//          String lecturers = "000150";  
+          
         ArrayList<Sessions> sessions = new ArrayList<>();
 
         try {

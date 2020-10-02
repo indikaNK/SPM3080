@@ -206,10 +206,15 @@ public class View_Session_UI extends javax.swing.JPanel {
         lecturers = jComboBox2.getSelectedItem().toString();
         subject_Code = jComboBox3.getSelectedItem().toString();
         group_ID = jComboBox1.getSelectedItem().toString();
+        
+        //get lec ID
+        String lecID = dbUtils.getLecID(lecturers);
+
+        
 
         //System.out.println("\n L:"+lecturers+"\n SCode:"+subject_Code+"\n GID:"+group_ID);
         //search session table
-        ArrayList<Sessions> sessions = dbUtils.testSearch(subject_Code, group_ID, lecturers);
+        ArrayList<Sessions> sessions = dbUtils.testSearch(subject_Code, group_ID, lecID);
         this.populateSearchedData(sessions);
         sessions.clear();
 
