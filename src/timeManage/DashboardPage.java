@@ -5,6 +5,9 @@
  */
 package timeManage;
 
+import javax.swing.JDesktopPane;
+import javax.swing.JTextPane;
+
 /**
  *
  * @author Thisura
@@ -14,12 +17,20 @@ public class DashboardPage extends javax.swing.JPanel {
     /**
      * Creates new form DashboardPage
      */
+//    JTextPane text ;
+    JDesktopPane jp ;
     public DashboardPage() {
         super();
         initComponents();
         
     }
 
+    public DashboardPage(JDesktopPane jp){
+        super();
+        initComponents();
+        this.jp = jp;
+//        System.out.println(jp.getText());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,9 +123,16 @@ public class DashboardPage extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        this.removeAll();
-        Dashboard db = new Dashboard();
-        db.showSettingsPage();
+        jp.removeAll();
+        try {
+           Settings settings = new Settings();           
+            jp.add(settings).setVisible(true);
+            settings.setSize(jp.getWidth(), jp.getHeight());
+
+        } catch (Exception e) {
+        }
+//        text.setText("hiiii");
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
 
