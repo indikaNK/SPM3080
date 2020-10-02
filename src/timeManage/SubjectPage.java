@@ -46,7 +46,7 @@ public class SubjectPage extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setBackground(new java.awt.Color(102, 102, 247));
+        jButton1.setBackground(new java.awt.Color(178, 107, 200));
         jButton1.setFont(new java.awt.Font("Adobe Gothic Std B", 1, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("VIEW SUBJECTS");
