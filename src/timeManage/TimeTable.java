@@ -487,6 +487,11 @@ public class TimeTable extends javax.swing.JPanel {
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
                                         System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
                                             System.out.println("j:"+j);
@@ -543,6 +548,10 @@ public class TimeTable extends javax.swing.JPanel {
                                             q++;
                                         }
                                         
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         for(int j=0;j<duration;j++){
                                             System.out.println("j:"+j);
                                             String cell = "";
@@ -597,6 +606,11 @@ public class TimeTable extends javax.swing.JPanel {
                                             }
                                         }
                                         System.out.println("tags-"+tags);
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
                                             System.out.println("j:"+j);
@@ -733,6 +747,11 @@ public class TimeTable extends javax.swing.JPanel {
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
                                         System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
                                             System.out.println("j:"+j);
@@ -787,6 +806,10 @@ public class TimeTable extends javax.swing.JPanel {
                                             tag[q] = ses.get("tag");
                                             
                                             q++;
+                                        }
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
                                         }
                                         
                                         for(int j=0;j<duration;j++){
@@ -844,6 +867,11 @@ public class TimeTable extends javax.swing.JPanel {
                                             }
                                         }
                                         System.out.println("tags-"+tags);
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
                                             System.out.println("j:"+j);
@@ -1063,6 +1091,10 @@ public class TimeTable extends javax.swing.JPanel {
                                         System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
                                         
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
                                             System.out.println("j:"+j);
@@ -1139,6 +1171,10 @@ public class TimeTable extends javax.swing.JPanel {
                                             q++;
                                         }
                                         
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         for(int j=0;j<duration;j++){
                                             System.out.println("j:"+j);
                                             String cell = "";
@@ -1194,6 +1230,11 @@ public class TimeTable extends javax.swing.JPanel {
                                             }
                                         }
                                         System.out.println("tags-"+tags);
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
                                             System.out.println("j:"+j);
