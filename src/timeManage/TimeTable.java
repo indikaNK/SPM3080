@@ -545,12 +545,15 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         for(int j=0;j<duration;j++){
                                             System.out.println("j:"+j);
-                                            
+                                            String cell = "";
                                             for(int k=0;k<sesList.size();k++){
-                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
-                                                +subject[k]+" ("+tag[k]+")\n"+room;
+                                               cell = cell+group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+lecturer[k]+")\n"+room;
+                                               if(k+1<sesList.size()){
+                                                   cell = cell+"\n---------------\n";
+                                               }
                                             }
-                                            
+                                            ttable[(x[0]+j)][x[1]] = cell;
                                         }
 
                                     }
@@ -788,12 +791,15 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         for(int j=0;j<duration;j++){
                                             System.out.println("j:"+j);
-                                            
+                                            String cell = "";
                                             for(int k=0;k<sesList.size();k++){
-                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
-                                                +subject[k]+" ("+tag[k]+")\n"+room1;
+                                               cell = cell+group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+lecturer[k]+")\n"+room;
+                                               if(k+1<sesList.size()){
+                                                   cell = cell+"\n---------------\n";
+                                               }
                                             }
-                                            
+                                            ttable[(x[0]+j)][x[1]] = cell;
                                         }
 
                                     }
@@ -1056,6 +1062,7 @@ public class TimeTable extends javax.swing.JPanel {
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
                                         System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        
                                         int j=0;
                                         while(j<duration){
                                             System.out.println("j:"+j);
@@ -1079,6 +1086,26 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+prlsessionObj.get("duration").toString());
+                                        
+//                                        String lecturerStr = "";
+//                                        List<Document> lecList =(List<Document>) sessionObj.get("Lecturers");
+//                                        
+//                                        for(int n=0;n<lecList.size();n++){
+//                                            
+//                                            for (Map.Entry ele : lectureList.entrySet()) {
+//                                                
+//                                                String key = (String)ele.getKey();
+//                                                
+//                                                if(ele.getKey().toString().equals(lecList.get(n))){
+//                                                    
+//                                                    lecturerStr = lecturerStr+ele.getValue().toString();
+//                                                    
+//                                                    if(n+1<lecList.size()){
+//                                                        lecturerStr = lecturerStr+",";
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
                                         String dur = prlsessionObj.get("duration").toString();
@@ -1114,12 +1141,15 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         for(int j=0;j<duration;j++){
                                             System.out.println("j:"+j);
-                                            
+                                            String cell = "";
                                             for(int k=0;k<sesList.size();k++){
-                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
-                                                +subject[k]+" ("+tag[k]+")\n"+room;
+                                               cell = cell+group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+lecturer[k]+")\n"+room;
+                                               if(k+1<sesList.size()){
+                                                   cell = cell+"\n---------------\n";
+                                               }
                                             }
-                                            
+                                            ttable[(x[0]+j)][x[1]] = cell;
                                         }
 
                                     }
