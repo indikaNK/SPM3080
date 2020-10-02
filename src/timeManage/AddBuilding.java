@@ -70,6 +70,8 @@ public class AddBuilding extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         addBuilding = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
         tfCenter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Malabe", "Metro", "Matara", "Kandy", "Jaffna" }));
         tfCenter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -12,8 +12,17 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import java.net.UnknownHostException;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -36,6 +45,8 @@ public class AddRoom extends javax.swing.JPanel {
         DBIntialization();
         initComponents();
         displayTable();
+        displayConsecutiveSessionsTable();
+        displayParallelSessionsTable();
     }
     
     public AddRoom(String buildingId){
@@ -43,6 +54,8 @@ public class AddRoom extends javax.swing.JPanel {
         DBIntialization();
         initComponents();
         displayTable();
+        displayConsecutiveSessionsTable();
+        displayParallelSessionsTable();
     }
     
     public AddRoom(String buildingId, JDesktopPane jp){
@@ -50,6 +63,8 @@ public class AddRoom extends javax.swing.JPanel {
         DBIntialization();
         initComponents();
         displayTable();
+        displayConsecutiveSessionsTable();
+        displayParallelSessionsTable();
         this.jp = jp;
     }
 
@@ -63,17 +78,26 @@ public class AddRoom extends javax.swing.JPanel {
     private void initComponents() {
 
         options = new javax.swing.JDialog();
-        rNote = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         reserve = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        rType = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        rDateTime = new com.github.lgooddatepicker.components.DateTimePicker();
-        rEndTime = new com.github.lgooddatepicker.components.TimePicker();
+        jTabbedPane9 = new javax.swing.JTabbedPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        consecutiveSessionList = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        parallelSessionList = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable5 = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable6 = new javax.swing.JTable();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable7 = new javax.swing.JTable();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTable8 = new javax.swing.JTable();
         tfLocation = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         tfSection = new javax.swing.JTextField();
@@ -94,23 +118,16 @@ public class AddRoom extends javax.swing.JPanel {
         tfRoomNumber = new javax.swing.JTextField();
         viewReservations = new javax.swing.JButton();
 
+        options.setBackground(new java.awt.Color(255, 255, 255));
         options.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentHidden(java.awt.event.ComponentEvent evt) {
                 optionsComponentHidden(evt);
             }
         });
 
-        rNote.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rNoteActionPerformed(evt);
-            }
-        });
-
         jLabel14.setText(this.buildingName);
 
         jLabel15.setText(this.selectedRoomNumbers.toString());
-
-        jLabel8.setText("Type");
 
         reserve.setText("Reserve");
         reserve.addActionListener(new java.awt.event.ActionListener() {
@@ -119,75 +136,155 @@ public class AddRoom extends javax.swing.JPanel {
             }
         });
 
-        jLabel10.setText("End Time");
+        jTabbedPane9.setBackground(new java.awt.Color(255, 255, 255));
 
-        rType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tag", "Lecturer", "Group", "Session", "Reservation" }));
-        rType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rTypeActionPerformed(evt);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        });
+        ));
+        jScrollPane2.setViewportView(jTable1);
 
-        jLabel11.setText("Date");
+        jTabbedPane9.addTab("tab1", jScrollPane2);
 
-        jLabel12.setText("Additional Info");
+        consecutiveSessionList.setModel(consecutiveSessionList.getModel());
+        jScrollPane3.setViewportView(consecutiveSessionList);
+        if (consecutiveSessionList.getColumnModel().getColumnCount() > 0) {
+            consecutiveSessionList.getColumnModel().getColumn(0).setHeaderValue("Title 1");
+            consecutiveSessionList.getColumnModel().getColumn(1).setHeaderValue("Title 2");
+            consecutiveSessionList.getColumnModel().getColumn(2).setHeaderValue("Title 3");
+            consecutiveSessionList.getColumnModel().getColumn(3).setHeaderValue("Title 4");
+        }
+
+        jTabbedPane9.addTab("Consecutive Sessions", jScrollPane3);
+
+        parallelSessionList.setModel(parallelSessionList.getModel());
+        jScrollPane4.setViewportView(parallelSessionList);
+        if (parallelSessionList.getColumnModel().getColumnCount() > 0) {
+            parallelSessionList.getColumnModel().getColumn(0).setHeaderValue("Title 1");
+            parallelSessionList.getColumnModel().getColumn(1).setHeaderValue("Title 2");
+            parallelSessionList.getColumnModel().getColumn(2).setHeaderValue("Title 3");
+            parallelSessionList.getColumnModel().getColumn(3).setHeaderValue("Title 4");
+        }
+
+        jTabbedPane9.addTab("Parallel Sessions", jScrollPane4);
+
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(jTable4);
+
+        jTabbedPane9.addTab("tab1", jScrollPane5);
+
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(jTable5);
+
+        jTabbedPane9.addTab("tab1", jScrollPane6);
+
+        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane7.setViewportView(jTable6);
+
+        jTabbedPane9.addTab("tab1", jScrollPane7);
+
+        jTable7.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(jTable7);
+
+        jTabbedPane9.addTab("tab1", jScrollPane8);
+
+        jTable8.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane9.setViewportView(jTable8);
+
+        jTabbedPane9.addTab("tab1", jScrollPane9);
 
         javax.swing.GroupLayout optionsLayout = new javax.swing.GroupLayout(options.getContentPane());
         options.getContentPane().setLayout(optionsLayout);
         optionsLayout.setHorizontalGroup(
             optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsLayout.createSequentialGroup()
+                .addContainerGap(351, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel15)
+                .addGap(397, 397, 397))
             .addGroup(optionsLayout.createSequentialGroup()
-                .addGap(56, 56, 56)
                 .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(optionsLayout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel14)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel15))
+                        .addGap(404, 404, 404)
+                        .addComponent(reserve))
                     .addGroup(optionsLayout.createSequentialGroup()
-                        .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel10))
-                        .addGap(18, 18, 18)
-                        .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(optionsLayout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(reserve))
-                            .addComponent(rDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rNote, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(54, Short.MAX_VALUE))
+                        .addGap(104, 104, 104)
+                        .addComponent(jTabbedPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         optionsLayout.setVerticalGroup(
             optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(optionsLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
                 .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jLabel15))
-                .addGap(35, 35, 35)
-                .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(rType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(rDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(rEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(optionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
-                    .addComponent(rNote, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                .addGap(51, 51, 51)
+                .addComponent(jTabbedPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(reserve)
-                .addGap(69, 69, 69))
+                .addGap(32, 32, 32))
         );
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setText(buildingName);
 
@@ -492,71 +589,6 @@ public class AddRoom extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfRoomNumberActionPerformed
 
-    private void rNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rNoteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rNoteActionPerformed
-
-    private void reserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserveActionPerformed
-        // TODO add your handling code here:
-        String type = (String)rType.getSelectedItem();
-        String date = rDateTime.getDatePicker().toString();
-        String startTime = rDateTime.getTimePicker().toString();
-        String endTime = (String)rEndTime.getTime().toString();
-        String note = rNote.getText();
-
-        String collectionName = "ddd";
-
-        switch(type){
-            case "Tag" :
-            collectionName = "Tags";
-            break;
-
-            case "Lecturer" :
-            collectionName = "Lecturers";
-            break;
-
-            case "Group" :
-            collectionName = "Groups";
-            break;
-
-            case "Session" :
-            collectionName = "Sessions";
-            break;
-
-            case "Reservation" :
-            collectionName = "Reservations";
-            break;
-
-            default : JOptionPane.showMessageDialog(null, "Error in switchcase");
-        }
-
-        ArrayList<String> reservationIds = new ArrayList<String>();
-        for(int i=0; i<selectedRoomNumbers.size(); i++ ){
-
-            JOptionPane.showMessageDialog(null, type+" === "+date+" === "+startTime+" === "+endTime+" === "+note+" === "+selectedRoomNumbers.get(i)+" === "+this.buildingCenter+" === "+this.buildingName+" === "+this.buildingDepartment+" === "+buildingLocation);
-            Reservation reservation = new Reservation(type, date, startTime, endTime, note, selectedRoomNumbers.get(i), this.buildingCenter, this.buildingName, this.buildingDepartment, buildingLocation);
-            DBObject doc = createDBObject(reservation);
-            DB MyDb = null;
-            try
-            {
-                MyDb = DBManager.getDatabase();
-            }
-            catch (UnknownHostException e)
-            {
-                JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
-            }
-            DBCollection col = MyDb.getCollection(collectionName);
-            WriteResult result = col.insert(doc);
-
-            reservationIds.add(doc.get("_id").toString());
-        }
-        JOptionPane.showMessageDialog(null, "Reservation Successful!\nYour reservation ID(s):\n "+reservationIds);
-    }//GEN-LAST:event_reserveActionPerformed
-
-    private void rTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rTypeActionPerformed
-
     //regex to check if string is numeric ===============================
     private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
  
@@ -663,6 +695,81 @@ public class AddRoom extends javax.swing.JPanel {
         this.selectedRoomNumbers.clear();
     }//GEN-LAST:event_optionsComponentHidden
 
+    private void reserveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserveActionPerformed
+        // Get valuees from UI
+//        String type = (String)rType.getSelectedItem();
+//        String day = (String)rDay.getSelectedItem();
+//        String startTime = rStartTime.getTime().toString();
+//        String endTime = rEndTime.getTime().toString();
+//        String note = rNote.getText();
+//
+//        //create an array to store the times inbetween start time and end time
+//        ArrayList<String> unavailableTimes = new ArrayList<String>();
+//        //convert the start time and end time to numerics to calculate time inbetween in half an hour gaps
+//        LocalTime start = LocalTime.parse( startTime ) ;
+//        LocalTime end = LocalTime.parse( endTime ) ;
+//        //get the duration in half an hour gaps - run a for loop from start to end while adding 30
+//        while(!start.toString().equals(endTime)){
+//            unavailableTimes.add(start.toString());
+//            JOptionPane.showMessageDialog(null, start.toString());
+//            start = start.plusMinutes(30);
+//            if(start == end){
+//                break;
+//            }
+//        }
+//        //JOptionPane.showMessageDialog(null, unavailableTimes);
+//        String collectionName = "Sessions";
+//        //ArrayList<String> reservationIds = new ArrayList<String>();
+//        //for each room selected, add a reservation
+//        for(int i=0; i<selectedRoomNumbers.size(); i++ ){
+//            try {
+//                //check for unavailable times in reservations collection
+//                getUnAvailableTimes(selectedRoomNumbers.get(i), this.buildingName, day, unavailableTimes, buildingId);
+//            } catch (Exception ex) {
+//                options.setVisible(false);
+//                break;
+//            }
+//            //if code survives in getUnAvailableTimes() this will happen
+//            Reservation reservation = new Reservation(type, day, startTime, endTime, note, selectedRoomNumbers.get(i), this.buildingCenter, this.buildingName, this.buildingDepartment, buildingLocation, unavailableTimes, this.buildingId);
+//            DBObject doc = createDBObject(reservation);
+//            DB MyDb = null;
+//            try
+//            {
+//                MyDb = DBManager.getDatabase();
+//            }
+//            catch (UnknownHostException e)
+//            {
+//                JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
+//            }
+//            DBCollection col = MyDb.getCollection(collectionName);
+//            WriteResult result = col.insert(doc);
+//            //save reservation ids
+//            //reservationIds.add(doc.get("_id").toString());
+//        }
+
+        //new code according to automated timetable generating method
+        int row = consecutiveSessionList.getSelectedRow();
+        String sessionId = consecutiveSessionList.getModel().getValueAt(row, 0).toString();
+
+        DB MyDb = null;
+        try
+        {
+            MyDb = DBManager.getDatabase();
+        }
+        catch (UnknownHostException e)
+        {
+            JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
+        }
+        DBCollection col = MyDb.getCollection("Reservations");
+        for(int i=0; i<selectedRoomNumbers.size(); i++){
+            String roomId = getRoomId(selectedRoomNumbers.get(i));
+            Reservation reservation = new Reservation(roomId, sessionId);
+            DBObject doc = createDBObject(reservation);
+            WriteResult result = col.insert(doc);
+            JOptionPane.showMessageDialog(null, "Reservation Added Succesfully!");
+        }
+    }//GEN-LAST:event_reserveActionPerformed
+
     //INITIALIZE variables
     public void DBIntialization(){
         DB MyDb = null;
@@ -715,19 +822,168 @@ public class AddRoom extends javax.swing.JPanel {
         }
     }
     
+    private void displayConsecutiveSessionsTable(){
+        DB MyDb = null;
+        DBCursor cursor = null;
+        try {
+            MyDb = DBManager.getDatabase();
+            DBCollection coll = MyDb.getCollection("ConstSession");
+            cursor = coll.find();
+            String[] columnNames = {"ID", "Subject", "Group ID", "Duration"};
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+            while(cursor.hasNext()) {
+                DBObject obj = cursor.next();
+                String id = (String)obj.get("C_id");
+                String subject = (String)obj.get("subject");
+                String groupId = (String)obj.get("groupId");
+                String duration = obj.get("duration").toString();
+                model.addRow(new Object[] { id, subject, groupId, duration });
+            }
+            consecutiveSessionList.setModel(model);
+            cursor.close();
+        }catch(Exception e){
+            System.err.println("Error in displayTable() method === "+e);
+        }
+    }
+    
+    private void displayParallelSessionsTable(){
+        DB MyDb = null;
+        DBCursor cursor = null;
+        ArrayList <List<String>> sessions = new ArrayList<>();
+        ArrayList <String> session = new ArrayList<String>();
+        try {
+            MyDb = DBManager.getDatabase();
+            DBCollection coll = MyDb.getCollection("ParallelSessions");
+            cursor = coll.find();
+            String[] columnNames = {"ID", "Subject", "Group ID", "Duration"};
+            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+            while(cursor.hasNext()) {
+                DBObject obj = cursor.next();
+                String id = (String)obj.get("P_id");
+                session.add(obj.get("session").toString());
+                
+                sessions.add(session);
+                JOptionPane.showMessageDialog(null, "Session: "+sessions);
+                for(int i=0; i<sessions.size(); i++){
+                    //JOptionPane.showMessageDialog(null, "Session(i): "+i);
+                    for(int j=0; j<sessions.get(i).size(); j++){
+                        //JOptionPane.showMessageDialog(null, "Sessions.get(i): "+sessions.get(i).get(j));
+                        ArrayList<Object> objArray = new ArrayList<>();
+                        objArray.add(sessions.get(i).get(j));
+                        for(Object b: objArray){
+                            JOptionPane.showMessageDialog(null, "b: "+b.toString());
+                        }
+                    }
+                }
+                
+                String day = (String)obj.get("day");
+                String duration = obj.get("duration").toString();
+                model.addRow(new Object[] { id, day, duration });
+            }
+            parallelSessionList.setModel(model);
+            cursor.close();
+        }catch(Exception e){
+            System.err.println("Error in displayTable() method === "+e);
+        }
+    }
+    
+    private void getUnAvailableTimes(String roomNo, String buildingName, String day, ArrayList<String> unavailableTimes, String buildingId) throws Exception{
+        //mulinma session ekak create karaddi db eke e dawasata, e room eke thiyena unavailable times tika eka meka compare karala balanawa
+        //==================================================================================
+        //first of all get the selected dates->rooms unavailable times
+        DB MyDb = null;
+        try
+        {
+            MyDb = DBManager.getDatabase();
+        }
+        catch (UnknownHostException e)
+        {
+            JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
+        }
+        //get collection
+        DBCollection col = MyDb.getCollection("Sessions");
+        BasicDBObject andQuery = new BasicDBObject();
+        //find records where both building Id, date and room number match
+        List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+        obj.add(new BasicDBObject("buildingId", buildingId));
+        obj.add(new BasicDBObject("roomNumber", roomNo));
+        obj.add(new BasicDBObject("date", day));
+        
+        //get the result
+        DBCursor cursor = col.find(andQuery);
+        //if result is not null
+        if(cursor != null){
+            //JOptionPane.showMessageDialog(null, "Result is not null");
+            ArrayList <List<String>> arrayFromDataBase = new ArrayList<>();
+            ArrayList <String> singleArray = new ArrayList<>();
+            //iterate the cursor
+            while (cursor.hasNext()) {
+                //JOptionPane.showMessageDialog(null, "Iterating the cursor");
+                //get each iterations record into an object
+                DBObject obj1 = cursor.next();
+                //JOptionPane.showMessageDialog(null, "Got the iteration to an object");
+                //get that objects unavailableTimes into a local array(this makes nested arrays)
+                arrayFromDataBase.add((List<String>) obj1.get("unavailableTimes"));
+            }
+            //get the values inside the nested arrays into one array
+            for(int i=0; i<arrayFromDataBase.size(); i++){
+                for(int j=0; j<arrayFromDataBase.get(i).size(); j++){
+                    singleArray.add(arrayFromDataBase.get(i).get(j));
+                }
+            }
+            //JOptionPane.showMessageDialog(null, "singleArray: "+singleArray+"\nunavailableTimes: "+unavailableTimes);
+            //check if singleArray contains times that are set for the new reservation
+            for (String s : singleArray){ 
+                if(unavailableTimes.contains(s)){
+                    JOptionPane.showMessageDialog(null, "Timeslot you choosed is unavailable!");
+                    //terminate the method
+                    throw new Exception();
+                }
+            }
+        }
+    }
+    
+    private String getRoomId(String rn){
+        DB MyDb = null;
+        try
+        {
+            MyDb = DBManager.getDatabase();
+        }
+        catch (UnknownHostException e)
+        {
+            JOptionPane.showMessageDialog(null, "Error When Connecting to DB" + e);
+        }
+        //get collection
+        DBCollection col = MyDb.getCollection("Rooms");
+        BasicDBObject andQuery = new BasicDBObject();
+        //find records where both building Id, date and room number match
+        List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+        obj.add(new BasicDBObject("buildingId", buildingId).append("roomNumber", rn));
+        DBObject result = col.findOne(andQuery);
+        if(result != null){
+            String roomID = result.get("_id").toString();
+            return roomID;
+        }
+        return null;
+    }
+    
     private static DBObject createDBObject(Reservation reservation)
 {
             BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
-            docBuilder.append("type", reservation.type);
-            docBuilder.append("date", reservation.date);
-            docBuilder.append("startTime", reservation.startTime);
-            docBuilder.append("endTime", reservation.endTime);
-            docBuilder.append("note", reservation.note);
-            docBuilder.append("buildingCenter", reservation.buildingCenter);
-            docBuilder.append("buildingDepartment", reservation.buildingDepartment);
-            docBuilder.append("buildingLocation", reservation.buildingLocation);
-            docBuilder.append("buildingName", reservation.buildingName);
-            docBuilder.append("roomNumber", reservation.roomNumber);
+//            docBuilder.append("type", reservation.type);
+//            docBuilder.append("date", reservation.date);
+//            docBuilder.append("startTime", reservation.startTime);
+//            docBuilder.append("endTime", reservation.endTime);
+//            docBuilder.append("note", reservation.note);
+//            docBuilder.append("buildingCenter", reservation.buildingCenter);
+//            docBuilder.append("buildingDepartment", reservation.buildingDepartment);
+//            docBuilder.append("buildingLocation", reservation.buildingLocation);
+//            docBuilder.append("buildingName", reservation.buildingName);
+//            docBuilder.append("roomNumber", reservation.roomNumber);
+//            docBuilder.append("unavailableTimes", reservation.unavailableTimes);
+//            docBuilder.append("buildingId", reservation.buildingId);
+              docBuilder.append("roomId", reservation.roomId);
+              docBuilder.append("sessionId", reservation.sessionId);
             return docBuilder.get();
 }
     
@@ -756,10 +1012,8 @@ public class AddRoom extends javax.swing.JPanel {
     private javax.swing.JButton btnDeleteRoom;
     private javax.swing.JButton btnEditRoom;
     private javax.swing.JButton btnOptions;
+    private javax.swing.JTable consecutiveSessionList;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
@@ -767,13 +1021,24 @@ public class AddRoom extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JTabbedPane jTabbedPane9;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTable5;
+    private javax.swing.JTable jTable6;
+    private javax.swing.JTable jTable7;
+    private javax.swing.JTable jTable8;
     private javax.swing.JDialog options;
-    private com.github.lgooddatepicker.components.DateTimePicker rDateTime;
-    private com.github.lgooddatepicker.components.TimePicker rEndTime;
-    private javax.swing.JTextField rNote;
-    private javax.swing.JComboBox<String> rType;
+    private javax.swing.JTable parallelSessionList;
     private javax.swing.JButton reserve;
     private javax.swing.JTable roomList;
     private javax.swing.JTextField tfFloorNumber;

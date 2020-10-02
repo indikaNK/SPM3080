@@ -5,14 +5,17 @@
  */
 package timeManage;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Shimran Kuwailid
  */
 public class Reservation {
-    public String type, date, startTime, endTime, note, buildingName, buildingCenter, buildingDepartment, buildingLocation, roomNumber;
+    public String roomId, sessionId, type, date, startTime, endTime, note, buildingName, buildingCenter, buildingDepartment, buildingLocation, roomNumber, buildingId;
+    public ArrayList<String> unavailableTimes;
     
-    public Reservation(String type, String date, String startTime, String endTime, String note, String roomNumber, String buildingName, String buildingCenter, String buildingDepartment, String buildingLocation){
+    public Reservation(String type, String date, String startTime, String endTime, String note, String roomNumber, String buildingName, String buildingCenter, String buildingDepartment, String buildingLocation, ArrayList<String> unavailableTimes, String buildingId){
         this.type = type;
         this.date = date;
         this.startTime = startTime;
@@ -23,5 +26,12 @@ public class Reservation {
         this.buildingDepartment = buildingDepartment;
         this.buildingLocation = buildingLocation;
         this.roomNumber = roomNumber;
+        this.unavailableTimes = unavailableTimes;
+        this.buildingId = buildingId;
+    }
+    
+    public Reservation(String roomId, String sessionId){
+        this.roomId = roomId;
+        this.sessionId = sessionId;
     }
 }
