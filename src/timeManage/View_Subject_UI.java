@@ -315,15 +315,15 @@ public class View_Subject_UI extends javax.swing.JPanel {
         try {
 
             DBCollection col = myDB.getCollection("Subjects ");
-            System.out.println("coll"+col);
+//            System.out.println("coll"+col);
 
             Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs, nLabhrs, nEVhrs);
             DBObject doc = createDBObject(subjects);
             BasicDBObject searchQuery = new BasicDBObject().append("Subject Code", code);
-            System.out.println("searchquery" + searchQuery);
+//            System.out.println("searchquery" + searchQuery);
             WriteResult updateresult = col.update(searchQuery, doc);
             
-            System.out.println("res:::" + updateresult);
+//            System.out.println("res:::" + updateresult);
 
             if (updateresult.getN() > 0) {
                 JOptionPane.showMessageDialog(null, "Record Updated");
@@ -413,7 +413,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
         while (iterDoc.hasNext()) {
             DBObject obj = iterDoc.next();
             code = (String) obj.get("Subject Code");
-            System.out.println("codei::"+code);
+//            System.out.println("codei::"+code);
             name = (String) obj.get("SubjectName");
             year = (String) obj.get("Offered Year");
             semester = (String) obj.get("Offerd Semester");
@@ -423,7 +423,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
             nEVhrs = (String) obj.get("Evaluation Hours").toString();
 
             dtm.addRow(new String[]{code, name, year, semester, nLhrs, nLabhrs, nThrs, nEVhrs});
-            System.out.println("code3" + code);
+//            System.out.println("code3" + code);
         }
         //load data to table (POPULATE DATA)
         jTable1.setModel(dtm);

@@ -16,6 +16,7 @@ import java.awt.Window;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -28,6 +29,9 @@ public class Create_Session_UI extends javax.swing.JPanel {
      */
     HashMap<String, String> lectureList = null;
     HashMap<String, String> subjectList = null;
+    HashMap<String, String> GID = null;
+    ArrayList<String> selectedLecs = new ArrayList<String>();
+
     DBCollection coll = null;
     DataRetrive dbutils = new DataRetrive();
 
@@ -36,17 +40,26 @@ public class Create_Session_UI extends javax.swing.JPanel {
         //load lectures from db     
         lectureList = getItemList("Employee ", "Employee ID", "Employee_Name");
         lectureList.forEach((k, v) -> {
-            System.out.println("lec" + lectureList);
+//            System.out.println("lec" + lectureList);
 
             jComboBox1.addItem(v);
         });
         //load subjects from db
         subjectList = getItemList("Subjects ", "Subject Code", "SubjectName");
         subjectList.forEach((k, v) -> {
-            System.out.println("sub" + subjectList);
+//            System.out.println("sub" + subjectList);
 
             jComboBox4.addItem(k);
         });
+
+        //load subjects from db
+        GID = getItemList("SubGroupID", "GID", "SID");
+        GID.forEach((k, v) -> {
+//            System.out.println("GID" + GID);
+
+            jComboBox3.addItem(k);
+        });
+
     }
 
     /**
@@ -69,7 +82,6 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox4 = new javax.swing.JComboBox<>();
-        jTextField4 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
@@ -77,6 +89,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jSpinner1 = new javax.swing.JSpinner();
         jComboBox2 = new javax.swing.JComboBox<>();
         jTextField7 = new javax.swing.JTextField();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
@@ -88,13 +101,15 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 153, 51));
+        jButton1.setForeground(new java.awt.Color(43, 200, 186));
         jButton1.setText("Submit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel2.setText("Session ID");
@@ -114,12 +129,14 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel8.setText("Subject");
 
+        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
 
+        jComboBox4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
@@ -129,16 +146,26 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel9.setText("Student Count");
 
+        jTextField5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel10.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel10.setText("Duration (hours)");
 
+        jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lecture", "Tutorial", "Practical", " " }));
 
+        jTextField7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField7ActionPerformed(evt);
             }
         });
+
+        jComboBox3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -164,7 +191,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField4))
+                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -178,20 +205,21 @@ public class Create_Session_UI extends javax.swing.JPanel {
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(134, 134, 134)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 369, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,8 +243,8 @@ public class Create_Session_UI extends javax.swing.JPanel {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -232,9 +260,9 @@ public class Create_Session_UI extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
+                .addGap(64, 64, 64)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jLabel2, jTextField1});
@@ -242,6 +270,11 @@ public class Create_Session_UI extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        selectedLecs.add(jComboBox1.getSelectedItem().toString());
+//        System.out.println("names lecs" + selectedLecs);
+        for (int i = 0; i < selectedLecs.size(); i++) {
+            jTextField7.setText(selectedLecs.toString().replaceAll("\\[|\\]", ""));
+        }
 
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -258,52 +291,62 @@ public class Create_Session_UI extends javax.swing.JPanel {
 
             String session_ID = jTextField1.getText();
             String tag = jComboBox2.getSelectedItem().toString();
-            String group_ID = jTextField4.getText();
+//            String group_ID = jTextField4.getText();
+            String group_ID = jComboBox3.getSelectedItem().toString();
             String subject_Code = jComboBox4.getSelectedItem().toString();
-            System.out.println("subcode"+subject_Code);
+//            System.out.println("subcode" + subject_Code);
 
+            String lecturer = jComboBox1.getSelectedItem().toString();
+            lecturers.add(lecturer);
 
-    String lecturer =  jComboBox1.getSelectedItem().toString();
-    lecturers.add(lecturer);
-    
-
-            System.out.println("lecturer"+lecturers);
+//            System.out.println("lecturer" + lecturers);
 
             String subject = jTextField5.getText();
             String scount = jTextField6.getText();
             String duration = jSpinner1.getValue().toString();
-            
-            System.out.println("duration"+duration);
+
+//            System.out.println("duration" + duration);
 
             //simple validations
             if (session_ID.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Session ID cannot be Empty");
-            }
-             else if (tag.isEmpty() == true) {
+            } else if (tag.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a Tag");
             } else if (group_ID.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a group id");
             } else if (subject_Code.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a subject code");
-            } else if (lecturers.isEmpty()==true) {
+            } else if (lecturers.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "lecturer cannot be empty");
-            } else if (subject.isEmpty()==true) {
+            } else if (subject.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a Subject name");
-            } else if (Integer.parseInt(duration) ==0   ) {
+            } else if (Integer.parseInt(duration) == 0) {
                 JOptionPane.showMessageDialog(null, "Add the duration for the session");
-            }
-            
-            else if (Integer.parseInt(duration) < 0 ) {
+            } else if (!isNumeric(scount)) {
+                JOptionPane.showMessageDialog(null, "Student count must be a number");
+            } else if (Integer.parseInt(duration) < 0) {
                 JOptionPane.showMessageDialog(null, "duration must be a positive value");
             } else {
-                
+
                 //get employee ID by name
-                String lecID = dbutils.getLecID(lecturers.get(0).toString());
-                System.out.println("lecID"+lecID);
-                 ArrayList<String> lecturersID = new ArrayList<String>();
-                 lecturersID.add(lecID);
-                
-                Sessions session = new Sessions(session_ID, lecturersID, tag, group_ID, subject_Code, subject, scount, duration);
+//                System.out.println("selected lecs size"+selectedLecs.size());
+                ArrayList<String> lecID = new ArrayList<String>();
+
+            //add a selected lecturers        
+                for ( String i  : selectedLecs) {
+                    //add to arraylist   
+//                    System.out.println("forloop" + lecID);
+                    String s = dbutils.getLecID(i);
+//                    System.out.println("s ::"+s +"/nI::"+i);
+                    lecID.add(s);
+                    
+                }
+
+//                System.out.println("lecID" + lecID);
+
+//                ArrayList<String> lecturersID = new ArrayList<String>();
+//                lecturersID.add(lecID);
+                Sessions session = new Sessions(session_ID, lecID, tag, group_ID, subject_Code, subject, scount, duration);
                 DBObject doc = createDBObject(session);
                 DB myDB = null;
 
@@ -314,19 +357,20 @@ public class Create_Session_UI extends javax.swing.JPanel {
                 } catch (UnknownHostException e) {
                     JOptionPane.showMessageDialog(null, "Error When connecting To Database");
                 }
-                
+
                 DBCollection col = myDB.getCollection("Sessions");
                 WriteResult result = col.insert(doc);
-                
+
                 JOptionPane.showMessageDialog(null, "Record Inserted");
                 lecturers.clear();
+                selectedLecs.clear();
                 emptyFields();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!");
-            
+
             jTextField1.grabFocus();
-            
+
         }
 
 
@@ -354,6 +398,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -366,7 +411,6 @@ public class Create_Session_UI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
@@ -408,6 +452,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
             }
         });
     }
+
     //empty form
     public void emptyFields() {
         jTextField1.setText(null);
@@ -416,12 +461,12 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jComboBox2.setSelectedItem("Select Tag");
 //      jTextField2.setText(null);
         jTextField7.setText(null);
-        jTextField4.setText(null);
+//        jTextField4.setText(null);
         jComboBox4.setSelectedItem("Select Subject Code");
         jTextField5.setText(null);
-        jTextField6.setText(null);   
+        jTextField6.setText(null);
     }
-    
+
     public HashMap<String, String> getItemList(String table_name, String id_col, String name_col) {
 
         DB database = null;
@@ -444,6 +489,17 @@ public class Create_Session_UI extends javax.swing.JPanel {
             }
         }
         return data;
+    }
+    //string checking it as numeric values passes
+//regex to check if string is numeric ===============================
+    Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+
+//method ============================================================
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        return pattern.matcher(strNum).matches();
     }
 
 }

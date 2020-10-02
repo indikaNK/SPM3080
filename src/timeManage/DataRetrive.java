@@ -132,16 +132,16 @@ public class DataRetrive {
 
         DBObject query = new BasicDBObject("Group_ID", groupId).append("Subject_Code", subject).append("Lecturers", lecturers);
 
-        System.out.println("groupID" + groupId + "\nscode" + subject+ "\nslecturers" + lecturers);
+//        System.out.println("groupID" + groupId + "\nscode" + subject+ "\nslecturers" + lecturers);
 
         //{{"Subject_Code": subject}, {"Group_ID": groupId}}
         DBCursor resultdb = col1.find(query);
 
-        System.out.println("dbcursor : " + resultdb.toString());
+//        System.out.println("dbcursor : " + resultdb.toString());
         if (resultdb.hasNext()) {
 
             DBObject obj = resultdb.next();
-            System.out.println("obj : " + obj.toString());
+//            System.out.println("obj : " + obj.toString());
 
             Sessions s = new Sessions();
             s.setDuration(obj.get("Duration").toString());
@@ -172,10 +172,10 @@ public class DataRetrive {
         col1 = edb.getCollection("Employee ");
         BasicDBObject searchQuery = new BasicDBObject().append("Employee ID", ID);
         DBObject result = col1.findOne(searchQuery);
-        System.out.println("beforeif:"+searchQuery);
+//        System.out.println("beforeif:"+searchQuery);
         
         if (result != null) {
-            System.out.println("result:"+result);
+//            System.out.println("result:"+result);
             return result.get("Employee_Name").toString();
         }
 
@@ -195,10 +195,10 @@ public class DataRetrive {
         col1 = edb.getCollection("Employee ");
         BasicDBObject searchQuery = new BasicDBObject().append("Employee_Name", Name);
         DBObject result = col1.findOne(searchQuery);
-        System.out.println("beforeif:"+searchQuery);
+//        System.out.println("beforeif:"+searchQuery);
         
         if (result != null) {
-            System.out.println("result:"+result);
+//            System.out.println("result:"+result);
             return result.get("Employee ID").toString();
         }
 

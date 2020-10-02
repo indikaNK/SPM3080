@@ -317,7 +317,7 @@ public class View_Employee_UI extends javax.swing.JPanel {
         String building = jComboBox4.getSelectedItem().toString();
         String occupation = jComboBox5.getSelectedItem().toString();
 
-        System.out.println("eID" + eID + " ename " + employee_Name);
+//        System.out.println("eID" + eID + " ename " + employee_Name);
         DB myDB = null;
         try {
             //connection to DB
@@ -337,7 +337,7 @@ public class View_Employee_UI extends javax.swing.JPanel {
 
             WriteResult updateresult = col.update(searchQuery, doc);
             this.populate();
-            System.out.println("res" + updateresult);
+//            System.out.println("res" + updateresult);
 
             if (updateresult.getN() > 0) {
                 JOptionPane.showMessageDialog(null, "Record Updated");
@@ -355,7 +355,7 @@ public class View_Employee_UI extends javax.swing.JPanel {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         String EID = jTextField3.getText();
-        System.out.println("Employee ID" + EID);
+//        System.out.println("Employee ID" + EID);
         Lecturer lec = new Lecturer(EID);
         DBObject doc = createRemoveDBObject(lec);
         DB edb = null;
