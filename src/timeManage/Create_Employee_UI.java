@@ -280,8 +280,6 @@ public class Create_Employee_UI extends javax.swing.JPanel {
         }
 
         
-
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private static DBObject createDBObject(Lecturer lecturer) {
