@@ -28,6 +28,7 @@ public class Create_Employee_UI extends javax.swing.JPanel {
      */
     public Create_Employee_UI() {
         initComponents();
+        System.out.println("mongo db");
     }
 
     /**
