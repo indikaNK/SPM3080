@@ -15,7 +15,7 @@ public class TimeManagerDB {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    AddBook b = new AddBook();
+    Dashboard b = new Dashboard();
             b.setVisible(true);
     }
     
