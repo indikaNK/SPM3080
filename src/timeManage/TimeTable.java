@@ -41,6 +41,7 @@ public class TimeTable extends javax.swing.JPanel {
         DBCollection col2=null;
         DBCollection col3=null;
         DBCollection col4=null;
+        DBCollection col5=null;
         DBCursor sessionObjects = null;
         DBCursor prlsessioObjects = null;
         DBCursor cnvsessionObjects = null;
@@ -127,7 +128,6 @@ public class TimeTable extends javax.swing.JPanel {
         jButton4 = new javax.swing.JButton();
         jDesktopPane3 = new javax.swing.JDesktopPane();
         jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
@@ -170,13 +170,6 @@ public class TimeTable extends javax.swing.JPanel {
             }
         });
 
-        jButton7.setText("jButton7");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -191,8 +184,6 @@ public class TimeTable extends javax.swing.JPanel {
                         .addGap(34, 34, 34)
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton7)
-                        .addGap(179, 179, 179)
                         .addComponent(jButton6))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(52, 52, 52)
@@ -207,8 +198,7 @@ public class TimeTable extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(jButton4)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
+                    .addComponent(jButton6))
                 .addGap(18, 18, 18)
                 .addComponent(jDesktopPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(52, Short.MAX_VALUE))
@@ -433,10 +423,10 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
-        //testing
-            for(int i=0;i<sessionIdArray.size();i++){
-                System.out.println("with pidsss:"+sessionIdArray.get(i));
-            }
+//        //testing
+//            for(int i=0;i<sessionIdArray.size();i++){
+//                System.out.println("with pidsss:"+sessionIdArray.get(i));
+//            }
         
         col2 = db.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
@@ -474,16 +464,37 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+sessionObj.get("Duration").toString());
+                                        String lecturerStr = "";
+                                        List<Document> lecList =(List<Document>) sessionObj.get("Lecturers");
+                                        
+                                        for(int n=0;n<lecList.size();n++){
+                                            
+                                            for (Map.Entry ele : lectureList.entrySet()) {
+                                                
+                                                String key = (String)ele.getKey();
+                                                
+                                                if(ele.getKey().toString().equals(lecList.get(n))){
+                                                    
+                                                    lecturerStr = lecturerStr+ele.getValue().toString();
+                                                    
+                                                    if(n+1<lecList.size()){
+                                                        lecturerStr = lecturerStr+",";
+                                                    }
+                                                }
+                                            }
+                                        }
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
                                                 +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -491,7 +502,6 @@ public class TimeTable extends javax.swing.JPanel {
                                 }
                             }
                         }else if(idType.equals("P")){
-                            System.out.println("inside P");
                             prlsessObjects =col3.find();
                             
                             if(prlsessObjects != null){
@@ -523,7 +533,6 @@ public class TimeTable extends javax.swing.JPanel {
                                             int indexB = obj.indexOf("}");
                                             
                                             count[q] = obj.substring(indexA,indexB);
-                                            System.out.println("count:"+count[q]);
                                             HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
                                             lecturer[q] = ses.get("lecturer");
                                             subject[q] = ses.get("subject");
@@ -534,14 +543,20 @@ public class TimeTable extends javax.swing.JPanel {
                                             q++;
                                         }
                                         
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         for(int j=0;j<duration;j++){
-                                            System.out.println("j:"+j);
-                                            
+                                            String cell = "";
                                             for(int k=0;k<sesList.size();k++){
-                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
-                                                +subject[k]+" ("+tag[k]+")\n"+room;
+                                               cell = cell+group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+lecturer[k]+")\n"+room;
+                                               if(k+1<sesList.size()){
+                                                   cell = cell+"\n---------------\n";
+                                               }
                                             }
-                                            
+                                            ttable[(x[0]+j)][x[1]] = cell;
                                         }
 
                                     }
@@ -549,7 +564,6 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }
                         else if(idType.equals("C")){
-                            System.out.println("inside C");
                             
                             cnvsessObjects =col4.find();
                             
@@ -561,9 +575,18 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+cnvsessionObj.get("duration").toString());
+                                        String lecturerStr = "";
+                                        List<Document> lecList =(List<Document>) cnvsessionObj.get("lecturer");
+                                        
+                                        for(int n=0;n<lecList.size();n++){
+                                            lecturerStr = lecturerStr+lecList.get(n);
+//                                                    
+                                            if(n+1<lecList.size()){
+                                                lecturerStr = lecturerStr+",";
+                                            }
+                                        }
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
                                         
                                          List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
@@ -574,13 +597,15 @@ public class TimeTable extends javax.swing.JPanel {
                                                 tags = tags+",";
                                             }
                                         }
-                                        System.out.println("tags-"+tags);
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
                                                 +cnvsessionObj.get("subject")+" ("+tags+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -635,17 +660,17 @@ public class TimeTable extends javax.swing.JPanel {
         
         
         //get Schedule table data
-        col2 = db.getCollection("RE_Schedules");
-        DBCursor scheduleObjects1 =col2.find();
+        col5 = db.getCollection("Reservations");
+        DBCursor rsv1Objects1 =col5.find();
         
         
         //Get session IDs which matches the room
-        if(scheduleObjects1 != null){
-            while(scheduleObjects1.hasNext()){
-                DBObject scheduleObj1 = scheduleObjects1.next();
-                if(scheduleObj1.get("room").equals(room)){
-                    if(scheduleObj1.get("session") != null){
-                        sessionIdArray.add(scheduleObj1.get("session").toString());
+        if(rsv1Objects1 != null){
+            while(rsv1Objects1.hasNext()){
+                DBObject rsv1Obj1 = rsv1Objects1.next();
+                if(rsv1Obj1.get("roomId").equals(room)){
+                    if(rsv1Obj1.get("sessionId") != null){
+                        sessionIdArray.add(rsv1Obj1.get("sessionId").toString());
                     }
                     
                 }
@@ -686,16 +711,39 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+sessionObj.get("Duration").toString());
+                                        String lecturerStr = "";
+                                        List<Document> lecList =(List<Document>) sessionObj.get("Lecturers");
+                                        
+                                        for(int n=0;n<lecList.size();n++){
+                                            
+                                            for (Map.Entry ele : lectureList.entrySet()) {
+                                                
+                                                String key = (String)ele.getKey();
+                                                
+                                                if(ele.getKey().toString().equals(lecList.get(n))){
+                                                    
+                                                    lecturerStr = lecturerStr+ele.getValue().toString();
+                                                    
+                                                    if(n+1<lecList.size()){
+                                                        lecturerStr = lecturerStr+",";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        
                                         String room1 = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
                                                 +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+room1;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -703,7 +751,6 @@ public class TimeTable extends javax.swing.JPanel {
                                 }
                             }
                         }else if(idType.equals("P")){
-                            System.out.println("inside P");
                             prlsessObjects =col3.find();
                             
                             if(prlsessObjects != null){
@@ -735,7 +782,6 @@ public class TimeTable extends javax.swing.JPanel {
                                             int indexB = obj.indexOf("}");
                                             
                                             count[q] = obj.substring(indexA,indexB);
-                                            System.out.println("count:"+count[q]);
                                             HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
                                             lecturer[q] = ses.get("lecturer");
                                             subject[q] = ses.get("subject");
@@ -746,14 +792,20 @@ public class TimeTable extends javax.swing.JPanel {
                                             q++;
                                         }
                                         
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         for(int j=0;j<duration;j++){
-                                            System.out.println("j:"+j);
-                                            
+                                            String cell = "";
                                             for(int k=0;k<sesList.size();k++){
-                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
-                                                +subject[k]+" ("+tag[k]+")\n"+room1;
+                                               cell = cell+group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+lecturer[k]+")\n"+room;
+                                               if(k+1<sesList.size()){
+                                                   cell = cell+"\n---------------\n";
+                                               }
                                             }
-                                            
+                                            ttable[(x[0]+j)][x[1]] = cell;
                                         }
 
                                     }
@@ -761,7 +813,6 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }
                         else if(idType.equals("C")){
-                            System.out.println("inside C");
                             
                             cnvsessObjects =col4.find();
                             
@@ -773,9 +824,19 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+cnvsessionObj.get("duration").toString());
+                                        String lecturerStr = "";
+                                        List<Document> lecList =(List<Document>) cnvsessionObj.get("lecturer");
+                                        
+                                        for(int n=0;n<lecList.size();n++){
+                                            lecturerStr = lecturerStr+lecList.get(n);
+//                                                    
+                                            if(n+1<lecList.size()){
+                                                lecturerStr = lecturerStr+",";
+                                            }
+                                        }
+                                        
                                         String room1 = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
                                         
                                          List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
@@ -786,13 +847,15 @@ public class TimeTable extends javax.swing.JPanel {
                                                 tags = tags+",";
                                             }
                                         }
-                                        System.out.println("tags-"+tags);
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
                                                 +cnvsessionObj.get("subject")+" ("+tags+")\n"+room1;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -939,10 +1002,10 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
-        //testing
-            for(int i=0;i<sessionIdArray.size();i++){
-                System.out.println("with pids:"+sessionIdArray.get(i));
-            }
+//        //testing
+//            for(int i=0;i<sessionIdArray.size();i++){
+//                System.out.println("with pids:"+sessionIdArray.get(i));
+//            }
         
         //get Schedule table data
         col2 = db.getCollection("RE_Schedules");
@@ -981,16 +1044,38 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+sessionObj.get("Duration").toString());
+                                        String lecturerStr = "";
+                                        List<Document> lecList =(List<Document>) sessionObj.get("Lecturers");
+                                        
+                                        for(int n=0;n<lecList.size();n++){
+                                            
+                                            for (Map.Entry ele : lectureList.entrySet()) {
+                                                
+                                                String key = (String)ele.getKey();
+                                                
+                                                if(ele.getKey().toString().equals(lecList.get(n))){
+                                                    
+                                                    lecturerStr = lecturerStr+ele.getValue().toString();
+                                                    
+                                                    if(n+1<lecList.size()){
+                                                        lecturerStr = lecturerStr+",";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
                                                 +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -998,7 +1083,6 @@ public class TimeTable extends javax.swing.JPanel {
                                 }
                             }
                         }else if(idType.equals("P")){
-                            System.out.println("inside P");
                             prlsessObjects =col3.find();
                             
                             if(prlsessObjects != null){
@@ -1008,6 +1092,26 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+prlsessionObj.get("duration").toString());
+                                        
+//                                        String lecturerStr = "";
+//                                        List<Document> lecList =(List<Document>) sessionObj.get("Lecturers");
+//                                        
+//                                        for(int n=0;n<lecList.size();n++){
+//                                            
+//                                            for (Map.Entry ele : lectureList.entrySet()) {
+//                                                
+//                                                String key = (String)ele.getKey();
+//                                                
+//                                                if(ele.getKey().toString().equals(lecList.get(n))){
+//                                                    
+//                                                    lecturerStr = lecturerStr+ele.getValue().toString();
+//                                                    
+//                                                    if(n+1<lecList.size()){
+//                                                        lecturerStr = lecturerStr+",";
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
                                         String dur = prlsessionObj.get("duration").toString();
@@ -1030,7 +1134,6 @@ public class TimeTable extends javax.swing.JPanel {
                                             int indexB = obj.indexOf("}");
                                             
                                             count[q] = obj.substring(indexA,indexB);
-                                            System.out.println("count:"+count[q]);
                                             HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
                                             lecturer[q] = ses.get("lecturer");
                                             subject[q] = ses.get("subject");
@@ -1041,14 +1144,20 @@ public class TimeTable extends javax.swing.JPanel {
                                             q++;
                                         }
                                         
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         for(int j=0;j<duration;j++){
-                                            System.out.println("j:"+j);
-                                            
+                                            String cell = "";
                                             for(int k=0;k<sesList.size();k++){
-                                                ttable[(x[0]+j)][x[1]] = group[k]+"\n"+scode[k]+"-"
-                                                +subject[k]+" ("+tag[k]+")\n"+room;
+                                               cell = cell+group[k]+"\n"+scode[k]+"-"
+                                                +subject[k]+" ("+tag[k]+")\n"+lecturer[k]+")\n"+room;
+                                               if(k+1<sesList.size()){
+                                                   cell = cell+"\n---------------\n";
+                                               }
                                             }
-                                            
+                                            ttable[(x[0]+j)][x[1]] = cell;
                                         }
 
                                     }
@@ -1056,7 +1165,6 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }
                         else if(idType.equals("C")){
-                            System.out.println("inside C");
                             
                             cnvsessObjects =col4.find();
                             
@@ -1068,9 +1176,19 @@ public class TimeTable extends javax.swing.JPanel {
 //                                        System.out.println("day-"+scheduleObj.get("day").toString());
 //                                        System.out.println("stime-"+scheduleObj.get("startTime").toString());
 //                                        System.out.println("dur-"+cnvsessionObj.get("duration").toString());
+                                        String lecturerStr = "";
+                                        List<Document> lecList =(List<Document>) cnvsessionObj.get("lecturer");
+                                        
+                                        for(int n=0;n<lecList.size();n++){
+                                            lecturerStr = lecturerStr+lecList.get(n);
+//                                                    
+                                            if(n+1<lecList.size()){
+                                                lecturerStr = lecturerStr+",";
+                                            }
+                                        }
+                                        
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
                                         
                                          List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
@@ -1081,13 +1199,15 @@ public class TimeTable extends javax.swing.JPanel {
                                                 tags = tags+",";
                                             }
                                         }
-                                        System.out.println("tags-"+tags);
+                                        
+                                        if(timeSlotDuration.equals("30_MINUTES")){
+                                            duration = duration*2;
+                                        }
+                                        
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
                                                 +cnvsessionObj.get("subject")+" ("+tags+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -1134,10 +1254,6 @@ public class TimeTable extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         printRecord(jDesktopPane2);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        System.out.println(getRoom("S0001"));
-    }//GEN-LAST:event_jButton7ActionPerformed
 
     public void printRecord(JDesktopPane pane){
         
@@ -1331,7 +1447,6 @@ public class TimeTable extends javax.swing.JPanel {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
