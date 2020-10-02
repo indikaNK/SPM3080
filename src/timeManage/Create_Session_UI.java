@@ -16,6 +16,7 @@ import java.awt.Window;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -260,49 +261,46 @@ public class Create_Session_UI extends javax.swing.JPanel {
             String tag = jComboBox2.getSelectedItem().toString();
             String group_ID = jTextField4.getText();
             String subject_Code = jComboBox4.getSelectedItem().toString();
-            System.out.println("subcode"+subject_Code);
+            System.out.println("subcode" + subject_Code);
 
+            String lecturer = jComboBox1.getSelectedItem().toString();
+            lecturers.add(lecturer);
 
-    String lecturer =  jComboBox1.getSelectedItem().toString();
-    lecturers.add(lecturer);
-    
-
-            System.out.println("lecturer"+lecturers);
+            System.out.println("lecturer" + lecturers);
 
             String subject = jTextField5.getText();
             String scount = jTextField6.getText();
             String duration = jSpinner1.getValue().toString();
-            
-            System.out.println("duration"+duration);
+
+            System.out.println("duration" + duration);
 
             //simple validations
             if (session_ID.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Session ID cannot be Empty");
-            }
-             else if (tag.isEmpty() == true) {
+            } else if (tag.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a Tag");
             } else if (group_ID.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a group id");
             } else if (subject_Code.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a subject code");
-            } else if (lecturers.isEmpty()==true) {
+            } else if (lecturers.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "lecturer cannot be empty");
-            } else if (subject.isEmpty()==true) {
+            } else if (subject.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please add a Subject name");
-            } else if (Integer.parseInt(duration) ==0   ) {
+            } else if (Integer.parseInt(duration) == 0) {
                 JOptionPane.showMessageDialog(null, "Add the duration for the session");
-            }
-            
-            else if (Integer.parseInt(duration) < 0 ) {
+            } else if (!isNumeric(scount)) {
+                JOptionPane.showMessageDialog(null, "Student count must be a number");
+            } else if (Integer.parseInt(duration) < 0) {
                 JOptionPane.showMessageDialog(null, "duration must be a positive value");
             } else {
-                
+
                 //get employee ID by name
                 String lecID = dbutils.getLecID(lecturers.get(0).toString());
-                System.out.println("lecID"+lecID);
-                 ArrayList<String> lecturersID = new ArrayList<String>();
-                 lecturersID.add(lecID);
-                
+                System.out.println("lecID" + lecID);
+                ArrayList<String> lecturersID = new ArrayList<String>();
+                lecturersID.add(lecID);
+
                 Sessions session = new Sessions(session_ID, lecturersID, tag, group_ID, subject_Code, subject, scount, duration);
                 DBObject doc = createDBObject(session);
                 DB myDB = null;
@@ -314,19 +312,19 @@ public class Create_Session_UI extends javax.swing.JPanel {
                 } catch (UnknownHostException e) {
                     JOptionPane.showMessageDialog(null, "Error When connecting To Database");
                 }
-                
+
                 DBCollection col = myDB.getCollection("Sessions");
                 WriteResult result = col.insert(doc);
-                
+
                 JOptionPane.showMessageDialog(null, "Record Inserted");
                 lecturers.clear();
                 emptyFields();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!");
-            
+
             jTextField1.grabFocus();
-            
+
         }
 
 
@@ -408,6 +406,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
             }
         });
     }
+
     //empty form
     public void emptyFields() {
         jTextField1.setText(null);
@@ -419,9 +418,9 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jTextField4.setText(null);
         jComboBox4.setSelectedItem("Select Subject Code");
         jTextField5.setText(null);
-        jTextField6.setText(null);   
+        jTextField6.setText(null);
     }
-    
+
     public HashMap<String, String> getItemList(String table_name, String id_col, String name_col) {
 
         DB database = null;
@@ -444,6 +443,17 @@ public class Create_Session_UI extends javax.swing.JPanel {
             }
         }
         return data;
+    }
+    //string checking it as numeric values passes
+//regex to check if string is numeric ===============================
+    Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+
+//method ============================================================
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        return pattern.matcher(strNum).matches();
     }
 
 }

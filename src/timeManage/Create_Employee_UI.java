@@ -12,10 +12,10 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import java.awt.Window;
 import java.net.UnknownHostException;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 
 /**
  *
@@ -242,6 +242,8 @@ public class Create_Employee_UI extends javax.swing.JPanel {
             //simple validations
             if (eID.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Employee ID is Mandatory");
+            } else if (!isNumeric(eID)) {
+                JOptionPane.showMessageDialog(null, "Employee ID Should be a number");
             } else if (employee_Name.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Please Enter a Name");
             } else if (faculty.equals("Select Faculty")) {
@@ -258,7 +260,7 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                 Lecturer lecturer = new Lecturer(eID, employee_Name, faculty, department, centre, building, occupation);
                 DBObject doc = createDBObject(lecturer);
                 DB myDB = null;
-                System.out.println("lecturer : Doc"+lecturer+"\n "+doc);
+                System.out.println("lecturer : Doc" + lecturer + "\n " + doc);
 
                 try {
                     //connection to DB
@@ -269,7 +271,7 @@ public class Create_Employee_UI extends javax.swing.JPanel {
                 }
                 DBCollection col = myDB.getCollection("Employee ");
                 WriteResult result = col.insert(doc);
-                System.out.println("res"+result);
+                System.out.println("res" + result);
                 JOptionPane.showMessageDialog(null, "Record Inserted");
                 this.emptyFields();
 
@@ -279,7 +281,7 @@ public class Create_Employee_UI extends javax.swing.JPanel {
             jTextField1.grabFocus();
         }
 
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private static DBObject createDBObject(Lecturer lecturer) {
@@ -361,7 +363,16 @@ public class Create_Employee_UI extends javax.swing.JPanel {
         jComboBox4.setSelectedItem(null);
         jComboBox5.setSelectedItem(null);
     }
+    //string checking it as numeric values passes
+//regex to check if string is numeric ===============================
+    Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
 
+//method ============================================================
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        return pattern.matcher(strNum).matches();
+    }
 
 }
-
