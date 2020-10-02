@@ -261,14 +261,14 @@ public class Create_Session_UI extends javax.swing.JPanel {
             String group_ID = jTextField4.getText();
             String subject_Code = jComboBox4.getSelectedItem().toString();
             System.out.println("subcode"+subject_Code);
-//            lecturers = (ArrayList<String>) jComboBox1.getSelectedItem();
+
 
     String lecturer =  jComboBox1.getSelectedItem().toString();
     lecturers.add(lecturer);
     
 
             System.out.println("lecturer"+lecturers);
-//            String lecturers = jComboBox1.getSelectedItem().toString();
+
             String subject = jTextField5.getText();
             String scount = jTextField6.getText();
             String duration = jSpinner1.getValue().toString();
@@ -297,7 +297,13 @@ public class Create_Session_UI extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "duration must be a positive value");
             } else {
                 
-                Sessions session = new Sessions(session_ID, lecturers, tag, group_ID, subject_Code, subject, scount, duration);
+                //get employee ID by name
+                String lecID = dbutils.getLecID(lecturers.get(0).toString());
+                System.out.println("lecID"+lecID);
+                 ArrayList<String> lecturersID = new ArrayList<String>();
+                 lecturersID.add(lecID);
+                
+                Sessions session = new Sessions(session_ID, lecturersID, tag, group_ID, subject_Code, subject, scount, duration);
                 DBObject doc = createDBObject(session);
                 DB myDB = null;
 
@@ -313,7 +319,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
                 WriteResult result = col.insert(doc);
                 
                 JOptionPane.showMessageDialog(null, "Record Inserted");
-                //lecturers.clear();
+                lecturers.clear();
                 emptyFields();
             }
         } catch (Exception e) {
@@ -322,7 +328,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
             jTextField1.grabFocus();
             
         }
-lecturers.clear(); //clear the arraylist
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -114,7 +114,7 @@ public class DataRetrive {
     public ArrayList<Sessions> testSearch(String subject, String groupId, String lecturers) {
         DB edb = null;
         DBCollection col1;
-       
+
 
 //        dummy values
 //        String subject = "SE3050";
