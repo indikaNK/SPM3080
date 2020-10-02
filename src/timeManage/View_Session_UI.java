@@ -309,6 +309,7 @@ public class View_Session_UI extends javax.swing.JPanel {
 
         String lecID;
         String lecname;
+        ArrayList<String> selectedLecs = new ArrayList<>();
         for (Sessions s : sessions) {
 
             session_ID = s.getSessionID();
@@ -316,7 +317,12 @@ public class View_Session_UI extends javax.swing.JPanel {
             lecturers = lecturers.replaceAll("[^a-zA-Z0-9,]", "");
             String[] lecs = lecturers.split(",");
             lecID = lecs[0];
+            
             lecname = dbUtils.getLecName(lecID);
+
+            selectedLecs.add(lecturers);
+
+            lecname = selectedLecs.toString().replaceAll("\\[|\\]", "");
 
             tag = s.getTags();
             group_ID = s.getGroupID();
