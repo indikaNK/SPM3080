@@ -20,6 +20,10 @@ public class Sessions {
     public Sessions(){
         
     }
+
+    Sessions(String session_ID, String lecturers, String tag, String group_ID, String subject_Code, String subject, String scount, String duration) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public ArrayList<String> getLecturers() {
         return lecturers;

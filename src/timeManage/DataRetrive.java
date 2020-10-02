@@ -50,7 +50,7 @@ public class DataRetrive {
         } catch (UnknownHostException e) {
             JOptionPane.showMessageDialog(null, "Error Connecting To DB");
         }
-        col1 = edb.getCollection("Employee");
+        col1 = edb.getCollection("Employee ");
         DBObject resultdb = col1.findOne();
         if (resultdb != null) {
             eID = (String) resultdb.get("Employee ID");
@@ -111,9 +111,10 @@ public class DataRetrive {
     }
 
     //search method
-    public ArrayList<Sessions> testSearch(String subject, String groupId, String lecturerrs) {
+    public ArrayList<Sessions> testSearch(String subject, String groupId, String lecturers) {
         DB edb = null;
         DBCollection col1;
+        System.out.println("mula lec"+lecturers); //archana
 
 //        dummy values
 //        String subject = "SE3050";
@@ -180,4 +181,26 @@ public class DataRetrive {
         return null;
     }
 
+        public String getLecID(String Name) {
+        DB edb = null;
+        DBCollection col1;
+        try {
+            edb = DBManager.getDatabase();
+        } catch (UnknownHostException e) {
+            JOptionPane.showMessageDialog(null, "Error Connecting To DB");
+
+        }
+
+        col1 = edb.getCollection("Employee ");
+        BasicDBObject searchQuery = new BasicDBObject().append("Employee_Name", Name);
+        DBObject result = col1.findOne(searchQuery);
+        System.out.println("beforeif:"+searchQuery);
+        
+        if (result != null) {
+            System.out.println("result:"+result);
+            return result.get("Employee ID").toString();
+        }
+
+        return null;
+    }
 }

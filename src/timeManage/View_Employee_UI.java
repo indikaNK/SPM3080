@@ -104,16 +104,21 @@ public class View_Employee_UI extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel4.setText("Employee ID");
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel5.setText("Name");
 
+        jTextField4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel6.setText("Faculty");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Faculty", "Computing", "Business", "Engineering", "Humanities & Science" }));
+        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Faculty", "Computing", "Business", "Engineering", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -123,11 +128,13 @@ public class View_Employee_UI extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel7.setText("Department");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Depatment", "Department A", "Department B", "Department C" }));
+        jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Depatment", "Matara Town", "Malabe" }));
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel8.setText("Center");
 
+        jComboBox3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select A Center", "Malabe", "Metro", "Mathara", "Kurunegala", "Jafna" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,7 +145,8 @@ public class View_Employee_UI extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel9.setText("Building");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Building", "New", "D-Block" }));
+        jComboBox4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Building", "FOB", "New Building", "E.H.Cooray" }));
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
@@ -148,6 +156,7 @@ public class View_Employee_UI extends javax.swing.JPanel {
         jLabel10.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel10.setText("Occupation");
 
+        jComboBox5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Job Title", "Professor", "LIC", "Senior Lecturer", "Lecturer", "Asistant Lecturer" }));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -320,7 +329,7 @@ public class View_Employee_UI extends javax.swing.JPanel {
         }
         try {
 
-            DBCollection col = myDB.getCollection("Employee");
+            DBCollection col = myDB.getCollection("Employee ");
 
             Lecturer lecturer = new Lecturer(eID, employee_Name, faculty, department, centre, building, occupation);
             DBObject doc = createDBObject(lecturer);
@@ -356,7 +365,7 @@ public class View_Employee_UI extends javax.swing.JPanel {
         } catch (UnknownHostException e) {
             JOptionPane.showMessageDialog(null, "Remove Failed " + e.toString());
         }
-        DBCollection col = edb.getCollection("Employee");
+        DBCollection col = edb.getCollection("Employee ");
         WriteResult result = col.remove(doc);
         if (result.getN() > 0) {
             JOptionPane.showMessageDialog(null, Integer.toString(result.getN()) + "Record(s) Removed Sucessfully");

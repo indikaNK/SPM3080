@@ -301,7 +301,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
         String nLabhrs = jSpinner3.getValue().toString();
         String nEVhrs = jSpinner4.getValue().toString();
 
-        System.out.println("code" + code + " " + name + " " + year + " " + semester + " " + nLhrs + " " + nThrs + " " + nLabhrs + " " + nEVhrs);
+        //System.out.println("code" + code + " " + name + " " + year + " " + semester + " " + nLhrs + " " + nThrs + " " + nLabhrs + " " + nEVhrs);
 
         DB myDB = null;
         try {
@@ -315,13 +315,14 @@ public class View_Subject_UI extends javax.swing.JPanel {
         try {
 
             DBCollection col = myDB.getCollection("Subjects ");
+            System.out.println("coll"+col);
 
             Subjects subjects = new Subjects(code, name, year, semester, nLhrs, nThrs, nLabhrs, nEVhrs);
             DBObject doc = createDBObject(subjects);
             BasicDBObject searchQuery = new BasicDBObject().append("Subject Code", code);
-            System.out.println("code1" + code);
+            System.out.println("searchquery" + searchQuery);
             WriteResult updateresult = col.update(searchQuery, doc);
-            this.populate();
+            
             System.out.println("res:::" + updateresult);
 
             if (updateresult.getN() > 0) {
@@ -336,6 +337,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
 
         }
         this.emptyFields();
+        this.populate();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -411,6 +413,7 @@ public class View_Subject_UI extends javax.swing.JPanel {
         while (iterDoc.hasNext()) {
             DBObject obj = iterDoc.next();
             code = (String) obj.get("Subject Code");
+            System.out.println("codei::"+code);
             name = (String) obj.get("SubjectName");
             year = (String) obj.get("Offered Year");
             semester = (String) obj.get("Offerd Semester");

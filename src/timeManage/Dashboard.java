@@ -5,6 +5,8 @@
  */
 package timeManage;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Thisura
@@ -16,10 +18,10 @@ public class Dashboard extends javax.swing.JFrame {
      */
     public Dashboard() {
         initComponents();
-
+        
         jDesktopPane1.removeAll();
         try {
-            DashboardPage dbPage = new DashboardPage(jDesktopPane1);
+           DashboardPage dbPage = new DashboardPage(jDesktopPane1);           
             jDesktopPane1.add(dbPage).setVisible(true);
             dbPage.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
 
@@ -46,10 +48,10 @@ public class Dashboard extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
+        btnLocation = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -104,21 +106,11 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("MANAGE SUBJECTS");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         jButton4.setBackground(new java.awt.Color(0, 153, 153));
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("MANAGE LECTURERS");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
 
         jButton5.setBackground(new java.awt.Color(0, 153, 153));
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -129,36 +121,26 @@ public class Dashboard extends javax.swing.JFrame {
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("MANAGE SESSIONS");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
 
         jButton7.setBackground(new java.awt.Color(0, 153, 153));
         jButton7.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton7.setForeground(new java.awt.Color(255, 255, 255));
         jButton7.setText("STATISTICS");
-
-        jButton8.setBackground(new java.awt.Color(0, 153, 153));
-        jButton8.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setText("GENERATE TIME TABLE");
-
-        jButton9.setBackground(new java.awt.Color(0, 153, 153));
-        jButton9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setText("MANAGE LOCATIONS");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                jButton7ActionPerformed(evt);
             }
         });
 
-        jButton10.setBackground(new java.awt.Color(0, 153, 153));
-        jButton10.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jButton10.setForeground(new java.awt.Color(255, 255, 255));
-        jButton10.setText("VIEW TIME TABLES");
+        btnLocation.setBackground(new java.awt.Color(0, 153, 153));
+        btnLocation.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btnLocation.setForeground(new java.awt.Color(255, 255, 255));
+        btnLocation.setText("MANAGE LOCATIONS");
+        btnLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocationActionPerformed(evt);
+            }
+        });
 
         jButton11.setBackground(new java.awt.Color(0, 153, 153));
         jButton11.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -167,6 +149,26 @@ public class Dashboard extends javax.swing.JFrame {
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
+            }
+        });
+
+        jButton12.setBackground(new java.awt.Color(0, 153, 153));
+        jButton12.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jButton12.setForeground(new java.awt.Color(255, 255, 255));
+        jButton12.setText("GENERATE TIME TABLES");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
+        jButton13.setBackground(new java.awt.Color(0, 153, 153));
+        jButton13.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jButton13.setForeground(new java.awt.Color(255, 255, 255));
+        jButton13.setText("VIEW TIME TABLES");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
             }
         });
 
@@ -181,20 +183,20 @@ public class Dashboard extends javax.swing.JFrame {
             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
-            .addComponent(jButton9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnLocation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
             .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -204,14 +206,14 @@ public class Dashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
@@ -249,10 +251,10 @@ public class Dashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void showSettingsPage() {
+    public void showSettingsPage(){
         this.jDesktopPane1.removeAll();
         try {
-            Settings settings = new Settings();
+           Settings settings = new Settings();           
             this.jDesktopPane1.add(settings).setVisible(true);
             settings.setSize(this.jDesktopPane1.getWidth(), this.jDesktopPane1.getHeight());
 
@@ -260,8 +262,7 @@ public class Dashboard extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
-
-
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -274,7 +275,7 @@ public class Dashboard extends javax.swing.JFrame {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jDesktopPane1.removeAll();
         try {
-            DashboardPage dbPage = new DashboardPage(jDesktopPane1);
+           DashboardPage dbPage = new DashboardPage(jDesktopPane1);           
             jDesktopPane1.add(dbPage).setVisible(true);
             dbPage.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
 
@@ -282,79 +283,51 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-        jDesktopPane1.removeAll();
-        try {
-            LecturerPage lecpage = new LecturerPage(jDesktopPane1);
-             jDesktopPane1.add(lecpage).setVisible(true);
-             lecpage.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
-        } catch (Exception e) {
-        e.printStackTrace();
-        }
-        
-        
-       
-        
-//        //view lectures and its components
-//        try {
-//            this.jDesktopPane1.removeAll();
-//            View_Employee_UI v = new View_Employee_UI();
-//            jDesktopPane1.add(v).setVisible(true);
-//            v.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
-        jDesktopPane1.removeAll();
-        try {
-            SubjectPage spage = new SubjectPage(jDesktopPane1);
-             jDesktopPane1.add(spage).setVisible(true);
-             spage.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
-        } catch (Exception e) {
-        e.printStackTrace();
-        }
-
-
-
-
-
-
-//        //View subjects and its components
-//        try {
-//              View_Subject_UI s = new View_Subject_UI();
-//        jDesktopPane1.add(s).setVisible(true);
-//       s.setSize(jDesktopPane1.getWidth(),jDesktopPane1.getHeight());
-//        } catch (Exception e) {
-//        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+    private void btnLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocationActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
+        this.jDesktopPane1.removeAll();
+        try {
+           AddBuilding locationPage = new AddBuilding();           
+           this.jDesktopPane1.add(locationPage).setVisible(true);
+           locationPage.setSize(this.jDesktopPane1.getWidth(), this.jDesktopPane1.getHeight());
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        } catch (Exception e) {
+           System.out.println(e);
+        }
+    }//GEN-LAST:event_btnLocationActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         jDesktopPane1.removeAll();
         try {
-            SessionPage spage = new SessionPage(jDesktopPane1);
-             jDesktopPane1.add(spage).setVisible(true);
-             spage.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
-        } catch (Exception e) {
-        e.printStackTrace();
-        }
-    
-        
-        
-    }//GEN-LAST:event_jButton6ActionPerformed
+           GenerateTT tt = new GenerateTT();           
+            jDesktopPane1.add(tt).setVisible(true);
+            tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
 
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        
+        jDesktopPane1.removeAll();
+        try {
+           TimeTable tt = new TimeTable();           
+            jDesktopPane1.add(tt).setVisible(true);
+            tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    public void showRoomPage(String buildingId){
+        this.jDesktopPane1.removeAll();
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -381,7 +354,6 @@ public class Dashboard extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -390,20 +362,20 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
     }
-
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLocation;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

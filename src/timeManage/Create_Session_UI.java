@@ -262,15 +262,36 @@ public class Create_Session_UI extends javax.swing.JPanel {
             String tag = jComboBox2.getSelectedItem().toString();
             String group_ID = jTextField4.getText();
             String subject_Code = jComboBox4.getSelectedItem().toString();
-            lecturers = (ArrayList<String>) jComboBox1.getSelectedItem();
+//            lecturers = (ArrayList<String>) jComboBox1.getSelectedItem();
+//            String lecturers = jComboBox1.getSelectedItem().toString();
             String subject = jTextField5.getText();
             String scount = jTextField6.getText();
             String duration = jSpinner1.getValue().toString();
+            
+            System.out.println("duration"+duration);
 
             //simple validations
             if (session_ID.isEmpty() == true) {
                 JOptionPane.showMessageDialog(null, "Session ID cannot be Empty");
+            }
+             else if (tag.isEmpty() == true) {
+                JOptionPane.showMessageDialog(null, "Please add a Tag");
+            } else if (group_ID.isEmpty() == true) {
+                JOptionPane.showMessageDialog(null, "Please add a group id");
+            } else if (subject_Code.isEmpty() == true) {
+                JOptionPane.showMessageDialog(null, "Please add a subject code");
+//            } else if (lecturers.isEmpty()==true) {
+//                JOptionPane.showMessageDialog(null, "lecturer cannot be empty");
+            } else if (subject.isEmpty()==true) {
+                JOptionPane.showMessageDialog(null, "Please add a Subject name");
+            } else if (Integer.parseInt(duration) ==0   ) {
+                JOptionPane.showMessageDialog(null, "Add the duration for the session");
+            }
+            
+            else if (Integer.parseInt(duration) < 0 ) {
+                JOptionPane.showMessageDialog(null, "duration must be a positive value");
             } else {
+                
                 Sessions session = new Sessions(session_ID, lecturers, tag, group_ID, subject_Code, subject, scount, duration);
                 DBObject doc = createDBObject(session);
                 DB myDB = null;
@@ -282,18 +303,18 @@ public class Create_Session_UI extends javax.swing.JPanel {
                 } catch (UnknownHostException e) {
                     JOptionPane.showMessageDialog(null, "Error When connecting To Database");
                 }
+                
                 DBCollection col = myDB.getCollection("Sessions");
                 WriteResult result = col.insert(doc);
                 JOptionPane.showMessageDialog(null, "Record Inserted");
-                lecturers.clear();
+                //lecturers.clear();
                 emptyFields();
-
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Insertion Failed  please Fill Details to add!");
-            lecturers.clear();
+            //lecturers.clear();
             jTextField1.grabFocus();
-            emptyFields();
+            
         }
 
 
@@ -306,7 +327,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
     private static DBObject createDBObject(Sessions session) {
         BasicDBObjectBuilder docBuilder = BasicDBObjectBuilder.start();
         docBuilder.append("Session_ID", session.getSessionID());
-        docBuilder.append("Lecturers", session.getLecturers());
+//        docBuilder.append("Lecturers", session.getLecturers());
         docBuilder.append("Tag", session.getTags());
         docBuilder.append("Group_ID", session.getGroupID());
         docBuilder.append("Subject_Code", session.getSSubjectCode());
@@ -389,7 +410,7 @@ public class Create_Session_UI extends javax.swing.JPanel {
         jComboBox4.setSelectedItem("Select Subject Code");
         jTextField5.setText(null);
         jTextField6.setText(null);
-        jSpinner1.setValue(null);
+        
     }
 
     public HashMap<String, String> getItemList(String table_name, String id_col, String name_col) {
