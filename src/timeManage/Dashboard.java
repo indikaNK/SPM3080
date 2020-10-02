@@ -6,6 +6,10 @@
 package timeManage;
 
 import javax.swing.JOptionPane;
+import timeManage.ManageSession.AddNotAtime;
+import timeManage.Student.AddGrpNumber;
+import timeManage.Student.AddStudent;
+import timeManage.Student.AddYear;
 
 /**
  *
@@ -95,7 +99,7 @@ public class Dashboard extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(0, 153, 153));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("MANAGE TAGS");
+        jButton2.setText("ADD NOT AVAILABLE TIME");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -126,6 +130,11 @@ public class Dashboard extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("MANAGE STUDENTS");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setBackground(new java.awt.Color(0, 153, 153));
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -259,8 +268,9 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(jDesktopPane1))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jDesktopPane1)
+                        .addContainerGap())))
         );
 
         pack();
@@ -280,6 +290,8 @@ public class Dashboard extends javax.swing.JFrame {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        new AddNotAtime().setVisible(true);
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -379,11 +391,24 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public void showRoomPage(String buildingId){
-        this.jDesktopPane1.removeAll();
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+//        // TODO add your handling code here:
+//           jDesktopPane1.removeAll();
+//        try {
+//           AddYear ay = new AddYear(jDesktopPane1);           
+//            jDesktopPane1.add(ay).setVisible(true);
+//            ay.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+//
+//        } catch (Exception e) {
+//        }
+            new AddStudent().setVisible(true);
+
+
         
-    }
-    
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+   
     /**
      * @param args the command line arguments
      */
