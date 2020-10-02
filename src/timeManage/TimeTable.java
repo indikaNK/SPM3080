@@ -423,10 +423,10 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
-        //testing
-            for(int i=0;i<sessionIdArray.size();i++){
-                System.out.println("with pidsss:"+sessionIdArray.get(i));
-            }
+//        //testing
+//            for(int i=0;i<sessionIdArray.size();i++){
+//                System.out.println("with pidsss:"+sessionIdArray.get(i));
+//            }
         
         col2 = db.getCollection("RE_Schedules");
         DBCursor scheduleObjects =col2.find();
@@ -485,7 +485,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         }
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
                                         
                                         if(timeSlotDuration.equals("30_MINUTES")){
@@ -494,10 +493,8 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
                                                 +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -505,7 +502,6 @@ public class TimeTable extends javax.swing.JPanel {
                                 }
                             }
                         }else if(idType.equals("P")){
-                            System.out.println("inside P");
                             prlsessObjects =col3.find();
                             
                             if(prlsessObjects != null){
@@ -537,7 +533,6 @@ public class TimeTable extends javax.swing.JPanel {
                                             int indexB = obj.indexOf("}");
                                             
                                             count[q] = obj.substring(indexA,indexB);
-                                            System.out.println("count:"+count[q]);
                                             HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
                                             lecturer[q] = ses.get("lecturer");
                                             subject[q] = ses.get("subject");
@@ -553,7 +548,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         }
                                         
                                         for(int j=0;j<duration;j++){
-                                            System.out.println("j:"+j);
                                             String cell = "";
                                             for(int k=0;k<sesList.size();k++){
                                                cell = cell+group[k]+"\n"+scode[k]+"-"
@@ -570,7 +564,6 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }
                         else if(idType.equals("C")){
-                            System.out.println("inside C");
                             
                             cnvsessObjects =col4.find();
                             
@@ -594,7 +587,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         }
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
                                         
                                          List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
@@ -605,7 +597,6 @@ public class TimeTable extends javax.swing.JPanel {
                                                 tags = tags+",";
                                             }
                                         }
-                                        System.out.println("tags-"+tags);
                                         
                                         if(timeSlotDuration.equals("30_MINUTES")){
                                             duration = duration*2;
@@ -613,10 +604,8 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
                                                 +cnvsessionObj.get("subject")+" ("+tags+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -745,7 +734,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         String room1 = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
                                         
                                         if(timeSlotDuration.equals("30_MINUTES")){
@@ -754,10 +742,8 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
                                                 +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+room1;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -765,7 +751,6 @@ public class TimeTable extends javax.swing.JPanel {
                                 }
                             }
                         }else if(idType.equals("P")){
-                            System.out.println("inside P");
                             prlsessObjects =col3.find();
                             
                             if(prlsessObjects != null){
@@ -797,7 +782,6 @@ public class TimeTable extends javax.swing.JPanel {
                                             int indexB = obj.indexOf("}");
                                             
                                             count[q] = obj.substring(indexA,indexB);
-                                            System.out.println("count:"+count[q]);
                                             HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
                                             lecturer[q] = ses.get("lecturer");
                                             subject[q] = ses.get("subject");
@@ -813,7 +797,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         }
                                         
                                         for(int j=0;j<duration;j++){
-                                            System.out.println("j:"+j);
                                             String cell = "";
                                             for(int k=0;k<sesList.size();k++){
                                                cell = cell+group[k]+"\n"+scode[k]+"-"
@@ -830,7 +813,6 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }
                         else if(idType.equals("C")){
-                            System.out.println("inside C");
                             
                             cnvsessObjects =col4.find();
                             
@@ -855,7 +837,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         String room1 = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
                                         
                                          List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
@@ -866,7 +847,6 @@ public class TimeTable extends javax.swing.JPanel {
                                                 tags = tags+",";
                                             }
                                         }
-                                        System.out.println("tags-"+tags);
                                         
                                         if(timeSlotDuration.equals("30_MINUTES")){
                                             duration = duration*2;
@@ -874,10 +854,8 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
                                                 +cnvsessionObj.get("subject")+" ("+tags+")\n"+room1;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -1024,10 +1002,10 @@ public class TimeTable extends javax.swing.JPanel {
             }
         }
         
-        //testing
-            for(int i=0;i<sessionIdArray.size();i++){
-                System.out.println("with pids:"+sessionIdArray.get(i));
-            }
+//        //testing
+//            for(int i=0;i<sessionIdArray.size();i++){
+//                System.out.println("with pids:"+sessionIdArray.get(i));
+//            }
         
         //get Schedule table data
         col2 = db.getCollection("RE_Schedules");
@@ -1088,7 +1066,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(sessionObj.get("Duration").toString());
                                         
                                         if(timeSlotDuration.equals("30_MINUTES")){
@@ -1097,10 +1074,8 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = sessionObj.get("Group_ID")+"\n"+sessionObj.get("Subject_Code")+"-"
                                                 +sessionObj.get("Subject")+" ("+sessionObj.get("Tag")+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 
@@ -1108,7 +1083,6 @@ public class TimeTable extends javax.swing.JPanel {
                                 }
                             }
                         }else if(idType.equals("P")){
-                            System.out.println("inside P");
                             prlsessObjects =col3.find();
                             
                             if(prlsessObjects != null){
@@ -1160,7 +1134,6 @@ public class TimeTable extends javax.swing.JPanel {
                                             int indexB = obj.indexOf("}");
                                             
                                             count[q] = obj.substring(indexA,indexB);
-                                            System.out.println("count:"+count[q]);
                                             HashMap<String,String> ses = (HashMap<String,String>) sesList.get(q);
                                             lecturer[q] = ses.get("lecturer");
                                             subject[q] = ses.get("subject");
@@ -1176,7 +1149,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         }
                                         
                                         for(int j=0;j<duration;j++){
-                                            System.out.println("j:"+j);
                                             String cell = "";
                                             for(int k=0;k<sesList.size();k++){
                                                cell = cell+group[k]+"\n"+scode[k]+"-"
@@ -1193,7 +1165,6 @@ public class TimeTable extends javax.swing.JPanel {
                             }
                         }
                         else if(idType.equals("C")){
-                            System.out.println("inside C");
                             
                             cnvsessObjects =col4.find();
                             
@@ -1218,7 +1189,6 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         String room = getRoom(scheduleObj.get("session").toString());
                                         int[] x = searchTimeSlot(scheduleObj.get("day").toString(),scheduleObj.get("startTime").toString());
-                                        System.out.println("x-"+x[0]+","+x[1]);
                                         int duration = Integer.parseInt(cnvsessionObj.get("duration").toString());
                                         
                                          List<Document> tagList =(List<Document>) cnvsessionObj.get("tag");
@@ -1229,7 +1199,6 @@ public class TimeTable extends javax.swing.JPanel {
                                                 tags = tags+",";
                                             }
                                         }
-                                        System.out.println("tags-"+tags);
                                         
                                         if(timeSlotDuration.equals("30_MINUTES")){
                                             duration = duration*2;
@@ -1237,10 +1206,8 @@ public class TimeTable extends javax.swing.JPanel {
                                         
                                         int j=0;
                                         while(j<duration){
-                                            System.out.println("j:"+j);
                                             ttable[(x[0]+j)][x[1]] = cnvsessionObj.get("groupId")+"\n"+cnvsessionObj.get("Scode")+"-"
                                                 +cnvsessionObj.get("subject")+" ("+tags+")\n"+room;
-                                            System.out.println("result->"+ttable[(x[0]+j)][x[1]]);
                                             j++;
                                         }
 

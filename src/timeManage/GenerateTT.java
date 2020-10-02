@@ -656,7 +656,6 @@ public class GenerateTT extends javax.swing.JPanel {
     
     
     public void rearrangeSchedules(){
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////////");
         DBCollection col=null;
         DBCursor schdlObject=null;
         ArrayList<String> siidList = getSessionIDList();
@@ -673,7 +672,6 @@ public class GenerateTT extends javax.swing.JPanel {
             DBCollection col1 = db.getCollection("RE_Schedules");
             col1.drop();
         
-        System.out.println("siidList:"+siidList);
         for(int i=0;i<siidList.size();i++){
             int min=2000;
             int max=0;
@@ -709,19 +707,17 @@ public class GenerateTT extends javax.swing.JPanel {
                         }
                     }
                 }
-                System.out.println("****************");
-                System.out.println("session: "+session);
-                System.out.println("day: "+day);
-                System.out.println("stime: "+startTime);
-                System.out.println("etime: "+endTime);
-                System.out.println("room: "+room);
-                System.out.println("****************");
+//                System.out.println("****************");
+//                System.out.println("session: "+session);
+//                System.out.println("day: "+day);
+//                System.out.println("stime: "+startTime);
+//                System.out.println("etime: "+endTime);
+//                System.out.println("room: "+room);
+//                System.out.println("****************");
                 try {
 //                    col1 = db.getCollection("RE_Schedules");
                     Schedules_t schedules = new Schedules_t(session, day, startTime, endTime, room);
-                    System.out.println(schedules);
                         DBObject doc = createDBObject(schedules);
-                        System.out.println(doc);
                         WriteResult result = col1.insert(doc);
                 } catch (Exception e) {
                     System.out.println(e);
@@ -830,20 +826,8 @@ public class GenerateTT extends javax.swing.JPanel {
             getSettingsPageDetails();
             addTimeSlotsToHashMap();
             getParallelSessions();
-            System.out.println("after get P session");
-            timeslot.forEach((k, v) -> {
-                System.out.println(k+"->"+v);
-            });
             getConsecutiveSession();
-            System.out.println("after get C session");
-            timeslot.forEach((k, v) -> {
-                System.out.println(k+"->"+v);
-            });
             getSession();
-            System.out.println("after get session");
-            timeslot.forEach((k, v) -> {
-                System.out.println(k+"->"+v);
-            });
             saveToSchedulesTable();
             rearrangeSchedules();
             
