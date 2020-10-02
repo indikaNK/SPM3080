@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Student;
+package timeManage.Student;
 
-import DBUtils.DBManager;
+import timeManage.DBManager;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
@@ -16,6 +16,7 @@ import com.mongodb.WriteResult;
 import java.awt.Color;
 import java.awt.Font;
 import java.net.UnknownHostException;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.bson.types.ObjectId;
@@ -31,6 +32,10 @@ public class AddYear extends javax.swing.JPanel {
      */
     public AddYear() {
         initComponents();
+    }
+
+    public AddYear(JDesktopPane jDesktopPane1) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -153,7 +158,7 @@ public class AddYear extends javax.swing.JPanel {
                     .addComponent(gnumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(138, 138, 138)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

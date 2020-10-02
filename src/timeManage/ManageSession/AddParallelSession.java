@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ManageSession;
+package timeManage.ManageSession;
 
-import DBUtils.DBManager;
+import timeManage.DBManager;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 
