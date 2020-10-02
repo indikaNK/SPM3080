@@ -41,6 +41,7 @@ public class TimeTable extends javax.swing.JPanel {
         DBCollection col2=null;
         DBCollection col3=null;
         DBCollection col4=null;
+        DBCollection col5=null;
         DBCursor sessionObjects = null;
         DBCursor prlsessioObjects = null;
         DBCursor cnvsessionObjects = null;
@@ -653,17 +654,17 @@ public class TimeTable extends javax.swing.JPanel {
         
         
         //get Schedule table data
-        col2 = db.getCollection("RE_Schedules");
-        DBCursor scheduleObjects1 =col2.find();
+        col5 = db.getCollection("Reservations");
+        DBCursor rsv1Objects1 =col5.find();
         
         
         //Get session IDs which matches the room
-        if(scheduleObjects1 != null){
-            while(scheduleObjects1.hasNext()){
-                DBObject scheduleObj1 = scheduleObjects1.next();
-                if(scheduleObj1.get("room").equals(room)){
-                    if(scheduleObj1.get("session") != null){
-                        sessionIdArray.add(scheduleObj1.get("session").toString());
+        if(rsv1Objects1 != null){
+            while(rsv1Objects1.hasNext()){
+                DBObject rsv1Obj1 = rsv1Objects1.next();
+                if(rsv1Obj1.get("roomId").equals(room)){
+                    if(rsv1Obj1.get("sessionId") != null){
+                        sessionIdArray.add(rsv1Obj1.get("sessionId").toString());
                     }
                     
                 }
