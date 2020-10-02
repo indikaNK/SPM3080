@@ -22,6 +22,7 @@ public class LecturerPage extends javax.swing.JPanel {
     public LecturerPage() {
         super();
         initComponents();
+        System.out.println("mongo lecture page");
         
     }
         public LecturerPage(JDesktopPane jp) {

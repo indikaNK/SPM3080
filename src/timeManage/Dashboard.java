@@ -106,11 +106,21 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("MANAGE SUBJECTS");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(0, 153, 153));
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("MANAGE LECTURERS");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(0, 153, 153));
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -121,6 +131,11 @@ public class Dashboard extends javax.swing.JFrame {
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("MANAGE SESSIONS");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(0, 153, 153));
         jButton7.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -322,6 +337,47 @@ public class Dashboard extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+                jDesktopPane1.removeAll();
+        try {
+           SessionPage tt = new SessionPage(jDesktopPane1);           
+            jDesktopPane1.add(tt).setVisible(true);
+            tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+
+        } catch (Exception e) {
+        }
+        
+        
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+                jDesktopPane1.removeAll();
+        try {
+           LecturerPage tt = new LecturerPage(jDesktopPane1);           
+            jDesktopPane1.add(tt).setVisible(true);
+            tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+
+        } catch (Exception e) {
+        }
+        
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+                jDesktopPane1.removeAll();
+        try {
+           SubjectPage tt = new SubjectPage(jDesktopPane1);           
+            jDesktopPane1.add(tt).setVisible(true);
+            tt.setSize(jDesktopPane1.getWidth(), jDesktopPane1.getHeight());
+
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public void showRoomPage(String buildingId){
         this.jDesktopPane1.removeAll();
